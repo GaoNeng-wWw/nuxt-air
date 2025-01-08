@@ -12,16 +12,32 @@ datasource db {
 
 model User {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  name  String
+  bio   String
+  owner Boolean
+  oauth OAuth[]
+}
+
+model OAuth {
+  id       Int    @id @default(autoincrement())
+  provider String
+  openid   String
+  User     User[]
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  id         Int        @id @default(autoincrement())
+  title      String
+  content    String
+  categories Category[]
+  pin        Boolean    @default(false)
+  createAt   DateTime   @default(now())
+  updateAt   DateTime   @default(now())
+  lastLogin  DateTime   @default(now())
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[]
 }
