@@ -7,4 +7,4 @@ export enum Permission {
   UPDATE_REPLY,
 }
 
-export const hasPermission = (permission: number, targetPermission: Permission[]) => targetPermission.every(p => (p & permission) > 0)
+export const hasPermission = (permission: number, targetPermission: Permission[]) => targetPermission.every(p => (p & permission) > 0);

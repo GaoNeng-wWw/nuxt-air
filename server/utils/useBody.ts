@@ -2,11 +2,11 @@ import type { H3Event, EventHandlerRequest } from 'h3';
 import status from 'http-status';
 import type { ZodType } from 'zod';
 
-export const useQuery = async <T>(
+export const useBody = async <T>(
   event: H3Event<EventHandlerRequest>,
   schema: ZodType<T>,
 ) => {
-  const { data, error } = await getValidatedQuery(event, schema.safeParseAsync);
+  const { data, error } = await readValidatedBody(event, schema.safeParseAsync);
   if (error) {
     throw createError({
       status: status.BAD_REQUEST,
