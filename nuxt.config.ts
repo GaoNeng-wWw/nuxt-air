@@ -37,10 +37,11 @@ export default defineNuxtConfig({
       },
     },
   },
-  prisma: {
-    installStudio: false,
-    generateClient: true,
-    autoSetupPrisma: false,
+  i18n: {
+    vueI18n: './i18n/i18n.config.ts',
+    experimental: {
+      localeDetector: 'localeDetector.ts',
+    },
   },
   tailwindcss: {
     config: {
@@ -51,4 +52,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-})
+});

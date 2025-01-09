@@ -68,6 +68,7 @@ export const defineApi = <T extends EventHandlerRequest, D>(
       return resp;
     } catch (e) {
       const err = e as H3Error | Error;
+      console.log(e);
       for (const filter of filters) {
         filter(event, err, respHandle);
       }

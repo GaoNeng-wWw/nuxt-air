@@ -15,14 +15,25 @@ model User {
   name  String
   bio   String
   owner Boolean
-  oauth OAuth[]
+  oauth OAuth?
+  auth Auth?
+  lastLogin  DateTime   @default(now())
+}
+
+model Auth {
+  id   Int  @id @default(autoincrement())
+  email String
+  password  String
+  user     User @relation(fields: [userid], references: [id])
+  userid   Int  @unique
 }
 
 model OAuth {
   id       Int    @id @default(autoincrement())
   provider String
   openid   String
-  User     User[]
+  user     User @relation(fields: [userid], references: [id])
+  userid   Int  @unique
 }
 
 model Post {
@@ -31,9 +42,9 @@ model Post {
   content    String
   categories Category[]
   pin        Boolean    @default(false)
+  publish    Boolean    @default(true)
   createAt   DateTime   @default(now())
   updateAt   DateTime   @default(now())
-  lastLogin  DateTime   @default(now())
 }
 
 model Category {
