@@ -28,8 +28,13 @@ export default defineNuxtConfig({
     },
   },
   eslint: {
+    checker: true,
     config: {
-      stylistic: true,
+      stylistic: {
+        indent: 2,
+        semi: true,
+        braceStyle: '1tbs',
+      },
     },
   },
   prisma: {
