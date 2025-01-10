@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
     '@nuxt/test-utils/module',
+    'shadcn-nuxt',
   ],
   devtools: { enabled: true },
   css: [
@@ -53,13 +54,7 @@ export default defineNuxtConfig({
       localeDetector: 'localeDetector.ts',
     },
   },
-  tailwindcss: {
-    config: {
-      content: [
-        './pages/**/*.vue',
-        './components/**/*.vue',
-        './contens/**/*.vue',
-      ],
-    },
+  shadcn: {
+    prefix: 'ui',
   },
 });
