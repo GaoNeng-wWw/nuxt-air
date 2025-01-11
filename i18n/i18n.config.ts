@@ -9,6 +9,8 @@ export default defineI18nConfig(() => {
         },
         common: {
           notFound: '资源不存在',
+          createAt: '创建时间',
+          updateAt: '修改时间'
         },
       },
     },

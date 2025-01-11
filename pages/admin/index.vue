@@ -22,7 +22,7 @@ import {
 </script>
 
 <template>
-  <SidebarProvider>
+  <SidebarProvider class="h-full">
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
@@ -56,7 +56,7 @@ import {
           </Breadcrumb>
         </div>
       </header>
-      <div class="w-full h-full p-4 pt-0">
+      <div class="w-full max-h-full flex-grow flex-shrink basis-0 overflow-hidden p-4 pt-0">
         <nuxt-page />
       </div>
     </SidebarInset>
