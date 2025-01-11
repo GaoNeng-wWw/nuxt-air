@@ -40,19 +40,17 @@ export default defineNuxtConfig({
   },
   eslint: {
     checker: true,
-    config: {
-      stylistic: {
-        indent: 2,
-        semi: true,
-        braceStyle: '1tbs',
-      },
-    },
   },
   i18n: {
     vueI18n: './i18n/i18n.config.ts',
     experimental: {
       localeDetector: 'localeDetector.ts',
     },
+  },
+  prisma: {
+    installCLI: false,
+    installClient: false,
+    installStudio: false,
   },
   shadcn: {
     prefix: 'ui',

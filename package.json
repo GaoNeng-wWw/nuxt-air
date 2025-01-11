@@ -20,6 +20,7 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@prisma/client": "^6.2.0",
     "@prisma/nuxt": "0.2.0",
+    "@tanstack/vue-table": "^8.20.5",
     "@vueuse/core": "^12.4.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -41,6 +42,7 @@
   "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903",
   "devDependencies": {
     "@nuxt/test-utils": "^3.15.1",
+    "@stylistic/eslint-plugin": "^2.12.1",
     "@vue/test-utils": "^2.4.6",
     "eslint": "^9.17.0",
     "happy-dom": "^16.5.2",
