@@ -12,6 +12,14 @@ export default defineI18nConfig(() => {
           createAt: '创建时间',
           updateAt: '修改时间'
         },
+        admin:{
+          post:{
+            edit: '编辑',
+            unpin: '取消置顶',
+            pin: '置顶',
+            del: '删除'
+          }
+        }
       },
     },
   };

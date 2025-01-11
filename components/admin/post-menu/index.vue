@@ -40,19 +40,19 @@ const remove = () => {
 <template>
   <div class="w-full h-full flex flex-col gap-2">
     <ui-button variant="ghost" class="justify-start">
-      编辑
+      {{$t('admin.post.edit')}}
     </ui-button>
     <ui-button v-if="pin" variant="ghost" class="justify-start" :disabled="loadingButtonId === 'pin'" @click="unPin">
       <loader2 v-if="loadingButtonId === 'pin'"/>
-      取消置顶
+      {{$t('admin.post.unpin')}}
     </ui-button>
     <ui-button v-if="!pin" variant="ghost" class="justify-start" :disabled="loadingButtonId === 'pin'" @click="pinPost">
       <loader2 v-if="loadingButtonId === 'pin'"/>
-      置顶
+      {{$t('admin.post.pin')}}
     </ui-button>
     <ui-button variant="ghost" :class="ghostDanger" :disabled="loadingButtonId === 'del'" @click="remove">
       <loader2 v-if="loadingButtonId === 'del'"/>
-      删除
+      {{$t('admin.post.del')}}
     </ui-button>
   </div>
 </template>
