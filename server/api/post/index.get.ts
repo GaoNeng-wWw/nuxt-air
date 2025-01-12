@@ -14,6 +14,9 @@ export default defineEventHandler(async (event) => {
       updateAt: true,
       pin: true,
       categories: true
+    },
+    orderBy:{
+      pin: 'desc'
     }
   });
   const totalPage = await getPostTotal() ?? 0;

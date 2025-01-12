@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/test-utils/module',
     'shadcn-nuxt',
+    '@nuxtjs/mdc',
   ],
   devtools: { enabled: true },
   css: [

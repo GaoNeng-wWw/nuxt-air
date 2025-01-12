@@ -82,7 +82,7 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, require('@tailwindcss/typography')],
   content: [
     './pages/**/*.vue',
     './components/**/*.vue',
