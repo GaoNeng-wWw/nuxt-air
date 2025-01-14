@@ -5,8 +5,8 @@ import ShikiCodeBlock from 'tiptap-extension-code-block-shiki';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import Math from '@aarkue/tiptap-math-extension';
-import Mention from '@tiptap/extension-mention';
 import featureSelect from './extensions/feature-select';
+import Commands from './extensions/command';
 
 
 const editor = new Editor({
@@ -21,8 +21,8 @@ const editor = new Editor({
       defaultTheme: 'material-theme-palenight'
     }),
     Math,
-    Mention.configure({
-      suggestion:featureSelect
+    Commands.configure({
+      suggestion: featureSelect
     })
   ]
 })

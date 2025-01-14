@@ -4,5 +4,5 @@ import type { SuggestionOptions } from "@tiptap/suggestion";
 export const createSuggestion = <SuggestionItem,Attrs=MentionNodeAttrs>(
   opts: Omit<SuggestionOptions<SuggestionItem, Attrs>, 'editor'>
 ) => {
-  return opts;
+  return opts as SuggestionOptions<SuggestionItem, Attrs>;
 }
