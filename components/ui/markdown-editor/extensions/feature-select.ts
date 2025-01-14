@@ -10,20 +10,24 @@ export type PopupMenuItem = {
   command: ({editor,range}: {editor: Editor, range:Range})=>void
 }
 
+const heading = Array.from({length: 6}).map((_,idx) => {
+  return {
+    title: `H${idx+1}`,
+    command: ({ editor, range }:{editor: Editor, range:Range}) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .setNode('heading', { level: idx+1 })
+        .run()
+    }
+  }
+})
+
 export default createSuggestion({
   items: ({ query }: {query: string}) => {
     return [
-      {
-        title: 'Heading 1',
-        command: ({ editor, range }:{editor: Editor, range:Range}) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setNode('heading', { level: 1 })
-            .run()
-        },
-      },
+      ...heading
     ]
     .filter(item => item.title.toLowerCase().startsWith(query.toLowerCase())).slice(0, 10)
   },

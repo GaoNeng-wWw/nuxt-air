@@ -1,18 +1,16 @@
 <template>
-  <div class="dropdown-menu">
+  <div class="border border-border rounded p-2 flex flex-col gap-2">
     <template v-if="items.length">
       <button
         v-for="(item, index) in items"
         :key="index"
-        :class="{ 'is-selected': index === selectedIndex }"
+        :data-is-selected="index === selectedIndex"
+        class=" data-[is-selected=true]:bg-muted hover:bg-muted p-2 rounded transition duration-300 text-sm"
         @click="selectItem(index)"
       >
         {{ item.title }}
       </button>
     </template>
-    <div v-else class="item">
-      No result
-    </div>
   </div>
 </template>
 
@@ -44,6 +42,7 @@ export default {
 
   methods: {
     onKeyDown({ event }) {
+      console.log(event.key)
       if (event.key === 'ArrowUp') {
         this.upHandler()
         return true
@@ -76,7 +75,7 @@ export default {
 
     selectItem(index) {
       const item = this.items[index]
-
+      console.log(item)
       if (item) {
         this.command(item)
       }
