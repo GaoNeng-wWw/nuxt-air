@@ -1,8 +1,10 @@
 import type {SerializeObject} from 'nitropack';
 
-export interface Category {
-  id: number;
-  name: string;
+export type CreatePost = {
+  title: string;
+  content: string;
+  pin?: boolean;
+  categories?: number[]
 }
 
 export interface Post {
@@ -25,8 +27,14 @@ export const usePosts = () => {
       posts.value = posts.value.filter(post => post.id !== id)
     })
   };
+  const add = (data: CreatePost) => {
+    return $fetch('/api/post',{
+      method: 'POST',
+      body: data
+    })
+  }
   watch(data, ()=>{
     posts.value = data.value?.data ?? [];
   }, {immediate: true})
-  return {posts,meta,status,error, remove}
+  return {posts,meta,status,error, remove, add}
 }

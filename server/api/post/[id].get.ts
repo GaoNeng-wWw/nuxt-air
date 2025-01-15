@@ -16,5 +16,13 @@ export default defineApi(async (event) => {
     const t = await useTranslation(event);
     throw new HttpException(t('common.notFound'), status.NOT_FOUND);
   }
-  return post;
+  const toc = await parseMarkdown(post.content, {
+    toc: {
+      depth: 10
+    }
+  })
+  return {
+    post,
+    toc
+  };
 });
