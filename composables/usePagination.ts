@@ -4,7 +4,17 @@ export type UsePaginationOptions = {
   pageSize:ComputedRef<number> | Ref<number> | number,
   currentPage:ComputedRef<number> | Ref<number> | number
 }
-
+export type BasePagination = {
+  totalItems: Ref<number>;
+  totalPages:Ref<number>;
+  pageSize: Ref<number>;
+  currentPage: Ref<number>;
+}
+export type PaginationMethod ={
+  next: () => number;
+  prev: () => number;
+  to: (page: number) => number;
+}
 export const usePagination = (
   opts: Partial<UsePaginationOptions>
 ) => {
