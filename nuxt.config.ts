@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     devStorage: {
       redis: {
         driver: 'fs',
-        base: './.tmp',
+        base: './.tmp'
       },
     },
   },

@@ -43,7 +43,11 @@ const renderScroll = () => {
   editorInstance.scrollTop = render.value.scrollTop;
 }
 const sendPost = (force:boolean=false) => {
-  if ((postTitle.value === '' || !categories.value.length) && !force){
+  if (postTitle.value === ''){
+    toast.error('文章标题不能为空')
+    return;
+  }
+  if (!categories.value.length && !force){
     showConfirm.value = true;
     return;
   }
@@ -62,7 +66,7 @@ const sendPost = (force:boolean=false) => {
 
 <template>
   <div class="w-full h-full py-2 flex flex-col gap-2">
-    <div class="w-full space-y-2 flex items-center gap-1.5">
+    <div class="w-full flex items-center gap-1.5">
       <ui-input id="post-title" v-model="postTitle" placeholder="标题" />
       <ui-popover :open="showConfirm">
         <ui-popover-trigger>
