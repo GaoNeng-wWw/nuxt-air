@@ -1,15 +1,18 @@
 import type { SerializeObject } from 'nitropack';
+export type UseCategoriesTypes = 'page' | 'scroll';
 export interface UseCategoriesOpts {
-  page: number | Ref<number>
+  page: number | Ref<number>,
+  type: UseCategoriesTypes | Ref<UseCategoriesTypes> 
 }
 export type Category = {
   id: number;
   name: string;
 }
 export const useCategories = (
-  {page:_page=1}:UseCategoriesOpts
+  {page:_page=1, type:_types='page'}:UseCategoriesOpts
 ) => {
   const page = ref(_page)
+  const type = ref(_types);
   const {data, status, error} = useFetch('/api/categories', {query: {page}, method: 'get', server: false});
   const categories:Ref<SerializeObject<Category>[]> = ref([]);
   const meta = computed(() => data.value?.meta ?? null);
@@ -21,7 +24,7 @@ export const useCategories = (
     if (!meta.value){
       return false;
     }
-    return meta.value.totalPages > page.value;
+    return meta.value.totalPages > page.value && !loading.value;
   }
   const addCategory = (category: Omit<Category,'id'> | string) => {
     setLoading(true)
@@ -58,7 +61,13 @@ export const useCategories = (
     if (status.value === 'error'){
       return;
     }
-    categories.value = data.value?.categories ?? [];
+    if (type.value === 'page'){
+      categories.value = data.value?.categories ?? [];
+      return;
+    }
+    if (type.value === 'scroll') {
+      categories.value.push(...data.value?.categories??[]);
+    }
   })
   watch(()=>_page, () => {
     page.value = unref(_page);
