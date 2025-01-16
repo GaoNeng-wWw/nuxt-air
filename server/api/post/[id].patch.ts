@@ -39,7 +39,7 @@ export default defineApi(async (event) => {
       title: body.title,
       pin: body.pin,
       categories: {
-        connect: categories,
+        set: categories
       },
       publish: body.publish,
     },

@@ -8,16 +8,29 @@ const editor = useTemplateRef('editor')
 const render = useTemplateRef('render')
 const postTitle = ref('');
 const postContent = ref('');
-const categories = ref<number[]>([]);
+const categories = ref<Category[]>([]);
 const showConfirm = ref(false);
 const ast = ref<MDCParserResult | null>(null)
-const {add} = usePosts();
+const route = useRoute();
+const id = computed(() => route.query.id ? route.query.id.toString() : null);
+const { add } = usePosts();
+const { updatePost, fetch } = usePost();
 watch(postContent, ()=>{
   parseMarkdown(postContent.value)
   .then((res) => {
     ast.value = res;
   })
 }, {immediate: true})
+watch(id, ()=>{
+  if (id.value !== null){
+    fetch(Number.parseInt(id.value))
+    .then((data) => {
+      postTitle.value = data.post.title;
+      postContent.value = data.post.content;
+      categories.value = data.post.categories
+    })
+  }
+}, {immediate: true});
 const getEditorInstance = () => editor.value?.getInstance();
 const editorScroll = () => {
   if (!editor.value || !render.value){
@@ -52,14 +65,25 @@ const sendPost = (force:boolean=false) => {
     return;
   }
   showConfirm.value = false;
-  add({
+  if (id.value === null){
+    add({
+      title: postTitle.value,
+      content: postContent.value,
+      pin: false,
+      categories: categories.value.map((category) => category.id)
+    })
+    .then(()=>{
+      toast('发布成功')
+    })
+    return;
+  }
+  updatePost(Number.parseInt(id.value), {
     title: postTitle.value,
     content: postContent.value,
-    pin: false,
-    categories: categories.value
+    categories: categories.value.map((category) => category.id)
   })
   .then(()=>{
-    toast('发布成功')
+    toast('修改成功')
   })
 }
 </script>

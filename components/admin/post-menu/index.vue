@@ -39,9 +39,11 @@ const remove = () => {
 
 <template>
   <div class="w-full h-full flex flex-col gap-2">
-    <ui-button variant="ghost" class="justify-start">
-      {{$t('admin.post.edit')}}
-    </ui-button>
+    <nuxt-link :to="`/admin/post/edit?id=${id}`" class="w-full">
+      <ui-button variant="ghost" class="justify-start w-full">
+        {{$t('admin.post.edit')}}
+      </ui-button>
+    </nuxt-link>
     <ui-button v-if="pin" variant="ghost" class="justify-start" :disabled="loadingButtonId === 'pin'" @click="unPin">
       <loader2 v-if="loadingButtonId === 'pin'"/>
       {{$t('admin.post.unpin')}}

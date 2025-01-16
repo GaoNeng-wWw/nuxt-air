@@ -10,7 +10,7 @@ export const usePost = () => {
   }
   const updatePost = (
     id: MaybeRef<number>,
-    post: Partial<Omit<Post, 'id' | 'createAt' | 'updateAt'>>
+    post: Partial<Omit<Post, 'id' | 'createAt' | 'updateAt' | 'categories'> & {categories: number[]}>
   ) => {
     setLoading(true);
     return $fetch(
@@ -20,7 +20,8 @@ export const usePost = () => {
         body: {
           title: post.title,
           pin: post.pin,
-          content: post.content
+          content: post.content,
+          categories: post.categories
         }
       }
     )
@@ -28,5 +29,10 @@ export const usePost = () => {
       setLoading(false)
     })
   }
-  return {updatePost, removePost, loading}
+  const fetch = (id: MaybeRef<number>) => {
+    setLoading(true);
+    return $fetch(`/api/post/${id}`, {method: 'get'})
+    .finally(()=>setLoading(false));
+  }
+  return {updatePost, removePost, fetch, loading}
 }

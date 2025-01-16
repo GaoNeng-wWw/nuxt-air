@@ -12,7 +12,7 @@ const format = (date: string) => new Date(date).toLocaleDateString()
 <template>
   <div class="w-full h-full flex flex-col gap-1.5">
     <div class="w-full h-fit flex-auto">
-      <nuxt-link to="/admin/post/new">
+      <nuxt-link to="/admin/post/edit">
         <ui-button>
           <pencil class="size-4" />
           写一篇新的文章
