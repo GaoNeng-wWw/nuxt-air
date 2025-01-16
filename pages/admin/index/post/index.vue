@@ -4,14 +4,23 @@ import {
   PopoverTrigger,
   PopoverContent
 } from '@/components/ui/popover';
-import {Pin,EllipsisVertical} from 'lucide-vue-next';
+import {Pin,EllipsisVertical,Pencil} from 'lucide-vue-next';
 const {status, posts, remove} = usePosts();
 const format = (date: string) => new Date(date).toLocaleDateString()
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <ui-skeleton v-if="status === 'pending'" class="h-full w-full" />
+  <div class="w-full h-full flex flex-col gap-1.5">
+    <div class="w-full h-fit flex-auto">
+      <nuxt-link to="/admin/post/new">
+        <ui-button>
+          <pencil class="size-4" />
+          写一篇新的文章
+        </ui-button>
+      </nuxt-link>
+    </div>
+
+    <ui-skeleton v-if="status === 'idle' || status==='pending'" class="h-full w-full" />
     <ui-list v-else>
       <ui-list-item v-for="post in posts" :key="post.id">
         <template #header>
