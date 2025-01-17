@@ -28,6 +28,7 @@ export default defineApi(async (event) => {
       publish: true,
     },
   });
-
+  const id = usePostTotalNameSpace();
+  await incr(id);
   return post;
 });
