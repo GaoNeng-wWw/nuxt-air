@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module',
     'shadcn-nuxt',
     '@nuxtjs/mdc',
+    'nuxt-seo-utils'
   ],
   devtools: { enabled: false },
   css: [

@@ -18,10 +18,11 @@ export interface Post {
 }
 export type UsePostsOptions = {
   page?: MaybeRef<number>,
-  type?: MaybeRef<'page' | 'scroll'>
+  type?: MaybeRef<'page' | 'scroll'>,
+  immediate?: MaybeRef<boolean>
 }
 export const usePosts = (
-  {page:_page=1, type:_type='page'}: UsePostsOptions
+  {page:_page=1, type:_type='page', immediate = true}: UsePostsOptions
 ) => {
   const page = ref(_page);
   const type = ref(_type);
@@ -32,6 +33,7 @@ export const usePosts = (
       server: false,
       query: ref({page}),
       watch: [page],
+      immediate: unref(immediate)
     })
   const posts:Ref<SerializeObject<Post>[]> = ref([]);
   const meta = computed(() => data.value?.meta || null);

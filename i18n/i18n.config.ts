@@ -3,7 +3,37 @@ export default defineI18nConfig(() => {
     legacy: false,
     locale: 'zh',
     messages: {
+      en:{
+        breadcrumb:{
+          items:{
+            admin:{
+              index:{
+                label: 'Dashboard'
+              },
+              post:{
+                label: 'Post Manage'
+              }
+            }
+          }
+        }
+      },
       zh: {
+        breadcrumb: {
+          items:{
+            index:{
+              label: '首页'
+            },
+            admin:{
+              label: '仪表盘'
+            },
+            'admin::post': {
+              label: '文章管理'
+            },
+            'admin::post::edit': {
+              label: '文章编辑'
+            }
+          }
+        },
         menu: {
           post: '文章管理',
         },
