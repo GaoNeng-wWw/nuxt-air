@@ -25,7 +25,9 @@ export default defineI18nConfig(() => {
             unclassified: '未分类',
             sendConfirm:{
               title: '确认要发布吗'
-            }
+            },
+            newButton: '写一篇新文章',
+            notMoreData: '到底了~'
           }
         }
       },

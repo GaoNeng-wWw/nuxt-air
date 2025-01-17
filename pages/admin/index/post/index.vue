@@ -19,7 +19,7 @@ const format = (date: string) => new Date(date).toLocaleDateString()
       <nuxt-link to="/admin/post/edit">
         <ui-button>
           <pencil class="size-4" />
-          写一篇新的文章
+          {{ $t('admin.post.newButton') }}
         </ui-button>
       </nuxt-link>
     </div>
@@ -48,7 +48,7 @@ const format = (date: string) => new Date(date).toLocaleDateString()
               </popover>
           </client-only>
           </div>
-        </template>
+        </template> 
         <template #extra>
           <div class="w-full h-full space-y-2">
             <div class="space-x-2 text-xs">
@@ -59,7 +59,7 @@ const format = (date: string) => new Date(date).toLocaleDateString()
         </template>
       </ui-list-item>
       <div v-if="status !== 'idle'" class="w-full flex items-center justify-center text-sm py-2 text-foreground/80">
-        到底了~
+        {{ $t('admin.post.notMoreData') }}
       </div>
     </ui-list>
   </div>
