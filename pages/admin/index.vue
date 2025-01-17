@@ -1,13 +1,4 @@
 <script setup lang=ts>
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-
 import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
@@ -41,23 +32,13 @@ import {
             orientation="vertical"
             class="mr-2 h-4"
           />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator class="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <admin-breadcrumb />
         </div>
       </header>
       <div class="w-full max-h-full flex-1 basis-0 overflow-hidden p-4 pt-0">
-        <nuxt-page />
+        <div class="w-full h-full flex flex-1 flex-col gap-4">
+          <nuxt-page />
+        </div>
       </div>
     </SidebarInset>
   </SidebarProvider>

@@ -4,6 +4,10 @@ import {MarkdownEditor} from '@/components/ui/markdown-editor';
 import categoriesSelect from './components/categories-select.vue';
 import { toast } from 'vue-sonner';
 
+definePageMeta({
+  name: 'admin::post::edit'
+})
+
 const editor = useTemplateRef('editor')
 const render = useTemplateRef('render')
 const postTitle = ref('');
@@ -15,7 +19,8 @@ const route = useRoute();
 const id = computed(() => route.query.id ? route.query.id.toString() : null);
 const { add } = usePosts({
   type: 'page',
-  page: 1
+  page: 1,
+  immediate: false
 });
 const { updatePost, fetch } = usePost();
 watch(postContent, ()=>{
