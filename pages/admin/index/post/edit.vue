@@ -13,7 +13,10 @@ const showConfirm = ref(false);
 const ast = ref<MDCParserResult | null>(null)
 const route = useRoute();
 const id = computed(() => route.query.id ? route.query.id.toString() : null);
-const { add } = usePosts();
+const { add } = usePosts({
+  type: 'page',
+  page: 1
+});
 const { updatePost, fetch } = usePost();
 watch(postContent, ()=>{
   parseMarkdown(postContent.value)
