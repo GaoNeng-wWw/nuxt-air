@@ -1,7 +1,17 @@
+<script lang="ts" setup>
+import {vInfiniteScroll} from '@vueuse/components';
+const props = defineProps<{
+  loadMore?: ()=>Promise<void> | void,
+  canLoadMore?: ()=>boolean
+}>()
+const onLoadMore = () => {
+  props.loadMore?.();
+}
+</script>
 <template>
-  <ui-scroll-area :id="useId()" class="h-full w-full" as-child>
-    <div class="w-full h-full space-y-2">
+  <div v-infinite-scroll="[onLoadMore, {distance:10,canLoadMore}]" class="w-full overflow-auto">
+    <div class="w-full space-y-2">
       <slot />
     </div>
-  </ui-scroll-area>
+  </div>
 </template>
