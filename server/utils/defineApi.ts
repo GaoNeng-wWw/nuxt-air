@@ -1,6 +1,7 @@
 import type { EventHandlerRequest, EventHandler, H3Event } from 'h3';
 import { H3Error } from 'h3';
 import status from 'http-status';
+import {defaultFilter} from './default-filter';
 
 type PromiseLike<T> = T | Promise<T>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +52,7 @@ export const defineApi = <T extends EventHandlerRequest, D>(
   opts: DefineApiOptions = {},
 ): EventHandler<T, Promise<D>> => {
   return defineEventHandler<T>(async (event) => {
-    const { middlewares = [], guards = [], filters = [] } = opts;
+    const { middlewares = [], guards = [], filters = [defaultFilter] } = opts;
     const respHandle = createResp();
     try {
       middlewares.forEach(f => f(event));
@@ -68,14 +69,13 @@ export const defineApi = <T extends EventHandlerRequest, D>(
       return resp;
     } catch (e) {
       const err = e as H3Error | Error;
-      console.log(e);
       for (const filter of filters) {
         filter(event, err, respHandle);
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const message = (status as any)[respHandle.statusCode] ?? status['500'];
       setResponseStatus(event, respHandle.statusCode, message);
-      return { err };
+      return { ...err.cause as object };
     }
   });
 };
