@@ -24,7 +24,9 @@ export default defineApi(async (event) => {
   const newCategory = await prisma.category.update({
     where:{id},
     data:{
-      name
+      name: {
+        set:name
+      }
     }
   })
   return newCategory;

@@ -7,11 +7,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/color-mode',
+    'nuxt-zod-i18n',
     '@nuxtjs/i18n',
     '@nuxt/test-utils/module',
     'shadcn-nuxt',
     '@nuxtjs/mdc',
-    'nuxt-seo-utils'
+    'nuxt-seo-utils',
   ],
   devtools: { enabled: false },
   css: [
@@ -74,6 +75,12 @@ export default defineNuxtConfig({
     remarkPlugins:{
       [require.resolve('remark-math')]: {},
       [require.resolve('remark-gfm')]: {}
+    }
+  },
+  typescript:{
+    shim: false,
+    tsConfig:{
+      include: ['~/types/*.d.ts']
     }
   }
 });

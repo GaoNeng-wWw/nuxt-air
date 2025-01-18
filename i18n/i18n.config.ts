@@ -1,3 +1,5 @@
+import zodErrors from './zod/zhCN.json';
+
 export default defineI18nConfig(() => {
   return {
     legacy: false,
@@ -12,12 +14,13 @@ export default defineI18nConfig(() => {
               },
               post:{
                 label: 'Post Manage'
-              }
+              },
             }
           }
         }
       },
       zh: {
+        ...zodErrors,
         breadcrumb: {
           items:{
             index:{
@@ -31,6 +34,9 @@ export default defineI18nConfig(() => {
             },
             'admin::post::edit': {
               label: '文章编辑'
+            },
+            'admin::category': {
+              label: '分类管理'
             }
           }
         },
@@ -43,9 +49,20 @@ export default defineI18nConfig(() => {
           updateAt: '修改时间',
           empty: '暂无数据',
           confirm: '确认',
-          cancel: '取消'
+          cancel: '取消',
         },
         admin:{
+          category: {
+            deleteConfirm: '确定要删除吗?',
+            update:{
+              success: '修改成功'
+            },
+            new:{
+              btn: '新建',
+              nameInputLabel: '分类名',
+              success: '添加成功'
+            }
+          },
           post:{
             edit: '编辑',
             unpin: '取消置顶',
