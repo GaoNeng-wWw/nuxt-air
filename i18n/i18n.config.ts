@@ -42,6 +42,7 @@ export default defineI18nConfig(() => {
         },
         menu: {
           post: '文章管理',
+          categories: '分组管理'
         },
         common: {
           notFound: '资源不存在',
