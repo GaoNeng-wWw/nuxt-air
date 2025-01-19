@@ -8,6 +8,6 @@ export const sign = <T extends Payload>(payload: T,exp: number, secret=process.e
 export type Payload = {
   id: string;
   provider: string;
-  avatar: string;
+  avatar?: string;
   type: 'access' | 'refresh'
 }
