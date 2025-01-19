@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
   ],
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   css: [
     '~/assets/css/reset.css',
   ],
