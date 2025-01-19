@@ -13,9 +13,16 @@ export const useCategories = (
 ) => {
   const page = ref(_page)
   const type = ref(_types);
-  const {data, status, error} = useFetch('/api/categories', {query: {page}, method: 'get', server: false});
+  const {data, status, error} = useFetch(
+    '/api/categories',
+    {
+      query: ref({page}),
+      method: 'get',
+      server: false,
+      watch: [page],
+    });
   const categories:Ref<SerializeObject<Category>[]> = ref([]);
-  const meta = computed(() => data.value?.meta ?? null);
+  const meta = computed(() => data.value?.meta || null);
   const {loading,setLoading} = useLoading({initializeValue: false});
   const loadMore = () => {
     page.value += 1;
@@ -24,7 +31,7 @@ export const useCategories = (
     if (!meta.value){
       return false;
     }
-    return meta.value.totalPages > page.value && !loading.value;
+    return meta.value?.totalPages > page.value && status.value !== 'pending';
   }
   const addCategory = (category: Omit<Category,'id'> | string) => {
     setLoading(true)
@@ -36,6 +43,7 @@ export const useCategories = (
   const remove = (id: MaybeRef<number>) => {
     setLoading(true)
     const handle = $fetch(`/api/categories/${unref(id)}`, {method: 'delete'});
+    handle.then((removedCategory) => categories.value = categories.value.filter((category) => category.id !== removedCategory.id))
     handle.finally(()=>{
       setLoading(false);
     })
@@ -61,6 +69,9 @@ export const useCategories = (
     if (status.value === 'error'){
       return;
     }
+    if (!data.value?.meta){
+      return;
+    }
     if (type.value === 'page'){
       categories.value = data.value?.categories ?? [];
       return;
@@ -68,7 +79,7 @@ export const useCategories = (
     if (type.value === 'scroll') {
       categories.value.push(...data.value?.categories??[]);
     }
-  })
+  }, {deep: true})
   watch(()=>_page, () => {
     page.value = unref(_page);
   }, {deep: true});

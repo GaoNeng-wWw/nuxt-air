@@ -39,7 +39,6 @@ export const usePosts = (
   const meta = computed(() => data.value?.meta || null);
   const loadMore = () => {
     page.value += 1;
-    console.log(page.value)
   }
   const canLoadMore = () => {
     if (!meta.value){

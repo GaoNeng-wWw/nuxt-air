@@ -3,7 +3,7 @@ import prisma from "~/lib/prisma";
 import { useCategoriesNameSpace } from "~/server/utils/redis";
 
 export const CreateCategory = z.object({
-  name: z.string()
+  name: z.string().min(1)
 });
 
 export default defineApi(async (event) => {
