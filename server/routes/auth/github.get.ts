@@ -34,7 +34,7 @@ export default defineOAuthGitHubEventHandler({
     }
     const tokenPair = {
       accessToken: await sign({id:OAuthId,provider: 'github', avatar:result.user.avatar, type: 'access'}, ms('2d')),
-      refreshToken: await sign({id:OAuthId,provider: 'github', avatar:result.user.avatar, type: 'refresh'}, ms('1d')),
+      refreshToken: await sign({id:OAuthId,provider: 'github', type: 'refresh'}, ms('1d')),
     }
     await setUserSession(event, {
       user: {
