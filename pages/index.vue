@@ -1,3 +1,3 @@
 <template>
-  <span>index</span>
+  <nuxt-page />
 </template>
