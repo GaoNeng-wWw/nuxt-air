@@ -21,6 +21,10 @@ export default defineI18nConfig(() => {
       },
       zh: {
         ...zodErrors,
+        navbar:{
+          index: '首页',
+          post: '文章'
+        },
         breadcrumb: {
           items:{
             index:{

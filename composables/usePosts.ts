@@ -63,6 +63,10 @@ export const usePosts = (
       posts.value = data.value?.data ?? [];
       return;
     }
+    if (page.value === 1 && posts.value.length > 0){
+      posts.value = data.value?.data ?? [];
+      return;
+    }
     posts.value.push(...(data.value?.data ?? []));
   }, {immediate: true})
   return {posts,meta,status,error, remove, add, loadMore, canLoadMore}

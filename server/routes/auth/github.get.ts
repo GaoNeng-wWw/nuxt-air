@@ -6,7 +6,7 @@ export default defineOAuthGitHubEventHandler({
   config: {
     emailRequired: true,
     clientId: 'Ov23liPL9rcoGb1qKDwK',
-    clientSecret: 'a25bfb1b0867ba8d8e5c19fc97da56d2d0b403f8'
+    clientSecret: 'a25bfb1b0867ba8d8e5c19fc97da56d2d0b403f8',
   },
   async onSuccess(event, result) {
     const OAuthId = useOAuthId('github', result.user.id);
@@ -33,14 +33,14 @@ export default defineOAuthGitHubEventHandler({
       })
     }
     const tokenPair = {
-      accessToken: await sign({id:OAuthId,provider: 'github', avatar:result.user.avatar, type: 'access'}, ms('2d')),
+      accessToken: await sign({id:OAuthId,provider: 'github', avatar:result.user.avatar_url, type: 'access'}, ms('2d')),
       refreshToken: await sign({id:OAuthId,provider: 'github', type: 'refresh'}, ms('1d')),
     }
     await setUserSession(event, {
       user: {
         id: OAuthId,
         provider: 'github',
-        avatar: result.user.avatar,
+        avatar: result.user.avatar_url,
         ...tokenPair
       },
       loggedInAt: Date.now()

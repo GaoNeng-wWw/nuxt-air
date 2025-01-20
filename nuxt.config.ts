@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
+    '@nuxt/image'
   ],
   devtools: { enabled: true },
   css: [
