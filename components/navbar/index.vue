@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
+import { MenuIcon } from 'lucide-vue-next';
+
 const {categories} = useCategories({
   page: 1,
   type: 'scroll'
 })
 let timer:NodeJS.Timeout;
 const categoriesVisible = ref(false);
+const [DefCategoriesList, CategoriesList] = createReusableTemplate();
+const [DefDesktopNavbar, DesktopNavbar] = createReusableTemplate();
+const isDesktop = useMediaQuery('(min-width: 640px)');
 const showCategories = () => {
   if (timer) {
     clearTimeout(timer);
@@ -22,27 +28,52 @@ const hideCategories = () => {
 </script>
 
 <template>
-  <header class="max-w-lg px-2 mx-auto">
-    <nav class="w-full">
-      <ul class="flex items-center max-h-40 gap-2 bg-slate-900/50 backdrop-blur py-3 px-4 rounded-full border border-border">
-        <navbar-item url="/">
-          {{ $t('navbar.index') }}
+  <header class="w-full sm:max-w-2xl sm:px-2 mx-auto">
+    <DefCategoriesList>
+      <ul>
+        <navbar-item v-for="category in categories"  :key="category.id" class="w-full" :url="{path: '/posts', query:{category:category.id}}">
+          {{ category.name }}
         </navbar-item>
-        <ui-popover :open="categoriesVisible">
-          <ui-popover-trigger as-child @mouseenter="showCategories" @mouseleave="hideCategories">
-            <navbar-item>
-              {{ $t('navbar.post') }}
-            </navbar-item>
-          </ui-popover-trigger>
-          <ui-popover-content :align-offset="16" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
-            <ul>
-              <navbar-item v-for="category in categories"  :key="category.id" class="w-full" :url="{path: '/posts', query:{category:category.id}}">
-                {{ category.name }}
-              </navbar-item>
-            </ul>
-          </ui-popover-content>
-        </ui-popover>
       </ul>
-    </nav>
+    </DefCategoriesList>
+    <def-desktop-navbar>
+      <nav class="w-full">
+        <ul class="flex items-center max-h-40 gap-2 bg-slate-900/50 backdrop-blur py-3 px-4 rounded-full border border-border">
+          <navbar-item url="/">
+            {{ $t('navbar.index') }}
+          </navbar-item>
+          <ui-popover :open="categoriesVisible">
+            <ui-popover-trigger as-child @mouseenter="showCategories" @mouseleave="hideCategories">
+              <navbar-item>
+                {{ $t('navbar.post') }}
+              </navbar-item>
+            </ui-popover-trigger>
+            <ui-popover-content :align-offset="16" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
+              <categories-list />
+            </ui-popover-content>
+          </ui-popover>
+        </ul>
+      </nav>
+    </def-desktop-navbar>
+    <desktop-navbar v-if="isDesktop" />
+    <ui-drawer v-else>
+      <ui-drawer-trigger>
+        <ui-button variant="ghost" size="icon">
+          <menu-icon />
+        </ui-button>
+      </ui-drawer-trigger>
+      <ui-drawer-content>
+        <div class="space-y-2 py-2 px-2 min-h-64">
+          <ul class="w-full">
+            <navbar-item url="/" class="w-full">
+              {{ $t('navbar.index') }}
+            </navbar-item>
+          </ul>
+          <ul class="w-full">
+            <categories-list />
+          </ul>
+        </div>
+      </ui-drawer-content>
+    </ui-drawer>
   </header>
 </template>
