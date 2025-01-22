@@ -65,6 +65,7 @@
     "tippy.js": "^6.3.7",
     "tiptap-extension-code-block-shiki": "^0.4.0",
     "unified": "^11.0.5",
+    "vaul-vue": "^0.2.0",
     "vee-validate": "^4.15.0",
     "vite-plugin-eslint2": "^5.0.3",
     "vue": "latest",
