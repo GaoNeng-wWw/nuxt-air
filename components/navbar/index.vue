@@ -34,10 +34,12 @@ const hideCategories = () => {
               {{ $t('navbar.post') }}
             </navbar-item>
           </ui-popover-trigger>
-          <ui-popover-content :align-offset="16" @mouseenter="showCategories" @mouseleave="hideCategories" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg">
-            <navbar-item  v-for="category in categories" :key="category.id" :url="{path: '/posts', query:{category:category.id}}">
-              {{ category.name }}
-            </navbar-item>
+          <ui-popover-content :align-offset="16" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
+            <ul>
+              <navbar-item v-for="category in categories"  :key="category.id" class="w-full" :url="{path: '/posts', query:{category:category.id}}">
+                {{ category.name }}
+              </navbar-item>
+            </ul>
           </ui-popover-content>
         </ui-popover>
       </ul>
