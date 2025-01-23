@@ -61,7 +61,10 @@ export const useDialog = (
       );
       const dialogContent = h(
         DialogContent,
-        [dialogHeader,content,dialogFooter]
+        null,
+        {
+          default: [h(dialogHeader),content ? h(content) : null, h(dialogFooter)]
+        }
       );
       const anchor = document.createElement('div');
       anchor.style.position = 'fixed';

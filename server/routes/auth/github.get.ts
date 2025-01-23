@@ -45,7 +45,7 @@ export default defineOAuthGitHubEventHandler({
       },
       loggedInAt: Date.now()
     })
-    return sendRedirect(event, '/')
+    return sendRedirect(event, '/oauth/redirect')
   },
   onError(event,error){
     console.log(error)
