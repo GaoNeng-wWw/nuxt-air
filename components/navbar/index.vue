@@ -48,7 +48,7 @@ const hideCategories = () => {
                 {{ $t('navbar.post') }}
               </navbar-item>
             </ui-popover-trigger>
-            <ui-popover-content :align-offset="16" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
+            <ui-popover-content :side-offset="8" class="bg-slate-900/80 backdrop-blur-md border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
               <categories-list />
             </ui-popover-content>
           </ui-popover>
