@@ -1,6 +1,6 @@
 html,body,#__nuxt {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   margin: 0;
   padding: 0%;
 }
@@ -40,6 +40,18 @@ html,body,#__nuxt {
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --default-50:229, 84%, 5%;
+    --default-100:222, 47%, 11%;
+    --default-200:217, 33%, 17%;
+    --default-300:215, 25%, 27%;
+    --default-400:215, 19%, 35%;
+    --default-500:215, 16%, 47%;
+    --default-600:215, 20%, 65%;
+    --default-700:213, 27%, 84%;
+    --default-800:214, 32%, 91%;
+    --default-900:210, 40%, 96%;
+    --default-950: 210, 40%, 98%;
   }
 
   .dark {
@@ -72,6 +84,18 @@ html,body,#__nuxt {
     --destructive-foreground: 210 40% 98%;
 
     --ring: 212.7 26.8% 83.9%;
+
+    --default-950:229, 84%, 5%;
+    --default-900:222, 47%, 11%;
+    --default-800:217, 33%, 17%;
+    --default-700:215, 25%, 27%;
+    --default-600:215, 19%, 35%;
+    --default-500:215, 16%, 47%;
+    --default-400:215, 20%, 65%;
+    --default-300:213, 27%, 84%;
+    --default-200:214, 32%, 91%;
+    --default-100:210, 40%, 96%;
+    --default-50: 210, 40%, 98%;
   }
 }
 

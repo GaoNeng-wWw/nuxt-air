@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <div class="w-full h-full mx-auto py-8 px-2">
+  <div class="w-full h-full flex flex-col mx-auto py-8 px-2">
     <navbar />
-    <main class="h-auto">
+    <main class="h-full">
       <nuxt-page />
     </main>
   </div>
