@@ -13,7 +13,7 @@ const props = defineProps<{
     :class="
       cn('block w-fit shrink-0 cursor-pointer border border-transparent hover:border-border hover:bg-default-800/50 px-4 py-2 transition duration-300 rounded-full', props.class)
     "
-    exact-active-class="border-border bg-default-800/50"
+    exact-active-class="border-border bg-default-800/50 bg-gradient-to-br from-default-900 to-default-800 dark:bg-gradient-to-tl border"
   >
     <li> <slot /> </li>
   </nuxt-link>
