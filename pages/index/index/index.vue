@@ -51,7 +51,7 @@ const formatDate = (date: string) => {
       </ui-list-item>
     </ui-list>
     <div v-intersection-observer="[onLoadMore, {threshold: 0.9}]" />
-    <div class="w-fit sticky top-3/4 left-full translate-x-full -translate-y-1/2 flex flex-col gap-1.5">
+    <div class="hidden w-fit sticky top-3/4 left-full translate-x-full -translate-y-1/2 flex-col gap-1.5 sm:flex">
       <div class="w-10 h-10">
         <float-button-color-switch />
       </div>

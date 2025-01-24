@@ -56,24 +56,29 @@ const hideCategories = () => {
       </nav>
     </def-desktop-navbar>
     <desktop-navbar v-if="isDesktop" />
-    <ui-drawer v-else as-child class="bg-default-950">
-      <ui-drawer-trigger>
-        <ui-button variant="ghost" size="icon">
-          <menu-icon />
-        </ui-button>
-      </ui-drawer-trigger>
-      <ui-drawer-content>
-        <div class="space-y-2 py-2 px-2 min-h-64">
-          <ul class="w-full">
-            <navbar-item url="/" class="w-full">
-              {{ $t('navbar.index') }}
-            </navbar-item>
-          </ul>
-          <ul class="w-full">
-            <categories-list />
-          </ul>
-        </div>
-      </ui-drawer-content>
-    </ui-drawer>
+    <div v-else class="w-full flex items-center justify-between">
+      <ui-drawer as-child class="bg-default-950">
+        <ui-drawer-trigger>
+          <ui-button variant="ghost" size="icon">
+            <menu-icon />
+          </ui-button>
+        </ui-drawer-trigger>
+        <ui-drawer-content>
+          <div class="space-y-2 py-2 px-2 min-h-64">
+            <ul class="w-full">
+              <navbar-item url="/" class="w-full">
+                {{ $t('navbar.index') }}
+              </navbar-item>
+            </ul>
+            <ul class="w-full">
+              <categories-list />
+            </ul>
+          </div>
+        </ui-drawer-content>
+      </ui-drawer>
+      <div class="w-10 h-10">
+        <float-button-avatar />
+      </div>
+    </div>
   </header>
 </template>
