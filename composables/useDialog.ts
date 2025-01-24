@@ -39,6 +39,7 @@ export const useDialog = (
    removeByInstance(dialogStack[0]);
    dialogStack.shift();
   }
+  const vm = getCurrentInstance();
   return {
     remove,
     removeAll: ()=>{
@@ -48,7 +49,7 @@ export const useDialog = (
         anchor.remove();
       }
     },
-    render: ()=>{
+    render(){
       if (!isClient){
         return;
       }
@@ -93,6 +94,7 @@ export const useDialog = (
         },
         dialogPortal
       );
+      dialog.appContext = vm?.appContext ?? null;
       const instance = {dialog,anchor};
       dialogStack.push(instance);
       document.body.append(anchor);

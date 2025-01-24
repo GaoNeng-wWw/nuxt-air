@@ -1,12 +1,18 @@
 <script lang="ts" setup>
+const profile = useProfile();
 const openFloatWindow = (method: 'google' | 'github') => {
-  const proxy = window.open(`/oauth/${method}`, '', 'toolbar=no,menubar=no');
+  const proxy = window.open(`/auth/${method}`, '', 'toolbar=no,menubar=no');
   if (!proxy){
     return;
   }
   const abort = new AbortController();
   proxy.addEventListener('load', () => {
     if (proxy.location.href.endsWith('/oauth/redirect')){
+      $fetch('/api/profile')
+        .then((realProfile) => profile.value = realProfile)
+        .then(()=>{
+          console.log(profile.value)
+        })
       proxy.close();
     };
     abort.abort();

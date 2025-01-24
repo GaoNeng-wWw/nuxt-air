@@ -21,7 +21,7 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-  <section class="max-w-lg w-full h-auto px-0 py-4 mx-auto relative">
+  <section class="max-w-lg w-full h-full px-0 py-4 mx-auto relative">
     <ui-list>
       <ui-list-item v-for="post in posts" :key="post.id">
         <div class="w-full flex flex-col gap-1 5">
@@ -51,8 +51,13 @@ const formatDate = (date: string) => {
       </ui-list-item>
     </ui-list>
     <div v-intersection-observer="[onLoadMore, {threshold: 0.9}]" />
-    <div class="w-16 h-16 absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-      <float-button-avatar />
+    <div class="w-fit sticky top-3/4 left-full translate-x-full -translate-y-1/2 flex flex-col gap-1.5">
+      <div class="w-10 h-10">
+        <float-button-color-switch />
+      </div>
+      <div class="w-10 h-10">
+        <float-button-avatar />
+      </div>
     </div>
   </section>
 </template>
