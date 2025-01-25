@@ -38,5 +38,6 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
         }
       }
     )
+    await fetch();
   }
 })
