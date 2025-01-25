@@ -15,6 +15,10 @@ export default defineNuxtConfig({
     'nuxt-seo-utils',
     '@nuxt/image'
   ],
+  runtimeConfig:{
+    SESSION_PASSWORD: '',
+    JWT_PASSWORD: ''
+  },
   devtools: { enabled: true },
   css: [
     '~/assets/css/reset.css',

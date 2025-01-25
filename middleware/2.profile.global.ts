@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware(async () => {
-  const {user} = useUserSession();
+  const {user,fetch} = useUserSession();
+  await fetch()
   if (!user.value){
     return;
   }

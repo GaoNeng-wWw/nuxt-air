@@ -1,22 +1,21 @@
 <script lang="ts" setup>
 const profile = useProfile();
+const { fetch } = useUserSession();
 const openFloatWindow = (method: 'google' | 'github') => {
   const proxy = window.open(`/auth/${method}`, '', 'toolbar=no,menubar=no');
   if (!proxy){
     return;
   }
-  const abort = new AbortController();
   proxy.addEventListener('load', () => {
     if (proxy.location.href.endsWith('/oauth/redirect')){
-      $fetch('/api/profile')
-        .then((realProfile) => profile.value = realProfile)
-        .then(()=>{
-          console.log(profile.value)
-        })
-      proxy.close();
+      fetch()
+      .then(()=>{
+        return $fetch('/api/profile')
+      })
+      .then((realProfile) => profile.value = realProfile)
+      .then(() => proxy.close())
     };
-    abort.abort();
-  }, {signal: abort.signal})
+  })
 
 }
 </script>
