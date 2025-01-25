@@ -21,7 +21,6 @@ export default defineApi(async (event)=>{
       owner: true,
     }
   })
-  console.log(profile)
   if (!profile){
     await clearUserSession(event);
     throw new HttpException(t('common.auth_expire'), status.UNAUTHORIZED);

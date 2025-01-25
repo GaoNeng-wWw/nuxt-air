@@ -80,6 +80,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      cookie-es:
+        specifier: ^1.2.2
+        version: 1.2.2
       http-status:
         specifier: ^2.1.0
         version: 2.1.0
