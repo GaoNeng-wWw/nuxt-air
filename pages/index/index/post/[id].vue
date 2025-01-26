@@ -10,8 +10,12 @@ const {data} = await useAsyncData(`post-${id.value}`, ()=>$fetch(`/api/post/${id
 
 <template>
     <div class="max-w-xl w-full h-auto px-2 sm:px-0 py-4 mx-auto mt-4">
-      <markdown-render v-if="data?.post" :value="data.post.content" :tag="'article'" />
-      <chevron-left class="w-6 h-6 cursor-pointer underline" @click="router.back()" />
+      <markdown-render 
+        v-if="data?.post"
+        :value="data.post.content"
+        :tag="'article'"
+      />
+      <chevron-left class="w-6 h-6 cursor-pointer underline mt-4" @click="router.back()" />
     </div>
 </template>
 
