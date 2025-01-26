@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     JWT_PASSWORD: ''
   },
   devtools: {
-    enabled: true,
+    enabled: false,
 
     timeline: {
       enabled: true
@@ -86,6 +86,12 @@ export default defineNuxtConfig({
     remarkPlugins:{
       [require.resolve('remark-math')]: {},
       [require.resolve('remark-gfm')]: {}
+    },
+    components:{
+      map:{
+        img: 'ProseImage',
+        a: 'ProseA'
+      },
     }
   },
   typescript:{
