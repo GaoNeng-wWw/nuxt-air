@@ -92,7 +92,8 @@ export default defineNuxtConfig({
         img: 'ProseImage',
         a: 'ProseA',
         code: 'ProseCode',
-        pre: 'ProsePre'
+        pre: 'ProsePre',
+        p: 'ProseP'
       },
     }
   },

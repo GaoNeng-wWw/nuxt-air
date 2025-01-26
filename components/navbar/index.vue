@@ -28,7 +28,7 @@ const hideCategories = () => {
 </script>
 
 <template>
-  <header class="max-w-xl w-full sticky top-0 sm:top-2 mx-auto sm:rounded-none sm:bg-transparent">
+  <header class="max-w-xl w-full sticky top-0 sm:top-2 mx-auto sm:rounded-none sm:bg-transparent z-50">
     <DefCategoriesList>
       <ul>
         <navbar-item v-for="category in categories"  :key="category.id" class="w-full" :url="{path: '/posts', query:{category:category.id}}">
