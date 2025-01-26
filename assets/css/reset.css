@@ -106,3 +106,16 @@ html,body,#__nuxt {
     @apply bg-background text-foreground;
   }
 }
+
+*[aria-hidden="true"]{
+  display: none;
+}
+
+annotation {
+  display: none;
+}
+
+.katex-display{
+  display: block;
+  overflow: scroll;
+}

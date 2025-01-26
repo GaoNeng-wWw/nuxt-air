@@ -72,7 +72,7 @@ export default defineNuxtConfig({
   },
   mdc:{
     highlight:{
-      noApiRoute: true,
+      // noApiRoute: true,
       theme: {
         default: 'vitesse-light',
         dark: 'material-theme-palenight'
@@ -90,7 +90,9 @@ export default defineNuxtConfig({
     components:{
       map:{
         img: 'ProseImage',
-        a: 'ProseA'
+        a: 'ProseA',
+        code: 'ProseCode',
+        pre: 'ProsePre'
       },
     }
   },
