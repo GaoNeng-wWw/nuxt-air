@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { MDCParserResult } from '@nuxtjs/mdc';
 import {MarkdownEditor} from '@/components/ui/markdown-editor';
+import {MarkdownRender} from '@/components/ui/markdown-render';
 import categoriesSelect from './components/categories-select.vue';
 import { toast } from 'vue-sonner';
 
@@ -125,7 +126,7 @@ const sendPost = (force:boolean=false) => {
         <MarkdownEditor ref="editor" v-model="postContent" @scroll="editorScroll" />
       </client-only>
       <div ref="render" class="w-full h-full overflow-auto border border-border rounded" @scroll="renderScroll">
-        <m-d-c-renderer v-if="ast" class="p-2 prose dark:prose-invert" :data="ast.data" :body="ast.body" />
+        <markdown-render :value="postContent" class="p-2" tag="article" />
       </div>
     </div>
   </div>
