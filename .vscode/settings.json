@@ -41,4 +41,11 @@
     "toml",
     "xml"
   ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "class:list",
+    "exact-active-class"
+  ]
 }

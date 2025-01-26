@@ -11,9 +11,16 @@ declare global {
     link: string,
     label: string;
   }
+  namespace NodeJS {
+    interface ProcessEnv {
+      NUXT_SESSION_PASSWORD:string;
+      NUXT_JWT_PASSWORD:string;
+    }
+  }
 }
 declare module 'vue-router'{
   declare interface RouteMeta {
+    auth: boolean | undefined;
     breadcrumb: boolean | undefined;
   }
 }

@@ -17,6 +17,7 @@ model User {
   owner     Boolean
   oauth     OAuth?
   auth      Auth?
+  avatar    String? @default("")
   lastLogin DateTime @default(now())
 }
 

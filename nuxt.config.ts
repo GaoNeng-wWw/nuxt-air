@@ -13,8 +13,19 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
+    '@nuxt/image'
   ],
-  devtools: { enabled: false },
+  runtimeConfig:{
+    SESSION_PASSWORD: '',
+    JWT_PASSWORD: ''
+  },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   css: [
     '~/assets/css/reset.css',
   ],

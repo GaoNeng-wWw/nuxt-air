@@ -21,7 +21,7 @@ export default defineApi(async (event) => {
   }
   const {toc} = await parseMarkdown(post.content, {
     toc: {
-      depth: 10
+      depth: 5
     }
   })
   return {

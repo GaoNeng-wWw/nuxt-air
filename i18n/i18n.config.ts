@@ -21,6 +21,10 @@ export default defineI18nConfig(() => {
       },
       zh: {
         ...zodErrors,
+        navbar:{
+          index: '首页',
+          post: '文章'
+        },
         breadcrumb: {
           items:{
             index:{
@@ -51,6 +55,9 @@ export default defineI18nConfig(() => {
           empty: '暂无数据',
           confirm: '确认',
           cancel: '取消',
+          unauth: '未登录',
+          auth_expire: '登陆过期',
+          bad_token: 'token 不合法'
         },
         admin:{
           category: {
