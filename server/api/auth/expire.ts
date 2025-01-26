@@ -40,10 +40,16 @@ export default defineApi(async (event)=>{
     throw new HttpException(t('common.unauth'), status.UNAUTHORIZED);
   }
   const secrect = process.env.NUXT_JWT_PASSWORD
-  if (type === 'access' && !user.accessToken || type === 'access' && await safeVerify(user.accessToken,secrect) === Reason.EXPIRED) {
+  if (
+    type === 'access' && !user.accessToken || 
+    type === 'access' && await safeVerify(user.accessToken,secrect) === Reason.EXPIRED
+  ) {
     return true;
   }
-  if (type === 'refresh' && !user.refreshToken || type === 'refresh' && await safeVerify(user.refreshToken,secrect) === Reason.EXPIRED) {
+  if (
+    type === 'refresh' && !user.refreshToken ||
+    type === 'refresh' && await safeVerify(user.refreshToken,secrect) === Reason.EXPIRED
+  ) {
     return true;
   }
 })

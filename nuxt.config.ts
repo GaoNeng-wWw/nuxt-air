@@ -19,7 +19,13 @@ export default defineNuxtConfig({
     SESSION_PASSWORD: '',
     JWT_PASSWORD: ''
   },
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   css: [
     '~/assets/css/reset.css',
   ],

@@ -1,14 +1,9 @@
 export default defineNuxtRouteMiddleware(async () => {
-  const {user,fetch} = useUserSession();
-  await fetch()
-  if (!user.value){
+  if (import.meta.server){
     return;
   }
   const profile = useProfile();
-  if (profile.value){
-    return;
-  }
   $fetch('/api/profile')
   .then((realProfile) => profile.value = realProfile)
-  .catch();
+  .catch(console.log)
 })

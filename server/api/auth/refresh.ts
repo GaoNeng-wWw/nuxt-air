@@ -11,7 +11,6 @@ export default defineApi(async (event) => {
   const {accessToken, refreshToken, id} = user;
   const redis = useRedis();
   const {access, refresh} = useTokenNamespace(id);
-  console.log(await redis.hasItem(refresh))
   if (!await redis.hasItem(refresh)){
     throw new HttpException(t('common.auth_expire'), status.UNAUTHORIZED)
   }
