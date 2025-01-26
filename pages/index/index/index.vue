@@ -21,10 +21,16 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-  <section class="max-w-xl w-full h-full px-2 sm:px-0 py-4 mx-auto">
-    <ui-list>
-      <nuxt-link v-for="post in posts" :key="post.id" :to="{path: `/post/${post.id}`}">
-        <ui-list-item class="hover:bg-default-800 py-2 rounded-md cursor-pointer transition">
+  <section class="max-w-xl w-full px-2 sm:px-0 py-4 mx-auto overflow-hidden">
+    <ui-list class=" overflow-visible">
+      <nuxt-link
+        v-for="post,idx in posts" :key="post.id" :to="{path: `/post/${post.id}`}"
+      >
+        <ui-list-item
+        class="slide-animation hover:bg-default-800 py-2 rounded-md cursor-pointer"
+        :style="{
+          '--index': idx
+        }">
           <div class="w-full flex flex-col gap-1 5">
             <div class="w-full flex items-center gap-1.5">
               <pin v-if="post.pin" class="size-5 mt-1 text-rose-500" />
