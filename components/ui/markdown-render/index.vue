@@ -13,7 +13,7 @@ const props = defineProps<{
     :class="cn(
       `
         prose prose-stone dark:prose-invert
-        prose-lead:no-underline
+        prose-headings:no-underline
         hover:prose-h1:before:content-['#']
         hover:prose-h2:before:content-['##']
         hover:prose-h3:before:content-['###']
