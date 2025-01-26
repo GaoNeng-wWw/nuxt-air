@@ -119,3 +119,19 @@ annotation {
   display: block;
   overflow: scroll;
 }
+
+@keyframes slideBottomToTop {
+  from{
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-animation {
+  --delay: calc(var(--index) * 100ms);
+  animation: slideBottomToTop 700ms ease-in-out var(--delay) both;
+}

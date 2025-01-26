@@ -2,14 +2,15 @@
 import {cn} from '@/lib/utils';
 const props = defineProps<{
   value: string,
-  tag: string,
+  tag?: string,
   class?: string
 }>();
 </script>
 
 <template>
   <m-d-c 
-    :value="props.value" :tag="props.tag"
+    :value="props.value"
+    :tag="props.tag"
     :class="cn(
       `
         prose prose-stone dark:prose-invert
