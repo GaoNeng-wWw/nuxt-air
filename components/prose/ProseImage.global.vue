@@ -5,6 +5,7 @@
     :width="props.width"
     :height="props.height"
     :loading="'lazy'"
+    class="mx-auto"
   >
     <template #placeholder>
       <ui-skeleton class="w-full h-64" />
