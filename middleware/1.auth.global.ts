@@ -45,6 +45,10 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
         await fetch();
       }
     }
+    const profile = useProfile();
+    if (to.meta.auth && !profile.value?.owner){
+      return abortNavigation();
+    }
   } catch (e) {
     console.log(e);
   }
