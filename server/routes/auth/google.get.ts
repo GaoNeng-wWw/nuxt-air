@@ -50,18 +50,25 @@ export default defineOAuthGoogleEventHandler({
       accessToken: await sign({id, provider: 'google', avatar: user.picture, type: 'access'}, ms('2d')),
       refreshToken: await sign({id, provider: 'google', avatar: user.picture, type: 'refresh'}, ms('1d')),
     }
+    const redis = useRedis();
     await setUserSession(event, {
       user: {
         id,
         provider: 'google',
         avatar: user.picture,
+        owner: await redis.getItem('site::owner') === id,
         ...tokenPair
       },
       loggedInAt: Date.now()
+    },{
+      maxAge: ms('1d') / 1000
     })
-    return sendRedirect(event, '/')
+    const {access, refresh} = useTokenNamespace(id);
+    await redis.setItem(access, tokenPair.accessToken);
+    await redis.setItem(refresh, tokenPair.refreshToken);
+    return sendRedirect(event, '/oauth/redirect')
   },
-  onError: (event, err) => {
-    return sendRedirect(event, '/')
+  onError: (event) => {
+    return sendRedirect(event, '/oauth/redirect')
   }
 })
