@@ -19,7 +19,7 @@ const format = (date: string) => new Date(date).toLocaleDateString()
 
 <template>
   <div class="w-full h-full flex flex-col gap-1.5">
-    <div class="w-full h-fit flex-auto">
+    <div class="w-full h-fit flex-auto basis-0 grow-0">
       <nuxt-link to="/admin/post/edit">
         <ui-button>
           <pencil class="size-4" />
@@ -28,7 +28,6 @@ const format = (date: string) => new Date(date).toLocaleDateString()
       </nuxt-link>
     </div>
 
-    <!-- <ui-skeleton v-if="status === 'idle' || status==='pending'" class="h-full w-full" /> -->
     <ui-list :load-more="loadMore" :can-load-more="canLoadMore">
       <ui-list-item v-for="post in posts" :key="post.id">
       <template #header>
