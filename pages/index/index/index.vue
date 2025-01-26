@@ -21,43 +21,37 @@ const formatDate = (date: string) => {
 </script>
 
 <template>
-  <section class="max-w-lg w-full h-full px-0 py-4 mx-auto relative">
+  <section class="max-w-xl w-full h-full px-2 sm:px-0 py-4 mx-auto">
     <ui-list>
-      <ui-list-item v-for="post in posts" :key="post.id">
-        <div class="w-full flex flex-col gap-1 5">
-          <div class="w-full flex items-center gap-1.5">
-            <pin v-if="post.pin" class="size-5 mt-1 text-rose-500" />
-            <div class="flex flex-auto items-center justify-between">
-              <nuxt-link :to="{path: `/post/${post.id}`}">
-                <span class="text-2xl transition duration-300 hover:text-primary">
-                  {{post.title}}
-                </span>
-              </nuxt-link>
+      <nuxt-link v-for="post in posts" :key="post.id" :to="{path: `/post/${post.id}`}">
+        <ui-list-item class="hover:bg-default-800 py-2 rounded-md cursor-pointer transition">
+          <div class="w-full flex flex-col gap-1 5">
+            <div class="w-full flex items-center gap-1.5">
+              <pin v-if="post.pin" class="size-5 mt-1 text-rose-500" />
+              <div class="flex flex-auto items-center justify-between">
+                <nuxt-link :to="{path: `/post/${post.id}`}">
+                  <span class="text-2xl transition duration-300 hover:text-primary">
+                    {{post.title}}
+                  </span>
+                </nuxt-link>
+              </div>
             </div>
-          </div>
-          <div class="w-full flex gap-2">
-            <div class="flex gap-0.5 items-center">
-              <calendar-days class="size-4" />
-              <span class="text-sm"> {{ formatDate(post.updateAt) }} </span>
-            </div>
-            <div class="w-fit flex flex-wrap">
-              <div v-for="category of post.categories" :key="category.id" class="flex gap-0.5 items-center hover:text-primary cursor-pointer">
-                <hash class="size-4" />
-                <span class="text-sm">{{ category.name }}</span>
+            <div class="w-full flex gap-2">
+              <div class="flex gap-0.5 items-center">
+                <calendar-days class="size-4" />
+                <span class="text-sm"> {{ formatDate(post.updateAt) }} </span>
+              </div>
+              <div class="w-fit flex flex-wrap">
+                <div v-for="category of post.categories" :key="category.id" class="flex gap-0.5 items-center hover:text-primary cursor-pointer">
+                  <hash class="size-4" />
+                  <span class="text-sm">{{ category.name }}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </ui-list-item>
+        </ui-list-item>
+      </nuxt-link>
     </ui-list>
     <div v-intersection-observer="[onLoadMore, {threshold: 0.9}]" />
-    <div class="hidden w-fit sticky top-3/4 left-full translate-x-full -translate-y-1/2 flex-col gap-1.5 sm:flex">
-      <div class="w-10 h-10">
-        <float-button-color-switch />
-      </div>
-      <div class="w-10 h-10">
-        <float-button-avatar />
-      </div>
-    </div>
   </section>
 </template>

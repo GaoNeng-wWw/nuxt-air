@@ -28,7 +28,7 @@ const hideCategories = () => {
 </script>
 
 <template>
-  <header class="w-full sm:max-w-2xl sm:px-2 mx-auto">
+  <header class="max-w-xl w-full sticky top-0 sm:top-2 sm:px-2 mx-auto bg-default-800/50 backdrop-blur rounded-md sm:rounded-none sm:bg-transparent">
     <DefCategoriesList>
       <ul>
         <navbar-item v-for="category in categories"  :key="category.id" class="w-full" :url="{path: '/posts', query:{category:category.id}}">
@@ -38,7 +38,7 @@ const hideCategories = () => {
     </DefCategoriesList>
     <def-desktop-navbar>
       <nav class="w-full">
-        <ul class="flex items-center max-h-40 gap-2 bg-default-900/50 backdrop-blur py-3 px-4 rounded-full border border-border">
+        <ul class="flex items-center max-h-40 gap-2.5 bg-default-900/50 backdrop-blur py-3 px-4 rounded-full border border-border">
           <navbar-item url="/">
             {{ $t('navbar.index') }}
           </navbar-item>
@@ -52,11 +52,12 @@ const hideCategories = () => {
               <categories-list />
             </ui-popover-content>
           </ui-popover>
+          <li class="ml-auto"><float-button-avatar /></li>
         </ul>
       </nav>
     </def-desktop-navbar>
     <desktop-navbar v-if="isDesktop" />
-    <div v-else class="w-full flex items-center justify-between">
+    <div v-else class="w-full flex items-center justify-between py-3 px-4">
       <ui-drawer as-child class="bg-default-950">
         <ui-drawer-trigger>
           <ui-button variant="ghost" size="icon">
