@@ -41,6 +41,9 @@ export default defineApi(async (event) => {
       categories: {
         set: categories
       },
+      content: {
+        set: body.content
+      },
       publish: body.publish,
     },
   });
