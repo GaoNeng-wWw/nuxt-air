@@ -15,6 +15,30 @@ module.exports = {
       },
     },
     extend: {
+      typography:{
+        DEFAULT: {
+          css: {
+            'th[align="right"]': {
+              textAlign: 'right',
+            },
+            'th[align="left"]': {
+              textAlign: 'left',
+            },
+            'th[align="center"]': {
+              textAlign: 'center',
+            },
+            'td[align="right"]': {
+              textAlign: 'right',
+            },
+            'td[align="left"]': {
+              textAlign: 'left',
+            },
+            'td[align="center"]': {
+              textAlign: 'center',
+            },
+          },
+        },
+      },
       colors: {
         'default-950': 'hsla(var(--default-950))',
         'default-900': 'hsla(var(--default-900))',
