@@ -107,7 +107,7 @@ html,body,#__nuxt {
   }
 }
 
-*[aria-hidden="true"]{
+.katex *[aria-hidden="true"]{
   display: none;
 }
 
