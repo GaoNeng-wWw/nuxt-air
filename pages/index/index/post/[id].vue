@@ -2,7 +2,6 @@
 import {MarkdownRender} from '@/components/ui/markdown-render';
 import { ChevronLeft } from 'lucide-vue-next';
 const route = useRoute();
-const router = useRouter();
 const id = ref<string>(route.params.id.toString() ?? '');
 
 const {data} = await useAsyncData(`post-${id.value}`, ()=>$fetch(`/api/post/${id.value}`));
@@ -28,7 +27,9 @@ const onBeforeEnter = (el:Element) => {
         :value="data?.post.content ?? ''"
         :tag="'article'"
       />
-      <chevron-left class="w-6 h-6 cursor-pointer underline mt-4" @click="router.back()" />
+      <nuxt-link to="/">
+        <chevron-left class="w-6 h-6 cursor-pointer underline mt-4"/>
+      </nuxt-link>
     </div>
 </transition>
 </template>
