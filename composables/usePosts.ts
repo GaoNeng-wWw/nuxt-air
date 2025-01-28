@@ -19,13 +19,15 @@ export interface Post {
 export type UsePostsOptions = {
   page?: MaybeRef<number>,
   type?: MaybeRef<'page' | 'scroll'>,
-  immediate?: MaybeRef<boolean>
+  immediate?: MaybeRef<boolean>,
+  category?: MaybeRef<number | null>
 }
 export const usePosts = (
-  {page:_page=1, type:_type='page', immediate = true}: UsePostsOptions
+  {page:_page=1, type:_type='page', immediate = true, category:_category=null}: UsePostsOptions
 ) => {
   const page = ref(_page);
   const type = ref(_type);
+  const category = ref(_category)
   const {data, status, error} = useFetch(
     '/api/post',
     {
@@ -69,5 +71,8 @@ export const usePosts = (
     }
     posts.value.push(...(data.value?.data ?? []));
   }, {immediate: true})
+  watch(() => _category, () => {
+    category.value = _category;
+  })
   return {posts,meta,status,error, remove, add, loadMore, canLoadMore}
 }
