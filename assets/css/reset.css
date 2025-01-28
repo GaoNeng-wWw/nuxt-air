@@ -1,8 +1,17 @@
-html,body,#__nuxt {
+html {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0%;
+  overflow: auto;
+}
+body{
+  width: 100%;
+  height: auto;
+}
+#__nuxt {
+  width: 100%;
+  height: 100%;
 }
 @tailwind base;
 @tailwind components;
