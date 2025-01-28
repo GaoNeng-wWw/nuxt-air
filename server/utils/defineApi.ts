@@ -42,7 +42,7 @@ const createResp = (): Resp => {
 
 export class HttpException extends H3Error {
   constructor(message: string, statusCode: number) {
-    super(message);
+    super(message, {cause: {statusCode, message}});
     this.statusCode = statusCode;
   }
 }
