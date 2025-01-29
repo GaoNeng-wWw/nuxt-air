@@ -58,6 +58,8 @@ export default defineI18nConfig(() => {
           unauth: '未登录',
           auth_expire: '登陆过期',
           bad_token: 'token 不合法',
+          userNotFound: '用户不存在',
+          unknownError: '未知错误',
           permissionDenied: '权限不足'
         },
         admin:{
