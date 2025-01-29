@@ -19,6 +19,7 @@ model User {
   auth      Auth?
   avatar    String? @default("")
   lastLogin DateTime @default(now())
+  replies   Reply[]
 }
 
 model Auth {
@@ -42,6 +43,7 @@ model Post {
   title      String
   content    String
   categories Category[]
+  replies    Reply[]
   pin        Boolean    @default(false)
   publish    Boolean    @default(true)
   createAt   DateTime   @default(now())
@@ -52,4 +54,19 @@ model Category {
   id    Int    @id @default(autoincrement())
   name  String
   posts Post[]
+}
+
+
+model Reply {
+  id    Int   @default(autoincrement()) @id
+  content String
+  post  Post?  @relation(fields: [postId], references: [id])
+  postId  Int?
+  parentId  Int?
+  author  User  @relation(fields: [authorId], references: [id])
+  authorId Int
+  createAt  DateTime @default(now())
+  updateAt  DateTime  @default(now()) @updatedAt
+  show  Boolean @default(true)
+  @@index([postId,authorId])
 }
