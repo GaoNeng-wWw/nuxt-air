@@ -15,4 +15,4 @@ export default defineApi(async (event) => {
       name
     }
   })
-})
+}, {guards: [AuthGuard]})

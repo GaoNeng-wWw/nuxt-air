@@ -81,7 +81,16 @@ const sendPost = (force:boolean=false) => {
       pin: false,
       categories: categories.value.map((category) => category.id)
     })
-    .then(()=>{
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        navigateTo('/');
+        toast.error(err.data.message)
+      }
+    })
+    .then((data)=>{
+      if (!data){
+        return;
+      }
       toast('发布成功')
     })
     return;
@@ -91,7 +100,17 @@ const sendPost = (force:boolean=false) => {
     content: postContent.value,
     categories: categories.value.map((category) => category.id)
   })
-  .then(()=>{
+  .catch((err)=>{
+    if (err.data.statusCode === 403){
+      navigateTo('/');
+      toast.error(err.data.message)
+    }
+    console.log(err);
+  })
+  .then((data)=>{
+    if (!data){
+      return;
+    }
     toast('修改成功')
   })
 }

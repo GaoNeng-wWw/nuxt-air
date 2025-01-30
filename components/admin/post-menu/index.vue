@@ -27,7 +27,12 @@ const unPin = () => {
 const pinPost = () => {
   loadingButtonId.value = 'pin'
   updatePost(id, {pin: true})
-  emits('pin')
+  .then((data)=>{
+    if(!data){
+      return;
+    }
+    emits('pin')
+  })
   loadingButtonId.value = ''
 }
 const remove = () => {

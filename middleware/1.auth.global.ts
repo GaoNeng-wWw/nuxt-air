@@ -1,5 +1,5 @@
 import { parse, parseSetCookie, serialize } from 'cookie-es';
-export default defineNuxtRouteMiddleware(async (to, _) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!to.meta.auth){
     return;
   }
@@ -47,6 +47,9 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
     }
     const profile = useProfile();
     if (to.meta.auth && !profile.value?.owner){
+      if (from.meta.auth){
+        return navigateTo('/')
+      }
       return abortNavigation();
     }
   } catch (e) {

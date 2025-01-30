@@ -58,7 +58,7 @@ export const defineApi = <T extends EventHandlerRequest, D>(
       middlewares.forEach(f => f(event));
       for (const guard of guards) {
         const guardRes = guard(event);
-        if (!guardRes) {
+        if (!(guardRes instanceof Promise ? await guardRes : guardRes)) {
           throw createError({
             status: status.UNAUTHORIZED,
             message: status['401'],

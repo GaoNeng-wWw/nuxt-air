@@ -1,4 +1,5 @@
 import type {SerializeObject} from 'nitropack';
+import { toast } from 'vue-sonner';
 
 export type CreatePost = {
   title: string;
@@ -53,11 +54,23 @@ export const usePosts = (
     .then(()=>{
       posts.value = posts.value.filter(post => post.id !== id)
     })
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        navigateTo('/');
+        toast.error(err.data.message)
+      }
+    })
   };
   const add = (data: CreatePost) => {
     return $fetch('/api/post',{
       method: 'POST',
       body: data
+    })
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        navigateTo('/');
+        toast.error(err.data.message)
+      }
     })
   }
   watch(data, ()=>{
