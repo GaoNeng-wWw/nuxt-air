@@ -38,12 +38,26 @@ export const useCategories = (
     const _category = typeof category === 'string' ? {name: category} : category;
     const handle = $fetch('/api/categories', {method: 'post', body: {..._category}});
     handle.finally(() => setLoading(false));
+    handle.catch((err)=>{
+      if(err.statusCode === 403){
+        navigateTo('/')
+        return;
+      }
+      console.log(err);
+    })
     return handle;
   }
   const remove = (id: MaybeRef<number>) => {
     setLoading(true)
     const handle = $fetch(`/api/categories/${unref(id)}`, {method: 'delete'});
     handle.then((removedCategory) => categories.value = categories.value.filter((category) => category.id !== removedCategory.id))
+    handle.catch((err)=>{
+      if(err.data.statusCode === 403){
+        navigateTo('/')
+        return;
+      }
+      console.log(err);
+    })
     handle.finally(()=>{
       setLoading(false);
     })
@@ -63,6 +77,13 @@ export const useCategories = (
         }
       }
     )
+    patchHandle
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        navigateTo('/');
+        return;
+      }
+    })
     return patchHandle;
   }
   watch(data, ()=>{

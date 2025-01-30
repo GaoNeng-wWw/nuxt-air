@@ -48,4 +48,4 @@ export default defineApi(async (event) => {
     },
   });
   return newPost;
-});
+},{guards: [AuthGuard]});
