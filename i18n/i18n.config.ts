@@ -57,7 +57,8 @@ export default defineI18nConfig(() => {
           cancel: '取消',
           unauth: '未登录',
           auth_expire: '登陆过期',
-          bad_token: 'token 不合法'
+          bad_token: 'token 不合法',
+          permissionDenied: '权限不足'
         },
         admin:{
           category: {
