@@ -10,4 +10,4 @@ export default defineApi(async (event) => {
   return prisma.category.delete({
     where:{id}
   })
-})
+}, {guards: [AuthGuard]})

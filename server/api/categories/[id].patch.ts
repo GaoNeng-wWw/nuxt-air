@@ -30,4 +30,4 @@ export default defineApi(async (event) => {
     }
   })
   return newCategory;
-})
+},{guards: [AuthGuard]})

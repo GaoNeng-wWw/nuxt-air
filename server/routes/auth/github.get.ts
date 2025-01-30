@@ -5,8 +5,6 @@ import ms from "ms";
 export default defineOAuthGitHubEventHandler({
   config: {
     emailRequired: true,
-    clientId: 'Ov23liPL9rcoGb1qKDwK',
-    clientSecret: 'a25bfb1b0867ba8d8e5c19fc97da56d2d0b403f8',
   },
   async onSuccess(event, result) {
     const OAuthId = useOAuthId('github', result.user.id);

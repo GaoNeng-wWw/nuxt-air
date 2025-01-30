@@ -1,3 +1,4 @@
+import { toast } from "vue-sonner";
 import { useLoading } from "./useLoading";
 import type { Post } from "./usePosts";
 
@@ -7,6 +8,12 @@ export const usePost = () => {
     setLoading(true)
     return $fetch(`/api/post/${id}`, {method: 'delete'})
     .finally(()=>setLoading(false))
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        navigateTo('/');
+        toast.error(err.data.message)
+      }
+    })
   }
   const updatePost = (
     id: MaybeRef<number>,
@@ -25,6 +32,11 @@ export const usePost = () => {
         }
       }
     )
+    .catch((err)=>{
+      if (err.data.statusCode === 403){
+        toast.error(err.data.message)
+      }
+    })
     .finally(()=>{
       setLoading(false)
     })

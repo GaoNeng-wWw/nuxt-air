@@ -31,4 +31,4 @@ export default defineApi(async (event) => {
   const id = usePostTotalNameSpace();
   await incr(id);
   return post;
-});
+},{guards: [AuthGuard]});
