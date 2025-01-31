@@ -43,7 +43,6 @@ export const useCategories = (
         navigateTo('/')
         return;
       }
-      console.log(err);
     })
     return handle;
   }
@@ -56,7 +55,6 @@ export const useCategories = (
         navigateTo('/')
         return;
       }
-      console.log(err);
     })
     handle.finally(()=>{
       setLoading(false);
