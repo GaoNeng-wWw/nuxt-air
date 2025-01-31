@@ -7,7 +7,6 @@ onMounted(()=>{
   if (!editor.value){
     return;
   }
-  console.log(modelValue.value)
   editor.value.innerHTML = modelValue.value ?? ''
 })
 defineExpose({

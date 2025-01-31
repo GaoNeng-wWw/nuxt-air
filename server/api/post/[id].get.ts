@@ -12,8 +12,8 @@ export default defineApi(async (event) => {
       id,
     },
     include:{
-      categories: true
-    }
+      categories: true,
+    },
   });
   if (!post) {
     const t = await useTranslation(event);
