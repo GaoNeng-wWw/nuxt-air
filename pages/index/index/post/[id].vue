@@ -18,6 +18,7 @@ const onBeforeEnter = (el:Element) => {
     child.classList.add('slide-animation');
   }
 }
+
 </script>
 
 <template>
@@ -30,6 +31,7 @@ const onBeforeEnter = (el:Element) => {
       <nuxt-link to="/">
         <chevron-left class="w-6 h-6 cursor-pointer underline mt-4"/>
       </nuxt-link>
+      <comment :id="Number.parseInt(id)" class="mt-4" />
     </div>
 </transition>
 </template>
