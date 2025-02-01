@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { cn } from '@/lib/utils';
+
 defineOptions({inheritAttrs: true})
 const {
   id,
@@ -7,7 +9,8 @@ const {
   author,
   childrenCount,
   expand,
-  childrenExpand
+  childrenExpand,
+  class:className
 } = defineProps<{
   id: number,
   content: string,
@@ -15,14 +18,15 @@ const {
   author: ReplyNode['author'],
   childrenCount: number | null,
   expand: (id: number)=>void,
-  childrenExpand: boolean
+  childrenExpand: boolean,
+  class:string
 }>();
 const formatDate = (date:string|Date) => new Date(date).toLocaleDateString();
 const getFallbackName = (name:string) => name.slice(0,2)
 
 </script>
 <template>
-  <div ref="wrapper" class="w-full">
+  <div ref="wrapper" :class="cn('w-full', className)">
     <div class="flex flex-col gap-1.5">
       <div class="w-full flex gap-1.5 items-center">
         <ui-avatar class="size-8">

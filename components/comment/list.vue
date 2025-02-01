@@ -70,7 +70,7 @@ const onVisible = (state:boolean,id: number) => {
           :style="{
             '--depth': item.depth-1,
           }"
-          class="ml-[calc(var(--depth)_*_theme('margin.[10]'))]"
+          class="ml-[calc(var(--depth)_*_theme('margin.[10]'))] w-[calc(100%_-_calc(var(--depth)_*_theme('margin.[10]')))]"
         >
           <template #toolbar>
             <div>
