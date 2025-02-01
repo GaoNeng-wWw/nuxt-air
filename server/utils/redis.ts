@@ -1,6 +1,8 @@
 export const useRedis = () => useStorage('redis');
 export const usePostTotalNameSpace = () => 'POST-TOTAL';
 export const useCategoriesNameSpace = () => `CATEGORIES::COUNT`;
+export const usePostReplyNamespace = (id: number) => `POST::REPLIES::${id}`;
+export const useReplyRepliesNamespace = (id:number) => `REPLY::REPLIES::${id}`;
 export const useTokenNamespace = (id: string) => {
   return {
     access: `token::access::${id}`,
