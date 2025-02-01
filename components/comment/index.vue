@@ -18,6 +18,9 @@ const onExpand = (id: number) => {
     .then(({meta})=>{
       target.children.forEach((child) => child.expand = true)
       prevId.value = meta.prevId;
+      if (meta.prevId) {
+        target.setFinish(true);
+      }
     })
     return;
   }
@@ -39,7 +42,8 @@ const onVisible = (param:OnCommentItemVisibleParams) => {
   const curDepth = getDepth(cur)!;
   const curId = getId(cur)!;
   const currentParentNode = root.findAndReturnParent(curId);
-  if (!currentParentNode) {
+  const curNode = root.find(curId);
+  if (!currentParentNode || curNode?.finish) {
     return;
   }
   if (!next && !currentParentNode.finish) {
@@ -47,6 +51,7 @@ const onVisible = (param:OnCommentItemVisibleParams) => {
     .then(({meta}) => {
       if (meta.prevId === null){
         currentParentNode.setFinish(true);
+        curNode?.setFinish(true);
       }
       prevId.value = meta.prevId;
       return;
@@ -59,8 +64,14 @@ const onVisible = (param:OnCommentItemVisibleParams) => {
       if (!parent || parent.id === -1){
         return;
       }
+      if (curNode?.finish){
+        return;
+      }
       fetch(parent.id, 'reply', curId)
       .then(({meta}) => {
+        if (meta.prevId === null){
+          curNode?.setFinish(true);
+        }
         prevId.value = meta.prevId
       })
     } else {
