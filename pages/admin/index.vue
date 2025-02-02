@@ -11,7 +11,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 definePageMeta({
-  auth: true
+  auth: false
 })
 </script>
 

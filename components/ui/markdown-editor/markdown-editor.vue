@@ -1,21 +1,19 @@
 <script lang="ts" setup>
-import { watchOnce } from '@vueuse/core';
-import { EditorView, keymap } from '@codemirror/view';
-import { basicSetup } from 'codemirror';
-import { EditorState, Text } from '@codemirror/state';
-import { defaultKeymap } from '@codemirror/commands';
-import { markdown } from '@codemirror/lang-markdown';
+import { EditorView } from '@codemirror/view';
+import { EditorState } from '@codemirror/state';
+import { highlightStyle, Theme } from './theme';
+import { syntaxHighlighting } from '@codemirror/language';
+import { dragImageUpload } from './extensions/drag-image-upload';
+import { extensions } from './extensions';
+
 
 const modelValue = defineModel<string>();
 const editorEl= useTemplateRef('editor');
+
 const state = EditorState.create({
   doc: unref(modelValue),
   extensions: [
-    keymap.of(defaultKeymap),
-    EditorView.lineWrapping,
-    markdown({
-      addKeymap: false
-    }),
+    extensions,
     EditorView.updateListener.of((updater) => {
       if (!updater.docChanged){
         return;
@@ -25,10 +23,36 @@ const state = EditorState.create({
         return;
       }
       modelValue.value = doc.toString();
+    }),
+    Theme,
+    syntaxHighlighting(highlightStyle),
+    dragImageUpload({
+      upload(id, file, name, pos) {
+        const body = new FormData();
+        body.set('file', file);
+        return $fetch(
+          '/api/upload',
+          {
+            method: 'post',
+            body,
+          }
+        )
+        .then((url)=>{
+          return {
+            status: 'success',
+            url,
+            name,
+            id,
+            pos
+          }
+        })
+      },
     })
   ]
 });
+
 let editor:EditorView | null = null;
+
 onMounted(()=>{
   if (!editorEl.value){
     return;
@@ -36,13 +60,13 @@ onMounted(()=>{
   editor = new EditorView({
     state,
     parent: editorEl.value,
-    extensions: [
-      basicSetup,
-    ],
   })
 })
 const stop = watch(modelValue, () => {
   if (!unref(modelValue)){
+    return;
+  }
+  if (!editor?.state.doc) {
     return;
   }
   editor?.dispatch({
@@ -52,7 +76,7 @@ const stop = watch(modelValue, () => {
       insert: unref(modelValue)
     }
   })
-},{immediate: true, deep: true, flush: 'pre'});
+},{immediate: true});
 const emits = defineEmits<{
   scroll: [Event]
 }>();
@@ -66,11 +90,41 @@ defineExpose({
   getInstance: ()=>editorEl.value,
 })
 onUnmounted(()=>{
-  console.log('destory')
   editor?.destroy();
 })
 </script>
 <template>
-  <div ref="editor" class="w-full h-full border border-border rounded p-2 box-border outline-none overflow-auto" @scroll="onScroll" @keyup="onKeyUp"/>
+  <div ref="editor" class="w-full h-full border border-border rounded box-border outline-none overflow-auto" @scroll="onScroll" @keyup="onKeyUp"/>
   <!-- <div ref="editor" class="w-full h-full border border-border rounded p-2 box-border outline-none overflow-auto" contenteditable="plaintext-only" @scroll="onScroll" @keyup="onKeyUp" /> -->
 </template>
+
+
+<style>
+.cm-cursor, .cm-dropCursor {
+  border-left-color: theme('colors.blue.500') !important;
+}
+.cm-panels {
+  background-color: transparent !important;
+}
+.cm-activeLine{
+  background: theme('colors.zinc.900') !important;
+}
+.cm-gutters {
+  background-color: transparent !important;
+  color: theme('colors.zinc.500') !important;
+  border: none !important;
+}
+.cm-activeLineGutter {
+  background-color: transparent !important;
+  color: theme('colors.zinc.300') !important;
+}
+.cm-foldPlaceholder {
+  background: transparent !important;
+  border: none !important;
+  color: theme('colors.zinc.500') !important;
+}
+.cm-tooltip {
+  border: 1px solid theme('colors.zinc.600') !important;
+  background-color: theme('colors.zinc.900') !important;
+}
+</style>
