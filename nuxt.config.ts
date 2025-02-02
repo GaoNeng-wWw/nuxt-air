@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import {bundledLanguages, type BundledLanguage} from 'shiki/langs.mjs';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -17,7 +18,9 @@ export default defineNuxtConfig({
   ],
   runtimeConfig:{
     SESSION_PASSWORD: '',
-    JWT_PASSWORD: ''
+    JWT_PASSWORD: '',
+    IMAGE_LIMIT_BYTE: 10000000,
+    OSS_PATH: resolve('./public/image')
   },
   devtools: {
     enabled: false,
@@ -40,7 +43,7 @@ export default defineNuxtConfig({
       redis: {
         driver: 'fs',
         base: './.tmp'
-      },
+      }
     },
   },
   vite: {
@@ -61,11 +64,6 @@ export default defineNuxtConfig({
     experimental: {
       localeDetector: 'localeDetector.ts',
     },
-  },
-  prisma: {
-    installCLI: false,
-    installClient: false,
-    installStudio: false,
   },
   shadcn: {
     prefix: 'ui',

@@ -60,7 +60,12 @@ export default defineI18nConfig(() => {
           bad_token: 'token 不合法',
           userNotFound: '用户不存在',
           unknownError: '未知错误',
-          permissionDenied: '权限不足'
+          permissionDenied: '权限不足',
+          badRequest: {
+            emptyFile: '不能上传空文件',
+            onlyImage: '只能上传图片',
+            imageExceedingSizeLimit: '图片超出大小限制'
+          }
         },
         admin:{
           category: {
