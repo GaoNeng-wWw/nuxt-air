@@ -72,22 +72,42 @@ const emits = defineEmits<{
 const onScroll = (event:Event) => {
   emits('scroll', event);
 }
+const ready = () => {
+  if (!view){
+    return;
+  }
+  view.dispatch({
+    changes:{
+      from: 0,
+      to: view.state.doc.length,
+      insert: unref(modelValue)
+    }
+  })
+}
+const insert = (selection: SelectionRange, content: string) => {
+  view?.dispatch({
+    changes:{
+      from: selection.from,
+      to: selection.to,
+      insert: content
+    }
+  })
+}
+const replaceSelection = (content: string) => {
+  if (!view?.state){
+    throw new Error('view.state is undefined.')
+  }
+  view.dispatch(
+    view.state.replaceSelection(content)
+  )
+}
 defineExpose({
   getInstance: ()=>editorEl.value,
   getCursor: ()=>cursor,
-  ready: ()=>{
-    if(!view){
-      return;
-    }
-    console.log(modelValue);
-    view.dispatch({
-      changes:{
-        from: 0,
-        to: view.state.doc.length,
-        insert: unref(modelValue)
-      }
-    })
-  }
+  getView: ()=>view,
+  ready,
+  insert,
+  replaceSelection
 })
 onUnmounted(()=>{
   view?.destroy();
@@ -126,5 +146,8 @@ onUnmounted(()=>{
 .cm-tooltip {
   border: 1px solid theme('colors.zinc.600') !important;
   background-color: theme('colors.zinc.900') !important;
+}
+.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .ͼo .cm-selectionBackground, .ͼo .cm-content ::selection{
+  background: theme('colors.blue.800/50') !important;
 }
 </style>

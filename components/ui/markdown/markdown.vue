@@ -36,6 +36,18 @@ const renderScroll = () => {
   }
   editorInstance.scrollTop = render.value.scrollTop;
 }
+
+const baseReplace = (prefix:string,suffix:string) => {
+  if (!editor.value){
+    return;
+  }
+  const view = editor.value.getView()!;
+  const {main:{from,to}} = view.state.selection
+  editor.value.replaceSelection(
+    `${prefix}${view.state.sliceDoc(from,to)}${suffix}`
+  )
+}
+
 invoke(async ()=>{
   await until<string>(modelValue).toMatch((value) => Boolean(value))
   if (!editor.value?.ready){
@@ -55,13 +67,13 @@ invoke(async ()=>{
     <div class="w-full h-fit grow-0 shrink-0 basis-0">
       <input ref="uploader" class="fixed top-0 left-0 hidden" type="file" >
       <ui-toggle-group v-model="commands" type="multiple" class="w-fit ml-0" @update:model-value="commands=[]">
-        <ui-toggle-group-item value="bold">
+        <ui-toggle-group-item value="bold" @click="baseReplace('**','**')">
           <bold class="w-4 h-4"/>
         </ui-toggle-group-item>
-        <ui-toggle-group-item value="italic">
+        <ui-toggle-group-item value="italic" @click="baseReplace('*','*')">
           <italic class="w-4 h-4"/>
         </ui-toggle-group-item>
-        <ui-toggle-group-item value="strikethrough">
+        <ui-toggle-group-item value="strikethrough" @click="baseReplace('~','~')">
           <strikethrough class="w-4 h-4"/>
         </ui-toggle-group-item>
         <ui-toggle-group-item value="image">
