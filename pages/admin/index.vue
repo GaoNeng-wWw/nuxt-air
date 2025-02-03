@@ -11,7 +11,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 definePageMeta({
-  auth: false
+  auth: true
 })
 </script>
 
@@ -27,7 +27,7 @@ definePageMeta({
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-    <SidebarInset>
+    <SidebarInset class="peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))] w-[calc(100%_-_var(--sidebar-width-icon))]">
       <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
@@ -38,7 +38,7 @@ definePageMeta({
           <admin-breadcrumb />
         </div>
       </header>
-      <div class="w-full max-h-full flex-1 basis-0 overflow-hidden p-4 pt-0">
+      <div class="max-h-full flex-1 basis-0 overflow-hidden p-4 pt-0">
         <div class="w-full h-full flex flex-1 flex-col gap-4">
           <nuxt-page />
         </div>
