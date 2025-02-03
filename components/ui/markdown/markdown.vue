@@ -48,6 +48,47 @@ const baseReplace = (prefix:string,suffix:string) => {
   )
 }
 
+const createImageMarkdown = ({url,name}:{url:string,name:string}) => {
+  return `\n![${name}](${url})\n`;
+}
+
+const onUploadFile = (_ev:Event) => {
+  if (!uploader.value){
+    return;
+  }
+  const files = Array.from(uploader.value.files ?? []);
+  const uploadHandles = files.map((file) => {
+    const body = new FormData();
+    body.set('file', file);
+    return $fetch('/api/upload', {body, method: 'post'})
+    .then((url)=>{
+      return {
+        name: file.name,
+        url
+      }
+    })
+  })
+  Promise.allSettled(
+    uploadHandles
+  )
+  .then((results) => results.map(res => res.status === 'fulfilled' ? res.value : {name: 'fail', url: ''}))
+  .then((handles) => handles.map(createImageMarkdown))
+  .then((contents) => {
+    contents.forEach((content) => {
+      if (!editor.value || !editor.value.getCursor()){
+        return;
+      }
+      const cursor = editor.value.getCursor();
+      if (!cursor){
+        return;
+      }
+      editor.value.insert(cursor,content);
+    })
+    uploader.value!.files = null;
+  })
+}
+const triggerUpload = () => uploader.value?.click();
+
 invoke(async ()=>{
   await until<string>(modelValue).toMatch((value) => Boolean(value))
   if (!editor.value?.ready){
@@ -65,7 +106,7 @@ invoke(async ()=>{
 <template>
   <div class="w-full h-full flex flex-col">
     <div class="w-full h-fit grow-0 shrink-0 basis-0">
-      <input ref="uploader" class="fixed top-0 left-0 hidden" type="file" >
+      <input ref="uploader" multiple class="fixed top-0 left-0 hidden" type="file" @change="onUploadFile" >
       <ui-toggle-group v-model="commands" type="multiple" class="w-fit ml-0" @update:model-value="commands=[]">
         <ui-toggle-group-item value="bold" @click="baseReplace('**','**')">
           <bold class="w-4 h-4"/>
@@ -76,7 +117,7 @@ invoke(async ()=>{
         <ui-toggle-group-item value="strikethrough" @click="baseReplace('~','~')">
           <strikethrough class="w-4 h-4"/>
         </ui-toggle-group-item>
-        <ui-toggle-group-item value="image">
+        <ui-toggle-group-item value="image" @click="triggerUpload">
           <image-up class="w-4 h-4"/>
         </ui-toggle-group-item>
       </ui-toggle-group>
