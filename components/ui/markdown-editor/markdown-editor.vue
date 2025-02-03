@@ -1,20 +1,24 @@
 <script lang="ts" setup>
 import { EditorView } from '@codemirror/view';
+import type { SelectionRange } from '@codemirror/state';
 import { EditorState } from '@codemirror/state';
 import { highlightStyle, Theme } from './theme';
 import { syntaxHighlighting } from '@codemirror/language';
 import { dragImageUpload } from './extensions/drag-image-upload';
 import { extensions } from './extensions';
 
-
 const modelValue = defineModel<string>();
 const editorEl= useTemplateRef('editor');
+
+let cursor:SelectionRange|null = null;
 
 const state = EditorState.create({
   doc: unref(modelValue),
   extensions: [
     extensions,
     EditorView.updateListener.of((updater) => {
+      const {main} = updater.state.selection
+      cursor = main;
       if (!updater.docChanged){
         return;
       }
@@ -51,50 +55,46 @@ const state = EditorState.create({
   ]
 });
 
-let editor:EditorView | null = null;
+let view:EditorView | null = null;
 
 onMounted(()=>{
   if (!editorEl.value){
     return;
   }
-  editor = new EditorView({
+  view = new EditorView({
     state,
     parent: editorEl.value,
   })
 })
-const stop = watch(modelValue, () => {
-  if (!unref(modelValue)){
-    return;
-  }
-  if (!editor?.state.doc) {
-    return;
-  }
-  editor?.dispatch({
-    changes:{
-      from: 0,
-      to: editor.state.doc.length,
-      insert: unref(modelValue)
-    }
-  })
-},{immediate: true});
 const emits = defineEmits<{
   scroll: [Event]
 }>();
-const onKeyUp = () => {
-  stop();
-}
 const onScroll = (event:Event) => {
   emits('scroll', event);
 }
 defineExpose({
   getInstance: ()=>editorEl.value,
+  getCursor: ()=>cursor,
+  ready: ()=>{
+    if(!view){
+      return;
+    }
+    console.log(modelValue);
+    view.dispatch({
+      changes:{
+        from: 0,
+        to: view.state.doc.length,
+        insert: unref(modelValue)
+      }
+    })
+  }
 })
 onUnmounted(()=>{
-  editor?.destroy();
+  view?.destroy();
 })
 </script>
 <template>
-  <div ref="editor" class="w-full h-full border border-border rounded box-border outline-none overflow-auto" @scroll="onScroll" @keyup="onKeyUp"/>
+  <div ref="editor" class="w-full h-full border border-border rounded box-border outline-none overflow-auto" @scroll="onScroll"/>
   <!-- <div ref="editor" class="w-full h-full border border-border rounded p-2 box-border outline-none overflow-auto" contenteditable="plaintext-only" @scroll="onScroll" @keyup="onKeyUp" /> -->
 </template>
 
