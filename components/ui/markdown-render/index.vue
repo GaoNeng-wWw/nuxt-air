@@ -1,15 +1,23 @@
 <script lang="ts" setup>
 import {cn} from '@/lib/utils';
+import { watchThrottled } from '@vueuse/core';
 const props = defineProps<{
   value: string,
   tag?: string,
   class?: string
 }>();
+
+const value = ref(props.value);
+
+watchThrottled(()=>props, ()=>{
+  value.value = props.value;
+}, {throttle: 300});
+
 </script>
 
 <template>
-  <m-d-c 
-    :value="props.value"
+  <m-d-c
+    :value="value"
     :tag="props.tag"
     :class="cn(
       `
@@ -21,6 +29,7 @@ const props = defineProps<{
         hover:prose-h4:before:content-['####']
         prose-p:before:content-none
         prose-p:after:content-none
+        prose-p:my-0
         prose-blockquote:not-italic
         prose-headings:before:content-none
         prose-headings:before:text-default-600

@@ -1,90 +1,108 @@
 <script lang="ts" setup>
 import { EditorView } from '@codemirror/view';
-import type { SelectionRange } from '@codemirror/state';
 import { EditorState } from '@codemirror/state';
 import { highlightStyle, Theme } from './theme';
 import { syntaxHighlighting } from '@codemirror/language';
 import { dragImageUpload } from './extensions/drag-image-upload';
 import { extensions } from './extensions';
+import { watchPausable } from '@vueuse/core';
+
+export type MininalCursor = {
+  from: number;
+  to: number;
+}
 
 const modelValue = defineModel<string>();
-const editorEl= useTemplateRef('editor');
-
-let cursor:SelectionRange|null = null;
-
-const state = EditorState.create({
-  doc: unref(modelValue),
-  extensions: [
-    extensions,
-    EditorView.updateListener.of((updater) => {
-      const {main} = updater.state.selection
-      cursor = main;
-      if (!updater.docChanged){
-        return;
-      }
-      const doc = updater.state.doc;
-      if (!doc){
-        return;
-      }
-      modelValue.value = doc.toString();
-    }),
-    Theme,
-    syntaxHighlighting(highlightStyle),
-    dragImageUpload({
-      upload(id, file, name, pos) {
-        const body = new FormData();
-        body.set('file', file);
-        return $fetch(
-          '/api/upload',
-          {
-            method: 'post',
-            body,
-          }
-        )
-        .then((url)=>{
-          return {
-            status: 'success',
-            url,
-            name,
-            id,
-            pos
-          }
-        })
-      },
-    })
-  ]
-});
-
+const editorEl = useTemplateRef('editor');
+let state:EditorState | null = null;
 let view:EditorView | null = null;
 
+const emits = defineEmits<{
+  scroll: [Event],
+  cursorUpdate: [MininalCursor]
+}>();
+
+const createState = (doc?:MaybeRef<string>) => {
+  return EditorState.create({
+    doc: unref(doc),
+    extensions: [
+      extensions,
+      EditorView.updateListener.of((updater) => {
+        const {main} = updater.state.selection
+        emits('cursorUpdate', {from: main.from,to: main.to})
+        if (!updater.docChanged){
+          return;
+        }
+        const doc = updater.state.doc;
+        if (!doc){
+          return;
+        }
+        modelValue.value = doc.toString();
+      }),
+      Theme,
+      syntaxHighlighting(highlightStyle),
+      dragImageUpload({
+        upload(id, file, name, pos) {
+          const body = new FormData();
+          body.set('file', file);
+          return $fetch(
+            '/api/upload',
+            {
+              method: 'post',
+              body,
+            }
+          )
+          .then((url)=>{
+            return {
+              status: 'success',
+              url,
+              name,
+              id,
+              pos
+            }
+          })
+        },
+      })
+    ]
+  });
+}
+
+const createView = (state:EditorState | null) => {
+  return new EditorView({
+    state: unref(state)!,
+    parent: unref(editorEl)!
+  })
+}
+const destory = () => view ? view.destroy() : null;
 onMounted(()=>{
-  if (!editorEl.value){
+  state = createState(modelValue.value);
+  if(!state){
     return;
   }
-  view = new EditorView({
-    state,
-    parent: editorEl.value,
-  })
+  view = createView(state);
 })
-const emits = defineEmits<{
-  scroll: [Event]
-}>();
+
+const getDoc = () => view?.state.doc.toString();
+const setDoc = (doc: string) => view?.dispatch({
+  changes:{
+    from: 0,
+    to: view.state.doc.length,
+    insert: doc
+  }
+})
+
+onUnmounted(()=>destory())
+
+const {pause, resume} = watchPausable(modelValue, ()=>{
+  if (modelValue.value !== getDoc()){
+    setDoc(unref(modelValue) ?? '');
+  }
+})
+
 const onScroll = (event:Event) => {
   emits('scroll', event);
 }
-const ready = () => {
-  if (!view){
-    return;
-  }
-  view.dispatch({
-    changes:{
-      from: 0,
-      to: view.state.doc.length,
-      insert: unref(modelValue)
-    }
-  })
-}
-const insert = (selection: SelectionRange, content: string) => {
+const insert = (selection: MininalCursor, content: string) => {
   view?.dispatch({
     changes:{
       from: selection.from,
@@ -93,29 +111,32 @@ const insert = (selection: SelectionRange, content: string) => {
     }
   })
 }
-const replaceSelection = (content: string) => {
+const replace = ({from,to}: {from: number, to: number}, content: string) => {
   if (!view?.state){
     throw new Error('view.state is undefined.')
   }
+  pause();
   view.dispatch(
-    view.state.replaceSelection(content)
+    {
+      changes: {
+        from,
+        to,
+        insert: content
+      }
+    }
   )
+  resume();
 }
+
 defineExpose({
   getInstance: ()=>editorEl.value,
-  getCursor: ()=>cursor,
-  getView: ()=>view,
-  ready,
+  getView: ()=>unref(view),
   insert,
-  replaceSelection
-})
-onUnmounted(()=>{
-  view?.destroy();
+  replace
 })
 </script>
 <template>
   <div ref="editor" class="w-full h-full border border-border rounded box-border outline-none overflow-auto" @scroll="onScroll"/>
-  <!-- <div ref="editor" class="w-full h-full border border-border rounded p-2 box-border outline-none overflow-auto" contenteditable="plaintext-only" @scroll="onScroll" @keyup="onKeyUp" /> -->
 </template>
 
 
