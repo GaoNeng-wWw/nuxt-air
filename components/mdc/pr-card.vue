@@ -23,6 +23,7 @@ export type PrInfo = {
 const prInfo = ref<PrInfo | null>(null);
 const author = ref<PrAuthor | null>(null);
 const octokit = new Octokit();
+const loading = ref(true);
 
 watch(()=>props, ()=>{
   octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}',{
@@ -49,20 +50,31 @@ watch(()=>props, ()=>{
       draft: payload.data.draft,
     }
   })
+  .finally(()=>{
+    loading.value = false;
+  })
 }, {immediate: true, deep: true})
 
 </script> 
 
 <template>
-  <div class="w-fit mx-auto">
-    <nuxt-link v-if="prInfo" :href="prInfo.link" class="mx-auto no-underline">
+  <div v-if="loading" class="w-full h-16 flex flex-col gap-2 mt-2">
+    <div class="w-full h-full flex gap-2 items-center">
+      <ui-skeleton class="w-16 h-full rounded-md shrink-0" />
+      <div class="w-full h-full grid grid-rows-2 gap-2">
+        <ui-skeleton class="flex-auto" />
+        <ui-skeleton class="flex-auto" />
+      </div>
+    </div>
+  </div>
+  <div v-else class="w-fit mx-auto mt-2">
+    <nuxt-link v-if="!loading && prInfo" :href="prInfo.link" class="mx-auto no-underline">
       <div class="w-fit max-w-full h-fit p-2 bg-default-900 rounded border border-border">
         <div class="w-full grid grid-cols-[theme('size.6')_1fr] gap-2 items-center">
           <git-merge v-if="prInfo.merged" class="size-6 text-purple-600" />
           <git-pull-request-closed v-else-if="prInfo.state === 'closed'" class="size-6 text-red-600" />
           <git-pull-request-draft v-else-if="prInfo.draft" class="size-6 text-default-600" />
           <git-pull-request v-else class="size-6 text-green-600" />
-
           <div class="flex gap-1.5 items-center">
             <span class="text-xl line-clamp-2 no-underline" :title="prInfo?.title">
               {{ prInfo?.title }}
