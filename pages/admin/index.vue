@@ -11,14 +11,15 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 definePageMeta({
-  auth: false
+  auth: true,
+  redirect: '/admin/post'
 })
 </script>
 
 <template>
   <SidebarProvider class="h-full">
     <Sidebar collapsible="icon">
-      <SidebarContent>
+      <SidebarContent class="bg-background">
         <SidebarGroup>
           <SidebarMenu>
             <admin-side-bar />

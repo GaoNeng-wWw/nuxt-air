@@ -39,13 +39,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                   }
                 }
               }
-            }
+            },
           }
         )
         await fetch();
       }
     }
     const profile = useProfile();
+    console.log(profile.value);
     if (to.meta.auth && !profile.value?.owner){
       if (from.meta.auth){
         return navigateTo('/')
@@ -54,5 +55,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   } catch (e) {
     console.log(e);
+    return await navigateTo('/');
   }
 })
