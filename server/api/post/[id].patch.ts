@@ -39,11 +39,9 @@ export default defineApi(async (event) => {
       title: body.title,
       pin: body.pin,
       categories: {
-        set: categories
+        set: categories.map(category => ({ id: category.id })),
       },
-      content: {
-        set: body.content
-      },
+      content: body.content,
       publish: body.publish,
     },
   });
