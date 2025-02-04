@@ -5,7 +5,7 @@ const {id} = defineProps<{
 const url = computed(() => `//www.youtube.com/embed/${unref(id)}`)
 </script>
 <template>
-  <iframe :src="url" frameborder="0" class="w-full aspect-video"/>
+  <iframe :src="url" frameborder="0" class="w-full aspect-video" loading="lazy"/>
 </template>
 
 <style scoped>
