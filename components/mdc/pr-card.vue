@@ -1,59 +1,22 @@
 <script lang="ts" setup>
 import {GitMerge,GitPullRequestClosed,GitPullRequestDraft,GitPullRequest} from 'lucide-vue-next';
-import {Octokit} from '@octokit/core';
 const props = defineProps<{
   owner: string,
   repo: string,
   prNumber: number
 }>();
-export type PrAuthor = {
-  name: string;
-  avatar: string;
-}
-export type PrInfo = {
-  title: string;
-  content: string;
-  prNumber: number;
-  link: string;
-  merged: boolean;
-  draft?:boolean;
-  locked: boolean;
-  state: 'open' | 'closed'
-}
-const prInfo = ref<PrInfo | null>(null);
-const author = ref<PrAuthor | null>(null);
-const octokit = new Octokit();
-const loading = ref(true);
-
-watch(()=>props, ()=>{
-  octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}',{
+const {data, status} = useFetch('/api/pr-card', {
+  query: {
     owner: props.owner,
     repo: props.repo,
-    pull_number: props.prNumber,
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28'
-    }
-  })
-  .then((payload) => {
-    author.value = {
-      name:payload.data.user.login,
-      avatar: payload.data.user.avatar_url
-    }
-    prInfo.value = {
-      title: payload.data.title,
-      content: payload.data.body?.slice(0,200) ?? '',
-      prNumber: props.prNumber,
-      link: payload.data.html_url,
-      state: payload.data.state,
-      locked: payload.data.locked,
-      merged: payload.data.merged,
-      draft: payload.data.draft,
-    }
-  })
-  .finally(()=>{
-    loading.value = false;
-  })
-}, {immediate: true, deep: true})
+    pull_number: props.prNumber
+  },
+  watch: [props],
+  deep: true,
+  server: false
+})
+const loading = computed(() => status.value === 'pending');
+const prInfo = computed(() => data.value?.info);
 
 </script> 
 
