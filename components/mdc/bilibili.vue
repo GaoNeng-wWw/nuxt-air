@@ -20,7 +20,16 @@ const url = computed(()=>{
 
 <template>
   <div class="w-full">
-    <iframe :src="url" frameborder="0" scrolling="no" border="0" framespacing="0" allowfullscreen="true" class="w-full h-full"/>
+    <iframe
+    :src="url"
+    frameborder="0"
+    scrolling="no"
+    border="0"
+    framespacing="0"
+    allowfullscreen="true"
+    class="w-full h-full"
+    loading="lazy"
+    />
   </div>
 </template>
 
