@@ -33,7 +33,6 @@ const jumpTo = (link: string) => {
 </script>
 
 <template>
-
   <ui-collapsible
     v-for="item in items"
     :key="item.link"
