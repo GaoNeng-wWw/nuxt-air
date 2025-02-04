@@ -20,7 +20,9 @@ export default defineNuxtConfig({
     SESSION_PASSWORD: '',
     JWT_PASSWORD: '',
     IMAGE_LIMIT_BYTE: 10000000,
-    OSS_PATH: resolve('./public/image')
+    OSS_PATH: resolve('./public/image'),
+    // 5min
+    PR_CARD_CACHE_TTL_MS: 5*60*1000,
   },
   devtools: {
     enabled: false,
