@@ -10,7 +10,7 @@ let timer:NodeJS.Timeout;
 const categoriesVisible = ref(false);
 const [DefCategoriesList, CategoriesList] = createReusableTemplate();
 const [DefDesktopNavbar, DesktopNavbar] = createReusableTemplate();
-const isDesktop = useMediaQuery('(min-width: 640px)');
+const isDesktop = useMediaQuery('(min-width: 576px)');
 const showCategories = () => {
   if (timer) {
     clearTimeout(timer);
@@ -28,7 +28,7 @@ const hideCategories = () => {
 </script>
 
 <template>
-  <header class="max-w-xl w-full sticky top-0 sm:top-2 mx-auto sm:rounded-none sm:bg-transparent z-50">
+  <header class="max-w-xl w-full sticky max-[576px]:top-0 top-2 mx-auto max-[576px]:rounded-none max-[576px]:bg-transparent z-50">
     <DefCategoriesList>
       <ul>
         <navbar-item v-for="category in categories" :key="category.id" class="w-full" :url="{path: '/category', query:{id:category.id}}">
@@ -57,7 +57,7 @@ const hideCategories = () => {
       </nav>
     </def-desktop-navbar>
     <desktop-navbar v-if="isDesktop" />
-    <div v-else class="w-full bg-default-800/50 backdrop-blur rounded flex items-center justify-between py-3 px-4">
+    <div v-else class="w-full bg-default-900 flex items-center justify-between py-3 px-4">
       <ui-drawer as-child class="bg-default-950">
         <ui-drawer-trigger>
           <ui-button variant="ghost" size="icon">

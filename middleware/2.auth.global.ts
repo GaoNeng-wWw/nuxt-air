@@ -46,7 +46,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       }
     }
     const profile = useProfile();
-    console.log(profile.value);
     if (to.meta.auth && !profile.value?.owner){
       if (from.meta.auth){
         return navigateTo('/')

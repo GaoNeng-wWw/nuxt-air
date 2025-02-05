@@ -7,7 +7,10 @@ import { toast } from 'vue-sonner';
 definePageMeta({
   name: 'admin::post::edit'
 })
-const markdownEditor = useTemplateRef('markdown');
+const {t} = useI18n();
+useHead({
+  title: t('breadcrumb.items.admin::post::edit.label')
+})
 const postTitle = ref('');
 const postContent = ref('');
 const categories = ref<Category[]>([]);
