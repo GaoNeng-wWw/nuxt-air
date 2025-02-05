@@ -66,9 +66,9 @@ export default defineOAuthGoogleEventHandler({
     const {access, refresh} = useTokenNamespace(id);
     await redis.setItem(access, tokenPair.accessToken);
     await redis.setItem(refresh, tokenPair.refreshToken);
-    return sendRedirect(event, '/oauth/redirect')
+    return sendRedirect(event, '/oauth/redirect?type=success')
   },
   onError: (event) => {
-    return sendRedirect(event, '/oauth/redirect')
+    return sendRedirect(event, '/oauth/redirect?type=fail&reason=${err.message}')
   }
 })

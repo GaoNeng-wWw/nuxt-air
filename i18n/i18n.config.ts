@@ -64,8 +64,9 @@ export default defineI18nConfig(() => {
           badRequest: {
             emptyFile: '不能上传空文件',
             onlyImage: '只能上传图片',
-            imageExceedingSizeLimit: '图片超出大小限制'
-          }
+            imageExceedingSizeLimit: '图片超出大小限制',
+            duplicateInstallation: '不允许重复安装'
+          },
         },
         admin:{
           category: {

@@ -1,19 +1,29 @@
 <script lang="ts" setup>
 const profile = useProfile();
 const { fetch } = useUserSession();
+const emits = defineEmits<{
+  success: [],
+  fail: [string]
+}>()
 const openFloatWindow = (method: 'google' | 'github') => {
   const proxy = window.open(`/auth/${method}`, '', 'toolbar=no,menubar=no');
   if (!proxy){
     return;
   }
   proxy.addEventListener('load', () => {
-    if (proxy.location.href.endsWith('/oauth/redirect')){
+    if (proxy.location.href.endsWith('/oauth/redirect?type=success')){
       fetch()
       .then(()=>{
         return $fetch('/api/profile')
       })
       .then((realProfile) => profile.value = realProfile)
       .then(() => proxy.close())
+      .then(()=>{
+        emits('success');
+      })
+    } else {
+      const failReason= /\?type=fail&reason=(.*)/.exec(proxy.location.href);
+      emits('fail', failReason?.[0] ?? '');
     };
   })
 
