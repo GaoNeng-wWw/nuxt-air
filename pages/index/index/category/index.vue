@@ -5,6 +5,11 @@ import { toast } from 'vue-sonner';
 const router = useRouter();
 const id = computed(() => Number.parseInt(router.currentRoute.value.query.id?.toString() ?? ''));
 const {data:category, status, error } = await useAsyncData(`category-${id.value}`, ()=>$fetch(`/api/categories/${unref(id)}`).then((category)=>category.name));
+
+useHead({
+  title: category
+})
+
 watch(status, ()=>{
   if (status.value === 'error') {
     const {data:{message}} = error.value as {data: HttpException};

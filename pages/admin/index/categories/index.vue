@@ -5,13 +5,16 @@ import {vOnClickOutside} from '@vueuse/components';
 definePageMeta({
   name: 'admin::category'
 })
+const {t} = useI18n();
+useHead({
+  title: t('breadcrumb.items.admin::category.label')
+})
 const openId = ref<number | null>(null);
 const showAdd = ref(false);
 const { categories, canLoadMore, loadMore, patch, remove, addCategory:add,loading } = useCategories({
   page: 1,
   type: 'scroll'
 })
-const {t} = useI18n();
 const categoryName = ref('');
 const loadingId = ref<number[]>([]);
 const onPatchCategory = (ev:FocusEvent, id: number) => {

@@ -19,6 +19,18 @@ const onBeforeEnter = (el:Element) => {
   }
 }
 
+const title = ref();
+useHead({
+  title
+})
+
+watch(data, ()=>{
+  if (!data.value){
+    return;
+  }
+  title.value = data.value.post.title;
+}, {immediate: true})
+
 </script>
 
 <template>
