@@ -11,6 +11,11 @@ export default withNuxt(
         '@stylistic/brace-style': ['warn', '1tbs'],
       },
     },
+    vue: {
+      overrides: {
+        'vue/component-name-in-template-casing': ['warn', 'kebab-case'],
+      },
+    },
     stylistic: {
       semi: true,
     },

@@ -26,20 +26,20 @@ function parseFileAsString(file: File | undefined): Promise<string | null> {
 </script>
 
 <template>
-  <FormField v-slot="slotProps" :name="fieldName">
-    <FormItem v-bind="$attrs">
-      <FormLabel v-if="!config?.hideLabel" :require="required">
+  <form-field v-slot="slotProps" :name="fieldName">
+    <form-item v-bind="$attrs">
+      <form-label v-if="!config?.hideLabel" :require="required">
         {{ config?.label || beautifyObjectName(label ?? fieldName) }}
-      </FormLabel>
-    </FormItem>
-    <FormControl>
+      </form-label>
+    </form-item>
+    <form-control>
       <slot v-bind="slotProps">
         <div class="group relative w-fit cursor-pointer" @click="fileUploader?.click">
           <ui-avatar class="size-24">
             <ui-avatar-image :src="avatarUrl || slotProps.componentField.modelValue" />
           </ui-avatar>
           <div class="pointer-events-none absolute left-0 top-0 flex size-full items-center justify-center rounded-full opacity-0 transition-all duration-300 hover:opacity-100 group-hover:pointer-events-auto group-hover:bg-black/50 group-hover:opacity-100">
-            <CloudUpload />
+            <cloud-upload />
             <input
               ref="file-uploader"
               class="hidden"
@@ -57,6 +57,6 @@ function parseFileAsString(file: File | undefined): Promise<string | null> {
           </div>
         </div>
       </slot>
-    </FormControl>
-  </FormField>
+    </form-control>
+  </form-field>
 </template>
