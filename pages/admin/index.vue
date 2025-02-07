@@ -10,10 +10,11 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+
 definePageMeta({
   auth: true,
-  redirect: '/admin/post'
-})
+  redirect: '/admin/post',
+});
 </script>
 
 <template>
@@ -28,7 +29,7 @@ definePageMeta({
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-    <SidebarInset class="peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))] w-[calc(100%_-_var(--sidebar-width-icon))]">
+    <SidebarInset class="w-[calc(100%_-_var(--sidebar-width-icon))] overflow-auto peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))]">
       <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
@@ -39,8 +40,8 @@ definePageMeta({
           <admin-breadcrumb />
         </div>
       </header>
-      <div class="max-h-full flex-1 basis-0 overflow-hidden p-4 pt-0">
-        <div class="w-full h-full flex flex-1 flex-col gap-4">
+      <div class="h-[calc(100%_-_theme('size.16'))] max-h-full flex-1 basis-0 p-4 pt-0 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[calc(100%_-_theme('size.12'))]">
+        <div class="flex size-full flex-1 flex-col gap-4">
           <nuxt-page />
         </div>
       </div>

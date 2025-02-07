@@ -1,7 +1,7 @@
 import status from 'http-status';
 import { z } from 'zod';
-import { CreatePost } from './index.post';
 import prisma from '~/lib/prisma';
+import { CreatePost } from './index.post';
 
 export const PatchPostParam = z.object({
   id: z.number({ coerce: true }),
@@ -46,4 +46,4 @@ export default defineApi(async (event) => {
     },
   });
   return newPost;
-},{guards: [AuthGuard]});
+}, { guards: [AuthGuard] });

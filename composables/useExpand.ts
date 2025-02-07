@@ -7,22 +7,22 @@ export type LinearNode<T> = {
   children: T[];
 } & T;
 
-export const useExpand = () => {
+export function useExpand() {
   const expand = <T extends object>(
-    data: ({ children: TreeNode<T>[] } & T) | ({ children: TreeNode<T>[] } & T)[]
+    data: ({ children: TreeNode<T>[] } & T) | ({ children: TreeNode<T>[] } & T)[],
   ): LinearNode<T>[] => {
     const result: LinearNode<T>[] = [];
-    
+
     const traverse = (node: TreeNode<T>, currentDepth: number) => {
       const { children, ...rest } = node;
-      
+
       result.push({
         ...rest,
         children,
         depth: currentDepth,
       } as LinearNode<T>);
-      
-      children.forEach(child => {
+
+      children.forEach((child) => {
         traverse(child, currentDepth + 1);
       });
     };
@@ -37,4 +37,4 @@ export const useExpand = () => {
   };
 
   return { expand };
-};
+}

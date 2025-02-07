@@ -1,20 +1,21 @@
 import 'vue-router';
-export {}
+
+export {};
 declare global {
   interface PaginationMeta {
-    totalItem:number;
+    totalItem: number;
     totalPages: number;
     pageSize: number;
-    currentPage: number
+    currentPage: number;
   }
-  type BreadcrumbItem = {
-    link: string,
+  interface BreadcrumbItem {
+    link: string;
     label: string;
   }
   namespace NodeJS {
     interface ProcessEnv {
-      NUXT_SESSION_PASSWORD:string;
-      NUXT_JWT_PASSWORD:string;
+      NUXT_SESSION_PASSWORD: string;
+      NUXT_JWT_PASSWORD: string;
     }
   }
 }

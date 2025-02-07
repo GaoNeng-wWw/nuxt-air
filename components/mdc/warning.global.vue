@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {TriangleAlert} from 'lucide-vue-next';
+import { TriangleAlert } from 'lucide-vue-next';
 </script>
 
 <template>
-  <div class="w-full px-2 py-1 warning-alert flex flex-col rounded-md">
-    <div class="w-full flex items-center gap-2 text-xl">
-      <triangle-alert class="size-8 shrink-0 alert-icon" />
+  <div class="warning-alert flex w-full flex-col rounded-md px-2 py-1">
+    <div class="flex w-full items-center gap-2 text-xl">
+      <TriangleAlert class="alert-icon size-8 shrink-0" />
       <span class="warning-alert__title break-all">
         <slot name="title" />
       </span>

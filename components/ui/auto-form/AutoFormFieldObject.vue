@@ -1,37 +1,37 @@
 <script setup lang="ts" generic="T extends ZodRawShape">
-import type { ZodAny, ZodObject, ZodRawShape } from 'zod'
-import type { Config, ConfigItem, Shape } from './interface'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { FormItem } from '@/components/ui/form'
-import { FieldContextKey, useField } from 'vee-validate'
-import { computed, provide } from 'vue'
-import AutoFormField from './AutoFormField.vue'
-import AutoFormLabel from './AutoFormLabel.vue'
-import { beautifyObjectName, getBaseSchema, getBaseType, getDefaultValueInZodStack } from './utils'
+import type { ZodAny, ZodObject, ZodRawShape } from 'zod';
+import type { Config, ConfigItem, Shape } from './interface';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { FormItem } from '@/components/ui/form';
+import { FieldContextKey, useField } from 'vee-validate';
+import { computed, provide } from 'vue';
+import AutoFormField from './AutoFormField.vue';
+import AutoFormLabel from './AutoFormLabel.vue';
+import { beautifyObjectName, getBaseSchema, getBaseType, getDefaultValueInZodStack } from './utils';
 
 const props = defineProps<{
-  fieldName: string
-  required?: boolean
-  config?: Config<T>
-  schema?: ZodObject<T>
-  disabled?: boolean
-}>()
+  fieldName: string;
+  required?: boolean;
+  config?: Config<T>;
+  schema?: ZodObject<T>;
+  disabled?: boolean;
+}>();
 
 const shapes = computed(() => {
   // @ts-expect-error ignore {} not assignable to object
-  const val: { [key in keyof T]: Shape } = {}
+  const val: { [key in keyof T]: Shape } = {};
 
   if (!props.schema)
-    return
-  const shape = getBaseSchema(props.schema)?.shape
+    return;
+  const shape = getBaseSchema(props.schema)?.shape;
   if (!shape)
-    return
+    return;
   Object.keys(shape).forEach((name) => {
-    const item = shape[name] as ZodAny
-    const baseItem = getBaseSchema(item) as ZodAny
-    let options = (baseItem && 'values' in baseItem._def) ? baseItem._def.values as string[] : undefined
+    const item = shape[name] as ZodAny;
+    const baseItem = getBaseSchema(item) as ZodAny;
+    let options = (baseItem && 'values' in baseItem._def) ? baseItem._def.values as string[] : undefined;
     if (!Array.isArray(options) && typeof options === 'object')
-      options = Object.values(options)
+      options = Object.values(options);
 
     val[name as keyof T] = {
       type: getBaseType(item),
@@ -39,14 +39,14 @@ const shapes = computed(() => {
       options,
       required: !['ZodOptional', 'ZodNullable'].includes(item._def.typeName),
       schema: item,
-    }
-  })
-  return val
-})
+    };
+  });
+  return val;
+});
 
-const fieldContext = useField(props.fieldName)
+const fieldContext = useField(props.fieldName);
 // @ts-expect-error ignore missing `id`
-provide(FieldContextKey, fieldContext)
+provide(FieldContextKey, fieldContext);
 </script>
 
 <template>
@@ -60,7 +60,7 @@ provide(FieldContextKey, fieldContext)
                 {{ schema?.description || beautifyObjectName(fieldName) }}
               </AutoFormLabel>
             </AccordionTrigger>
-            <AccordionContent class="p-1 space-y-5">
+            <AccordionContent class="space-y-5 p-1">
               <template v-for="(shape, key) in shapes" :key="key">
                 <AutoFormField
                   :config="config?.[key as keyof typeof config] as ConfigItem"

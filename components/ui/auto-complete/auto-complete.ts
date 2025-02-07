@@ -1,12 +1,12 @@
-import type { Component } from "vue";
+import type { Component } from 'vue';
 
-export const AutoCompleteContextKey = Symbol();
-export type Option<T> = {
-  icon?: Component,
-  label: string,
-  value: T
+export const AutoCompleteContextKey = Symbol('AutoComplete');
+export interface Option<T> {
+  icon?: Component;
+  label: string;
+  value: T;
 }
-export type AutoCompleteProps<T> = {
+export interface AutoCompleteProps<T> {
   open: boolean;
   options: Option<T>[];
 }

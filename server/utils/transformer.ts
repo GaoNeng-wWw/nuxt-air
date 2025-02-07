@@ -1,8 +1,6 @@
-import type { Reply, User } from "@prisma/client";
-export const toRawReplyNode = (
-  r:Reply & {author: User},
-  childrenCount: number=0
-):RawReplyNode => {
+import type { Reply, User } from '@prisma/client';
+
+export function toRawReplyNode(r: Reply & { author: User }, childrenCount: number = 0): RawReplyNode {
   return {
     id: r.id,
     author: {
@@ -13,12 +11,10 @@ export const toRawReplyNode = (
     parentId: r.parentId,
     createAt: r.createAt.toString(),
     content: r.content,
-    childrenCount
-  }
+    childrenCount,
+  };
 }
-export const toReplyNode = (
-  rawNode: RawReplyNode
-):IReplyNode => {
+export function toReplyNode(rawNode: RawReplyNode): IReplyNode {
   return {
     id: rawNode.id,
     content: rawNode.content,
@@ -26,6 +22,6 @@ export const toReplyNode = (
     children: [],
     expand: false,
     childrenTotal: rawNode.childrenCount,
-    createAt: rawNode.createAt
-  }
+    createAt: rawNode.createAt,
+  };
 }

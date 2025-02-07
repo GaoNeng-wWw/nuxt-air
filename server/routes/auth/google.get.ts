@@ -1,7 +1,7 @@
-import ms from "ms";
-import prisma from "~/lib/prisma";
+import ms from 'ms';
+import prisma from '~/lib/prisma';
 
-export type GoogleOAuthUserPayload = {
+export interface GoogleOAuthUserPayload {
   name: string;
   given_name: string;
   family_name: string;
@@ -16,40 +16,40 @@ export default defineOAuthGoogleEventHandler({
     redirectURL: 'http://localhost:3000/auth/google',
     authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
     tokenURL: 'https://oauth2.googleapis.com/token',
-    authorizationParams:{
+    authorizationParams: {
       access_type: 'offline',
     },
-    scope: ['openid', 'profile', 'email']
+    scope: ['openid', 'profile', 'email'],
   },
   onSuccess: async (event, result) => {
-    const {user}:{user:GoogleOAuthUserPayload} = result;
+    const { user }: { user: GoogleOAuthUserPayload } = result;
     const name = `${user.given_name} ${user.family_name}`;
     const id = useOAuthId('google', user.email);
     const oauthAccount = await prisma.oAuth.findFirst({
-      where:{
-        openid:id
-      }
-    })
-    if (!oauthAccount){
+      where: {
+        openid: id,
+      },
+    });
+    if (!oauthAccount) {
       await prisma.user.create({
-        data:{
+        data: {
           name,
           bio: '',
           avatar: user.picture,
           owner: false,
           oauth: {
-            create:{
+            create: {
               openid: id,
-              provider: 'google'
-            }
-          }
-        }
-      })
+              provider: 'google',
+            },
+          },
+        },
+      });
     }
     const tokenPair = {
-      accessToken: await sign({id, provider: 'google', avatar: user.picture, type: 'access'}, ms('2d')),
-      refreshToken: await sign({id, provider: 'google', avatar: user.picture, type: 'refresh'}, ms('1d')),
-    }
+      accessToken: await sign({ id, provider: 'google', avatar: user.picture, type: 'access' }, ms('2d')),
+      refreshToken: await sign({ id, provider: 'google', avatar: user.picture, type: 'refresh' }, ms('1d')),
+    };
     const redis = useRedis();
     await setUserSession(event, {
       user: {
@@ -57,18 +57,18 @@ export default defineOAuthGoogleEventHandler({
         provider: 'google',
         avatar: user.picture,
         owner: await redis.getItem('site::owner') === id,
-        ...tokenPair
+        ...tokenPair,
       },
-      loggedInAt: Date.now()
-    },{
-      maxAge: ms('1d') / 1000
-    })
-    const {access, refresh} = useTokenNamespace(id);
+      loggedInAt: Date.now(),
+    }, {
+      maxAge: ms('1d') / 1000,
+    });
+    const { access, refresh } = useTokenNamespace(id);
     await redis.setItem(access, tokenPair.accessToken);
     await redis.setItem(refresh, tokenPair.refreshToken);
-    return sendRedirect(event, '/oauth/redirect?type=success')
+    return sendRedirect(event, '/oauth/redirect?type=success');
   },
   onError: (event) => {
-    return sendRedirect(event, '/oauth/redirect?type=fail&reason=${err.message}')
-  }
-})
+    return sendRedirect(event, '/oauth/redirect?type=fail&reason=${err.message}');
+  },
+});

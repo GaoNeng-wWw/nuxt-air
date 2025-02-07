@@ -1,21 +1,21 @@
-import prisma from "~/lib/prisma";
-import { getCategoriesTotal } from "~/server/utils/redis";
+import prisma from '~/lib/prisma';
+import { getCategoriesTotal } from '~/server/utils/redis';
 
 export default defineApi(async (event) => {
-  const {page=1, size=20} = await useQuery(event, PageQuery);
+  const { page = 1, size = 20 } = await useQuery(event, PageQuery);
   const categories = await prisma.category.findMany({
     take: size,
     skip: (page - 1) * size,
-    select:{
+    select: {
       id: true,
-      name: true
-    }
+      name: true,
+    },
   });
   const total = await getCategoriesTotal() ?? 0;
   const meta = usePaginationMeta({
     total,
     currentPage: page,
     pageSize: size,
-  })
-  return {categories,meta}
-})
+  });
+  return { categories, meta };
+});

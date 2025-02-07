@@ -1,11 +1,8 @@
-import type { H3Event, EventHandlerRequest } from 'h3';
-import status from 'http-status';
+import type { EventHandlerRequest, H3Event } from 'h3';
 import type { ZodType } from 'zod';
+import status from 'http-status';
 
-export const useBody = async <T>(
-  event: H3Event<EventHandlerRequest>,
-  schema: ZodType<T>,
-) => {
+export async function useBody<T>(event: H3Event<EventHandlerRequest>, schema: ZodType<T>) {
   const { data, error } = await readValidatedBody(event, schema.safeParseAsync);
   if (error) {
     throw createError({
@@ -14,4 +11,4 @@ export const useBody = async <T>(
     });
   }
   return data;
-};
+}

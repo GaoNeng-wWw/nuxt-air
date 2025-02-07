@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { AvatarImage, type AvatarImageProps } from 'radix-vue';
+import type { AvatarImageProps } from 'radix-vue';
+import { AvatarImage } from 'radix-vue';
 
 const props = defineProps<AvatarImageProps>();
 </script>
@@ -7,6 +8,6 @@ const props = defineProps<AvatarImageProps>();
 <template>
   <AvatarImage
     v-bind="props"
-    class="h-full w-full object-cover"
+    class="size-full object-cover"
   />
 </template>

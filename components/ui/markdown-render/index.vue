@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import {cn} from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { watchThrottled } from '@vueuse/core';
+
 const props = defineProps<{
-  value: string,
-  tag?: string,
-  class?: string
+  value: string;
+  tag?: string;
+  class?: string;
 }>();
 
 const value = ref(props.value);
 
-watchThrottled(()=>props, ()=>{
+watchThrottled(() => props, () => {
   value.value = props.value;
-}, {throttle: 300});
-
+}, { throttle: 300 });
 </script>
 
 <template>
@@ -35,7 +35,7 @@ watchThrottled(()=>props, ()=>{
         prose-headings:before:text-default-600
         prose-headings:before:mr-2
       `,
-      props.class
+      props.class,
     )"
   />
 </template>

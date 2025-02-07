@@ -6,7 +6,7 @@ declare module '#auth-utils' {
     avatar: string;
     accessToken: string;
     refreshToken: string;
-    owner: boolean
+    owner: boolean;
   }
 }
 

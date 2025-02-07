@@ -1,71 +1,71 @@
-import { isClient } from "@vueuse/core";
-import { DialogPortal } from "radix-vue";
-import { render, type VNode } from "vue";
-import Dialog from "~/components/ui/dialog/Dialog.vue";
-import DialogContent from "~/components/ui/dialog/DialogContent.vue";
-import DialogDescription from "~/components/ui/dialog/DialogDescription.vue";
-import DialogFooter from "~/components/ui/dialog/DialogFooter.vue";
-import DialogHeader from "~/components/ui/dialog/DialogHeader.vue";
-import DialogTitle from "~/components/ui/dialog/DialogTitle.vue"
-export type UseDialogOptions = {
+import type { VNode } from 'vue';
+import { isClient } from '@vueuse/core';
+import { DialogPortal } from 'radix-vue';
+import { render } from 'vue';
+import Dialog from '~/components/ui/dialog/Dialog.vue';
+import DialogContent from '~/components/ui/dialog/DialogContent.vue';
+import DialogDescription from '~/components/ui/dialog/DialogDescription.vue';
+import DialogFooter from '~/components/ui/dialog/DialogFooter.vue';
+import DialogHeader from '~/components/ui/dialog/DialogHeader.vue';
+import DialogTitle from '~/components/ui/dialog/DialogTitle.vue';
+
+export interface UseDialogOptions {
   title: VNode;
-  description: VNode,
-  content: VNode,
-  footer:VNode,
+  description: VNode;
+  content: VNode;
+  footer: VNode;
 }
 
-type DialogIntsnace = {
-  dialog: VNode,
-  anchor: HTMLDivElement
+interface DialogIntsnace {
+  dialog: VNode;
+  anchor: HTMLDivElement;
 }
 
 const dialogStack: DialogIntsnace[] = [];
 
-export const useDialog = (
-  opts: Partial<UseDialogOptions> = {}
-) => {
-  const {title,description,content,footer} = opts;
+export function useDialog(opts: Partial<UseDialogOptions> = {}) {
+  const { title, description, content, footer } = opts;
   const removeByInstance = (instance: DialogIntsnace) => {
     dialogStack
-    .filter(_instance => _instance === instance)
-    .forEach(({anchor}) => {
-      setTimeout(() => {
-        render(null, anchor);
-        anchor.remove();
-      }, 300);
-    })
-  }
-  function remove(){
-   removeByInstance(dialogStack[0]);
-   dialogStack.shift();
+      .filter(_instance => _instance === instance)
+      .forEach(({ anchor }) => {
+        setTimeout(() => {
+          render(null, anchor);
+          anchor.remove();
+        }, 300);
+      });
+  };
+  function remove() {
+    removeByInstance(dialogStack[0]);
+    dialogStack.shift();
   }
   const vm = getCurrentInstance();
   return {
     remove,
-    removeAll: ()=>{
-      while (dialogStack.length){
-        const {anchor} = dialogStack.shift()!;
-        render(null,anchor);
+    removeAll: () => {
+      while (dialogStack.length) {
+        const { anchor } = dialogStack.shift()!;
+        render(null, anchor);
         anchor.remove();
       }
     },
-    render(){
-      if (!isClient){
+    render() {
+      if (!isClient) {
         return;
       }
-      const dialogTtile = h(DialogTitle,title);
-      const dialogDescription = h(DialogDescription,description);
-      const dialogHeader = h(DialogHeader,[dialogTtile,dialogDescription]);
+      const dialogTtile = h(DialogTitle, title);
+      const dialogDescription = h(DialogDescription, description);
+      const dialogHeader = h(DialogHeader, [dialogTtile, dialogDescription]);
       const dialogFooter = h(
         DialogFooter,
-        footer
+        footer,
       );
       const dialogContent = h(
         DialogContent,
         null,
         {
-          default: [h(dialogHeader),content ? h(content) : null, h(dialogFooter)]
-        }
+          default: [h(dialogHeader), content ? h(content) : null, h(dialogFooter)],
+        },
       );
       const anchor = document.createElement('div');
       anchor.style.position = 'fixed';
@@ -74,31 +74,33 @@ export const useDialog = (
       anchor.style.width = '100%';
       anchor.style.height = '100%';
       const dialogPortal = h(
-        DialogPortal, {
+        DialogPortal,
+        {
           to: anchor,
           forceMount: true,
         },
         [
-          dialogContent
-        ]
-      )
+          dialogContent,
+        ],
+      );
       const dialog = h(
         Dialog,
         {
-          defaultOpen: true,
-          "onUpdate:open": (openState)=>{
-            if(!openState){
-              removeByInstance(instance)
+          'defaultOpen': true,
+          'onUpdate:open': (openState) => {
+            if (!openState) {
+              // eslint-disable-next-line ts/no-use-before-define
+              removeByInstance(instance);
             }
           },
         },
-        dialogPortal
+        dialogPortal,
       );
       dialog.appContext = vm?.appContext ?? null;
-      const instance = {dialog,anchor};
+      const instance = { dialog, anchor };
       dialogStack.push(instance);
       document.body.append(anchor);
       render(dialog, anchor);
-    }
-  }
+    },
+  };
 }

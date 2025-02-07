@@ -1,1 +1,1 @@
-export {default as MarkdownEditor} from './markdown-editor.vue';
+export { default as MarkdownEditor } from './markdown-editor.vue';

@@ -1,22 +1,24 @@
 <script setup lang="ts">
+import type { PrimitiveProps } from 'radix-vue';
 import type { HTMLAttributes } from 'vue';
-import { Primitive, type PrimitiveProps } from 'radix-vue';
-import { type ButtonVariants, buttonVariants } from '.';
+import type { ButtonVariants } from '.';
 import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-vue-next'
+import { Loader2 } from 'lucide-vue-next';
+import { Primitive } from 'radix-vue';
+import { buttonVariants } from '.';
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant'];
   size?: ButtonVariants['size'];
   class?: HTMLAttributes['class'];
-  loading?: boolean,
-  disabled?: boolean
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
   loading: false,
-  disabled:false,
+  disabled: false,
 });
 </script>
 
@@ -25,10 +27,10 @@ const props = withDefaults(defineProps<Props>(), {
     :as="as"
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"
-    :disabled="props.disabled ||  props.loading"
+    :disabled="props.disabled || props.loading"
   >
-    <slot name="loading" v-if="props.loading">
-      <Loader2 class="w-4 h-4 mr-2 animate-spin" />
+    <slot v-if="props.loading" name="loading">
+      <Loader2 class="mr-2 size-4 animate-spin" />
     </slot>
     <slot />
   </Primitive>

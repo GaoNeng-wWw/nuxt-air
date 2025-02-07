@@ -1,6 +1,6 @@
+import type { Filter } from './defineApi';
 import { H3Error } from 'h3';
 import status from 'http-status';
-import type { Filter } from './defineApi';
 
 export const defaultFilter: Filter = (event, error, resp) => {
   if (error instanceof H3Error) {

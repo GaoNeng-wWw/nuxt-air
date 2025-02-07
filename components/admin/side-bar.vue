@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Pencil,Hash } from 'lucide-vue-next';
 import type { Component } from 'vue';
+import { Hash, Pencil } from 'lucide-vue-next';
 
 interface MenuItem {
   label: string;
@@ -21,15 +21,15 @@ const items: Ref<MenuItem[]> = ref(
     {
       label: t('menu.categories'),
       link: '/admin/categories',
-      active: computed(()=>router.currentRoute.value.path === '/admin/categories'),
-      icon: Hash
-    }
+      active: computed(() => router.currentRoute.value.path === '/admin/categories'),
+      icon: Hash,
+    },
   ],
 );
 
-const jumpTo = (link: string) => {
+function jumpTo(link: string) {
   router.replace(link);
-};
+}
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const jumpTo = (link: string) => {
     :default-open="item.active"
   >
     <ui-sidebar-menu-item>
-      <ui-sidebar-menu-button :data-active="item.active" class="data-[active=true]:bg-muted hover:bg-muted" @click="() => jumpTo(item.link)">
+      <ui-sidebar-menu-button :data-active="item.active" class="hover:bg-muted data-[active=true]:bg-muted" @click="() => jumpTo(item.link)">
         <component :is="item.icon" />
         <span>{{ item.label }}</span>
       </ui-sidebar-menu-button>

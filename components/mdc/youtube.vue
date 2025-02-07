@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-const {id} = defineProps<{
-  id: string
+const { id } = defineProps<{
+  id: string;
 }>();
-const url = computed(() => `//www.youtube.com/embed/${unref(id)}`)
+const url = computed(() => `//www.youtube.com/embed/${unref(id)}`);
 </script>
+
 <template>
-  <iframe :src="url" frameborder="0" class="w-full aspect-video" loading="lazy"/>
+  <iframe :src="url" frameborder="0" class="aspect-video w-full" loading="lazy" />
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
+import type { BundledLanguage } from 'shiki/langs.mjs';
 import { resolve } from 'node:path';
-import {bundledLanguages, type BundledLanguage} from 'shiki/langs.mjs';
+import { bundledLanguages } from 'shiki/langs.mjs';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -14,22 +15,22 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
-    '@nuxt/image'
+    '@nuxt/image',
   ],
-  runtimeConfig:{
+  runtimeConfig: {
     SESSION_PASSWORD: '',
     JWT_PASSWORD: '',
     IMAGE_LIMIT_BYTE: 10000000,
     OSS_PATH: resolve('./public/image'),
     // 5min
-    PR_CARD_CACHE_TTL_MS: 5*60*1000,
+    PR_CARD_CACHE_TTL_MS: 5 * 60 * 1000,
   },
   devtools: {
     enabled: false,
 
     timeline: {
-      enabled: true
-    }
+      enabled: true,
+    },
   },
   css: [
     '~/assets/css/reset.css',
@@ -44,8 +45,8 @@ export default defineNuxtConfig({
     devStorage: {
       redis: {
         driver: 'fs',
-        base: './.tmp'
-      }
+        base: './.tmp',
+      },
     },
   },
   vite: {
@@ -60,6 +61,9 @@ export default defineNuxtConfig({
   },
   eslint: {
     checker: true,
+    config: {
+      standalone: false,
+    },
   },
   i18n: {
     vueI18n: './i18n/i18n.config.ts',
@@ -70,37 +74,37 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: 'ui',
   },
-  mdc:{
-    highlight:{
+  mdc: {
+    highlight: {
       // noApiRoute: true,
       theme: {
         default: 'vitesse-light',
-        dark: 'material-theme-palenight'
+        dark: 'material-theme-palenight',
       },
       shikiEngine: 'javascript',
-      langs: Object.keys(bundledLanguages) as BundledLanguage[]
+      langs: Object.keys(bundledLanguages) as BundledLanguage[],
     },
-    rehypePlugins:{
-      [require.resolve('rehype-katex')]: {}
+    rehypePlugins: {
+      [require.resolve('rehype-katex')]: {},
     },
-    remarkPlugins:{
+    remarkPlugins: {
       [require.resolve('remark-math')]: {},
-      [require.resolve('remark-gfm')]: {}
+      [require.resolve('remark-gfm')]: {},
     },
-    components:{
-      map:{
+    components: {
+      map: {
         img: 'ProseImage',
         a: 'ProseA',
         code: 'ProseCode',
         pre: 'ProsePre',
-        p: 'ProseP'
+        p: 'ProseP',
       },
-    }
+    },
   },
-  typescript:{
+  typescript: {
     shim: false,
-    tsConfig:{
-      include: ['~/types/*.d.ts']
-    }
-  }
+    tsConfig: {
+      include: ['~/types/*.d.ts'],
+    },
+  },
 });
