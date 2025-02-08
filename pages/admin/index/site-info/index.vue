@@ -3,23 +3,26 @@ import UiAvatarUpload from '@/components/ui/avatar-upload/index.vue';
 import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import { watchOnce } from '@vueuse/core';
-import { Plus, Trash } from 'lucide-vue-next';
+import { GripVertical, Plus, Trash } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
+import { VueDraggable } from 'vue-draggable-plus';
 import { z } from 'zod';
 import { socialIconNames } from '~/components/icon';
 
 const { data, status } = useFetch('/api/site-info', { method: 'get', server: false });
 const siteInfo = useSiteInfo();
 const { removeItem } = useExpireLocalStorage();
-
+let counter = 0;
+const useId = () => `id-${counter++}`;
 const schema = z.object({
-  ownerName: z.string().describe('管理员昵称').min(1),
-  ownerBio: z.string().describe('管理员简介').min(1),
-  ownerAvatar: z.string().describe('管理员头像').default('https://avatars.githubusercontent.com/u/31283122?v=4'),
+  ownerName: z.string().describe('管理员昵称').min(1), // todo: i18n
+  ownerBio: z.string().describe('管理员简介').min(1), // todo: i18n
+  ownerAvatar: z.string().describe('管理员头像'), // todo: i18n
   social: z.array(
     z.object({
       icon: z.enum(socialIconNames as [string, ...string[]]),
       url: z.string().url(),
+      _id: z.string(),
     }).describe('社交媒体'),
   ).describe('社交媒体').optional(),
 });
@@ -60,6 +63,9 @@ function uploadImage(base64Url: string) {
     })
     .then((body) => {
       return $fetch(`/api/upload`, { body, method: 'post' });
+    })
+    .then(() => {
+      // todo: Toast
     });
   return file;
 }
@@ -72,6 +78,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       body: {
         ...value,
         ownerAvatar: url,
+        social: value.social ? value.social : [],
       },
     });
   })
@@ -130,10 +137,10 @@ const onSubmit = form.handleSubmit(async (value) => {
               variant="ghost"
               @click="() => {
                 if (!componentField.modelValue) {
-                  componentField.modelValue = [{ icon: '', url: '' }];
+                  componentField.modelValue = [{ icon: '', url: '', _id: useId() }];
                 }
                 else {
-                  componentField.modelValue.push({ icon: '', url: '' })
+                  componentField.modelValue.push({ icon: '', url: '', _id: useId() })
                 }
                 form.setFieldValue('social', componentField.modelValue)
               }"
@@ -143,27 +150,39 @@ const onSubmit = form.handleSubmit(async (value) => {
           </div>
         </ui-form-label>
         <div class="w-full space-y-2 first:mt-2">
-          <ui-form-field v-for="(social, idx) in componentField.modelValue" :key="idx" v-auto-animate :name="`social.${idx}`">
-            <ui-form-item v-auto-animate>
-              <div class="flex w-full items-center justify-center gap-1.5">
-                <div class="relative flex w-full">
-                  <ui-input v-model="social.url" class="pl-16 ring-0 focus:ring-0" @update:model-value="() => form.setFieldValue('social', componentField.modelValue)" />
-                  <div class="absolute top-0 h-fit w-16">
-                    <social-select
-                      v-model="social.icon"
-                      :options="['github', 'x', 'discord']"
-                      show-name
-                      @update:model-value="() => form.setFieldValue('social', componentField.modelValue)"
-                    />
+          <vue-draggable
+            v-model="componentField.modelValue"
+            handle=".handle"
+            :animation="200"
+            @update="form.setFieldValue('social', componentField.modelValue)"
+          >
+            <ui-form-field v-for="(social, idx) in componentField.modelValue" :key="social._id" v-auto-animate :name="`social.${idx}`">
+              <ui-form-item v-auto-animate>
+                <div class="flex w-full items-center justify-center gap-1.5">
+                  <grip-vertical class="handle size-4 fill-foreground" />
+                  <div class="relative flex w-full">
+                    <ui-input v-model="social.url" class="pl-16 ring-0 focus:ring-0" @update:model-value="() => form.setFieldValue('social', componentField.modelValue)" />
+                    <div class="absolute top-0 h-fit w-16">
+                      <social-select
+                        v-model="social.icon"
+                        :options="['github', 'x', 'discord']"
+                        show-name
+                        @update:model-value="() => form.setFieldValue('social', componentField.modelValue)"
+                      />
+                    </div>
                   </div>
+                  <ui-button
+                    variant="ghost" class="hover:!bg-red-500/20" size="icon" @click="() => {
+                      componentField.modelValue.splice(idx, 1)
+                    }"
+                  >
+                    <trash />
+                  </ui-button>
                 </div>
-                <ui-button variant="ghost" class="hover:!bg-red-500/20" size="icon" @click="() => componentField.modelValue.splice(idx, 1)">
-                  <trash />
-                </ui-button>
-              </div>
-              <ui-form-message />
-            </ui-form-item>
-          </ui-form-field>
+                <ui-form-message />
+              </ui-form-item>
+            </ui-form-field>
+          </vue-draggable>
         </div>
       </ui-form-field>
       <ui-button type="submit" class="mt-2" :loading="loading">

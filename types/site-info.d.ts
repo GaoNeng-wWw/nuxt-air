@@ -8,6 +8,7 @@ declare global {
     social: {
       url: string;
       icon: string;
+      _id: string;
     }[];
   }
 }

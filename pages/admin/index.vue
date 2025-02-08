@@ -18,22 +18,22 @@ definePageMeta({
 </script>
 
 <template>
-  <SidebarProvider class="h-full">
-    <Sidebar collapsible="icon">
-      <SidebarContent class="bg-background">
-        <SidebarGroup>
-          <SidebarMenu>
+  <sidebar-provider class="h-full">
+    <sidebar collapsible="icon">
+      <sidebar-content class="bg-background">
+        <sidebar-group>
+          <sidebar-menu>
             <admin-side-bar />
-          </SidebarMenu>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-    <SidebarInset class="w-[calc(100%_-_var(--sidebar-width-icon))] overflow-auto peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))]">
+          </sidebar-menu>
+        </sidebar-group>
+      </sidebar-content>
+      <sidebar-rail />
+    </sidebar>
+    <sidebar-inset class="w-[calc(100%_-_var(--sidebar-width-icon))] overflow-auto peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))]">
       <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">
-          <SidebarTrigger class="-ml-1" />
-          <Separator
+          <sidebar-trigger class="-ml-1" />
+          <separator
             orientation="vertical"
             class="mr-2 h-4"
           />
@@ -45,6 +45,6 @@ definePageMeta({
           <nuxt-page />
         </div>
       </div>
-    </SidebarInset>
-  </SidebarProvider>
+    </sidebar-inset>
+  </sidebar-provider>
 </template>
