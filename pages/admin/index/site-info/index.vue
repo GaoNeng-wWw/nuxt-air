@@ -1,130 +1,174 @@
 <script lang="ts" setup>
 import UiAvatarUpload from '@/components/ui/avatar-upload/index.vue';
+import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { toTypedSchema } from '@vee-validate/zod';
-import { ChevronsUpDown, Plus, Trash } from 'lucide-vue-next';
+import { watchOnce } from '@vueuse/core';
+import { Plus, Trash } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { z } from 'zod';
-import Github from '~/components/icon/github.vue';
+import { socialIconNames } from '~/components/icon';
+
+const { data, status } = useFetch('/api/site-info', { method: 'get', server: false });
+const siteInfo = useSiteInfo();
+const { removeItem } = useExpireLocalStorage();
 
 const schema = z.object({
-  ownerName: z.string().describe('管理员昵称'),
-  ownerBio: z.string().describe('管理员简介'),
+  ownerName: z.string().describe('管理员昵称').min(1),
+  ownerBio: z.string().describe('管理员简介').min(1),
   ownerAvatar: z.string().describe('管理员头像').default('https://avatars.githubusercontent.com/u/31283122?v=4'),
   social: z.array(
     z.object({
-      icon: z.enum(['github', 'google']),
-      url: z.string(),
-    }).describe('社交媒体').optional(),
-  ).describe('社交媒体'),
+      icon: z.enum(socialIconNames as [string, ...string[]]),
+      url: z.string().url(),
+    }).describe('社交媒体'),
+  ).describe('社交媒体').optional(),
 });
 
 const form = useForm({
   validationSchema: toTypedSchema(schema),
   initialValues: {
-    ownerBio: '123',
-    ownerName: '123',
-    ownerAvatar: 'https://avatars.githubusercontent.com/u/31283122?v=4',
-    social: [],
+    ownerBio: data.value?.ownerBio,
+    ownerName: data.value?.ownerName,
+    ownerAvatar: data.value?.ownerAvatar,
+    social: data.value?.social ?? [],
   },
 });
-const icons = {
-  Github,
-};
-const onSubmit = form.handleSubmit(() => {});
+
+watchOnce(data, () => {
+  form.setValues({
+    ownerBio: data.value?.ownerBio,
+    ownerName: data.value?.ownerName,
+    ownerAvatar: data.value?.ownerAvatar,
+    social: data.value?.social ?? [],
+  });
+  siteInfo.value = data.value;
+  removeItem('site-info');
+});
+
+const loading = ref(false);
+const isBase64Image = (url: string) => /data:image\/.*;base64/.test(url);
+function uploadImage(base64Url: string) {
+  const avatarExtensionName = /data:image\/(?<extName>.*);/.exec(base64Url)?.groups?.extName ?? 'png';
+  const file = fetch(base64Url)
+    .then(resp => resp.blob())
+    .then(blob => new File([blob], `avatar.${avatarExtensionName}`, { type: `image/${avatarExtensionName}` }))
+    .then(file => file)
+    .then((file) => {
+      const body = new FormData();
+      body.set('file', file);
+      return body;
+    })
+    .then((body) => {
+      return $fetch(`/api/upload`, { body, method: 'post' });
+    });
+  return file;
+}
+const onSubmit = form.handleSubmit(async (value) => {
+  loading.value = true;
+  const avatarUrl = isBase64Image(value.ownerAvatar) ? uploadImage(value.ownerAvatar) : Promise.resolve(value.ownerAvatar);
+  avatarUrl.then((url) => {
+    $fetch('/api/site-info', {
+      method: 'post',
+      body: {
+        ...value,
+        ownerAvatar: url,
+      },
+    });
+  })
+    .finally(() => {
+      loading.value = false;
+    });
+});
 </script>
 
 <template>
   <div class="size-full">
-    <form @submit="() => onSubmit">
-      <ui-form-field v-slot="{ componentField }" name="ownerBio">
-        <ui-form-label>
-          Owner Bio
-        </ui-form-label>
-        <ui-form-control>
-          <ui-input v-bind="componentField" />
-        </ui-form-control>
+    <form @submit.stop.prevent="onSubmit">
+      <ui-form-field v-slot="{ componentField }" name="ownerName">
+        <ui-form-item v-auto-animate>
+          <ui-form-label>
+            Owner Name
+          </ui-form-label>
+          <ui-form-control>
+            <ui-skeleton v-if="status === 'pending'" class="h-8 w-full" />
+            <ui-input v-else v-bind="componentField" />
+          </ui-form-control>
+          <ui-form-message />
+        </ui-form-item>
       </ui-form-field>
 
-      <ui-form-field v-slot="{ componentField }" name="ownerName">
-        <ui-form-label>
-          Owner Name
-        </ui-form-label>
-        <ui-form-control>
-          <ui-input v-bind="componentField" />
-        </ui-form-control>
+      <ui-form-field v-slot="{ componentField }" name="ownerBio">
+        <ui-form-item v-auto-animate>
+          <ui-form-label>
+            Owner Bio
+          </ui-form-label>
+          <ui-form-control>
+            <ui-skeleton v-if="status === 'pending'" class="h-8 w-full" />
+            <ui-input v-else v-bind="componentField" />
+          </ui-form-control>
+          <ui-form-message />
+        </ui-form-item>
       </ui-form-field>
 
       <ui-form-field v-slot="{ componentField }" name="ownerAvatar">
-        <ui-form-label>
-          Owner Avatar
-        </ui-form-label>
-        <ui-form-control>
-          <ui-avatar-upload v-model:url="componentField.modelValue" @update:url="(val) => componentField['onUpdate:modelValue']?.(val)" />
-        </ui-form-control>
+        <ui-form-item v-auto-animate>
+          <ui-form-label>
+            Owner Avatar
+          </ui-form-label>
+          <ui-form-control>
+            <ui-avatar-upload v-model:url="componentField.modelValue" @update:url="(val) => componentField['onUpdate:modelValue']?.(val)" />
+          </ui-form-control>
+          <ui-form-message />
+        </ui-form-item>
       </ui-form-field>
 
-      <ui-form-field v-slot="{ componentField }" name="social">
-        <ui-collapsible>
-          <ui-form-label>
-            <div class="flex w-full justify-between">
-              <span>
-                Social
-              </span>
-              <div>
-                <ui-collapsible-trigger as-child>
-                  <ui-button size="sm" variant="ghost" class="w-9 p-0">
-                    <chevrons-up-down />
-                  </ui-button>
-                </ui-collapsible-trigger>
-                <ui-button size="icon" variant="ghost" type="button" @click="componentField.modelValue.push({})">
-                  <plus class="size-4" />
-                </ui-button>
-              </div>
-            </div>
-          </ui-form-label>
-          <ui-collapsible-content class="pl-2">
-            <ui-form-control>
-              <ui-collapsible v-for="socialItem, idx in componentField.modelValue" :key="idx">
-                <div class="flex w-full justify-between font-mono text-sm">
-                  <span>Social</span>
-                  <div class="flex gap-1.5">
-                    <ui-collapsible-trigger as-child>
-                      <ui-button size="sm" variant="ghost" class="w-9 p-0">
-                        <chevrons-up-down />
-                      </ui-button>
-                    </ui-collapsible-trigger>
-                    <ui-button size="sm" variant="ghost" class="w-9 p-0 hover:bg-rose-500/20" @click="() => (componentField.modelValue as any[]).splice(idx, 1)">
-                      <trash class="text-red-500" />
-                    </ui-button>
+      <ui-form-field v-slot="{ componentField }" v-auto-animate name="social">
+        <ui-form-label>
+          <div class="flex w-full items-center justify-between">
+            Social
+            <ui-button
+              variant="ghost"
+              @click="() => {
+                if (!componentField.modelValue) {
+                  componentField.modelValue = [{ icon: '', url: '' }];
+                }
+                else {
+                  componentField.modelValue.push({ icon: '', url: '' })
+                }
+                form.setFieldValue('social', componentField.modelValue)
+              }"
+            >
+              <plus class="size-4 !text-foreground" />
+            </ui-button>
+          </div>
+        </ui-form-label>
+        <div class="w-full space-y-2 first:mt-2">
+          <ui-form-field v-for="(social, idx) in componentField.modelValue" :key="idx" v-auto-animate :name="`social.${idx}`">
+            <ui-form-item v-auto-animate>
+              <div class="flex w-full items-center justify-center gap-1.5">
+                <div class="relative flex w-full">
+                  <ui-input v-model="social.url" class="pl-16 ring-0 focus:ring-0" @update:model-value="() => form.setFieldValue('social', componentField.modelValue)" />
+                  <div class="absolute top-0 h-fit w-16">
+                    <social-select
+                      v-model="social.icon"
+                      :options="['github', 'x', 'discord']"
+                      show-name
+                      @update:model-value="() => form.setFieldValue('social', componentField.modelValue)"
+                    />
                   </div>
                 </div>
-                <ui-collapsible-content class="roudned flex flex-col gap-3 px-3 py-4 font-mono">
-                  <ui-form-label>
-                    Icon
-                  </ui-form-label>
-                  <ui-select>
-                    <ui-select-trigger>
-                      <ui-select-value class="w-full" />
-                    </ui-select-trigger>
-                    <ui-select-content>
-                      <ui-select-group>
-                        <ui-select-item value="github" class="flex items-center">
-                          <component :is="icons.Github" class="inline-block size-4 fill-foreground" />
-                          Github
-                        </ui-select-item>
-                      </ui-select-group>
-                    </ui-select-content>
-                  </ui-select>
-                  <ui-form-label>
-                    Url
-                  </ui-form-label>
-                  <ui-input v-model="socialItem.url" />
-                </ui-collapsible-content>
-              </ui-collapsible>
-            </ui-form-control>
-          </ui-collapsible-content>
-        </ui-collapsible>
+                <ui-button variant="ghost" class="hover:!bg-red-500/20" size="icon" @click="() => componentField.modelValue.splice(idx, 1)">
+                  <trash />
+                </ui-button>
+              </div>
+              <ui-form-message />
+            </ui-form-item>
+          </ui-form-field>
+        </div>
       </ui-form-field>
+      <ui-button type="submit" class="mt-2" :loading="loading">
+        提交
+      </ui-button>
     </form>
   </div>
 </template>

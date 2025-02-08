@@ -11,14 +11,12 @@ export function useFormField() {
 
   const { name } = fieldContext;
   const id = fieldItemContext;
-
   const fieldState = {
     valid: useIsFieldValid(name),
     isDirty: useIsFieldDirty(name),
     isTouched: useIsFieldTouched(name),
     error: useFieldError(name),
   };
-
   return {
     id,
     name,
