@@ -8,6 +8,7 @@ export const CreateSiteInfo = z.object({
     z.object({
       icon: z.string(),
       url: z.string(),
+      _id: z.string(),
     }),
   ),
 });

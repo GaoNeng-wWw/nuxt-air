@@ -1,19 +1,18 @@
 <script lang="ts" setup>
 import UiAvatarUpload from '@/components/ui/avatar-upload/index.vue';
-import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import { watchOnce } from '@vueuse/core';
 import { GripVertical, Plus, Trash } from 'lucide-vue-next';
+import { v4 } from 'uuid';
 import { useForm } from 'vee-validate';
-import { VueDraggable } from 'vue-draggable-plus';
+import Draggable from 'vuedraggable';
 import { z } from 'zod';
 import { socialIconNames } from '~/components/icon';
 
 const { data, status } = useFetch('/api/site-info', { method: 'get', server: false });
 const siteInfo = useSiteInfo();
 const { removeItem } = useExpireLocalStorage();
-let counter = 0;
-const useId = () => `id-${counter++}`;
+const useId = () => v4();
 const schema = z.object({
   ownerName: z.string().describe('管理员昵称').min(1), // todo: i18n
   ownerBio: z.string().describe('管理员简介').min(1), // todo: i18n
@@ -92,7 +91,7 @@ const onSubmit = form.handleSubmit(async (value) => {
   <div class="size-full">
     <form @submit.stop.prevent="onSubmit">
       <ui-form-field v-slot="{ componentField }" name="ownerName">
-        <ui-form-item v-auto-animate>
+        <ui-form-item>
           <ui-form-label>
             Owner Name
           </ui-form-label>
@@ -105,7 +104,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       </ui-form-field>
 
       <ui-form-field v-slot="{ componentField }" name="ownerBio">
-        <ui-form-item v-auto-animate>
+        <ui-form-item>
           <ui-form-label>
             Owner Bio
           </ui-form-label>
@@ -118,7 +117,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       </ui-form-field>
 
       <ui-form-field v-slot="{ componentField }" name="ownerAvatar">
-        <ui-form-item v-auto-animate>
+        <ui-form-item>
           <ui-form-label>
             Owner Avatar
           </ui-form-label>
@@ -129,7 +128,7 @@ const onSubmit = form.handleSubmit(async (value) => {
         </ui-form-item>
       </ui-form-field>
 
-      <ui-form-field v-slot="{ componentField }" v-auto-animate name="social">
+      <ui-form-field v-slot="{ componentField }" name="social">
         <ui-form-label>
           <div class="flex w-full items-center justify-between">
             Social
@@ -150,41 +149,49 @@ const onSubmit = form.handleSubmit(async (value) => {
           </div>
         </ui-form-label>
         <div class="w-full space-y-2 first:mt-2">
-          <vue-draggable
-            v-model="componentField.modelValue"
+          <draggable
+            :list="componentField.modelValue"
             handle=".handle"
-            :animation="200"
-            @update="form.setFieldValue('social', componentField.modelValue)"
+            item-key="_id"
+            :disabled="false"
+            :animation="120"
           >
-            <ui-form-field v-for="(social, idx) in componentField.modelValue" :key="social._id" v-auto-animate :name="`social.${idx}`">
-              <ui-form-item v-auto-animate>
-                <div class="flex w-full items-center justify-center gap-1.5">
-                  <grip-vertical class="handle size-4 fill-foreground" />
-                  <div class="relative flex w-full">
-                    <ui-input v-model="social.url" class="pl-16 ring-0 focus:ring-0" @update:model-value="() => form.setFieldValue('social', componentField.modelValue)" />
-                    <div class="absolute top-0 h-fit w-16">
-                      <social-select
-                        v-model="social.icon"
-                        :options="['github', 'x', 'discord']"
-                        show-name
-                        @update:model-value="() => form.setFieldValue('social', componentField.modelValue)"
-                      />
+            <template #item="{ element, index }">
+              <div>
+                <ui-form-field :key="element._id" :name="`social.${index}`">
+                  <ui-form-item>
+                    <div class="flex w-full items-center justify-center gap-1.5">
+                      <grip-vertical class="handle size-4 fill-foreground" />
+                      <div class="relative flex w-full">
+                        <ui-input v-model="element.url" class="pl-16 ring-0 focus:ring-0" @update:model-value="() => form.setFieldValue('social', componentField.modelValue)" />
+                        <div class="absolute top-0 h-fit w-16">
+                          <social-select
+                            v-model="element.icon"
+                            :options="['github', 'x', 'discord']"
+                            show-name
+                            @update:model-value="() => form.setFieldValue('social', componentField.modelValue)"
+                          />
+                        </div>
+                      </div>
+                      <ui-button
+                        variant="ghost" class="hover:!bg-red-500/20" size="icon"
+                        @click.prevent.stop="() => {
+                          componentField.modelValue = componentField.modelValue.filter((item: any) => item._id !== element._id);
+                          form.setFieldValue('social', componentField.modelValue ?? [])
+                          console.log(componentField.modelValue);
+                        }"
+                      >
+                        <trash />
+                      </ui-button>
                     </div>
-                  </div>
-                  <ui-button
-                    variant="ghost" class="hover:!bg-red-500/20" size="icon" @click.prevent.stop="() => {
-                      componentField.modelValue.splice(idx, 1)
-                      form.setFieldValue('social', componentField.modelValue)
-                    }"
-                  >
-                    <trash />
-                  </ui-button>
-                </div>
-                <ui-form-message />
-              </ui-form-item>
-            </ui-form-field>
-          </vue-draggable>
+                    <ui-form-message />
+                  </ui-form-item>
+                </ui-form-field>
+              </div>
+            </template>
+          </draggable>
         </div>
+        {{ componentField.modelValue }}
       </ui-form-field>
       <ui-button type="submit" class="mt-2" :loading="loading">
         提交
