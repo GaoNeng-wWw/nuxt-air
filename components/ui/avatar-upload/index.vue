@@ -36,7 +36,6 @@ function onChange(e: Event) {
 }
 watch(() => modelValueUrl, () => {
   url.value = modelValueUrl.value;
-  console.log(url.value);
 }, { immediate: true, deep: true });
 </script>
 
