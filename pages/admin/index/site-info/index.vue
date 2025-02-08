@@ -22,7 +22,7 @@ const schema = z.object({
     z.object({
       icon: z.enum(socialIconNames as [string, ...string[]]),
       url: z.string().url(),
-      _id: z.string(),
+      _id: z.string().optional(),
     }).describe('社交媒体'),
   ).describe('社交媒体').optional(),
 });
@@ -172,8 +172,9 @@ const onSubmit = form.handleSubmit(async (value) => {
                     </div>
                   </div>
                   <ui-button
-                    variant="ghost" class="hover:!bg-red-500/20" size="icon" @click="() => {
+                    variant="ghost" class="hover:!bg-red-500/20" size="icon" @click.prevent.stop="() => {
                       componentField.modelValue.splice(idx, 1)
+                      form.setFieldValue('social', componentField.modelValue)
                     }"
                   >
                     <trash />
