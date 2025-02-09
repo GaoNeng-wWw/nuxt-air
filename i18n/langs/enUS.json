@@ -1,0 +1,92 @@
+{
+  "navbar": {
+    "index": "Home",
+    "post": "Post"
+  },
+  "breadcrumb": {
+    "items": {
+      "index": {
+        "label": "Home"
+      },
+      "admin": {
+        "label": "Dashboard"
+      },
+      "admin::post": {
+        "label": "Post Management"
+      },
+      "admin::post::edit": {
+        "label": "Edit Post"
+      },
+      "admin::category": {
+        "label": "Category Management"
+      },
+      "admin::site-setting": {
+        "label": "Site Settings"
+      }
+    }
+  },
+  "menu": {
+    "post": "Post Management",
+    "categories": "Category Management",
+    "setting": "Site Settings"
+  },
+  "common": {
+    "notFound": "Resource not found",
+    "createAt": "Created At",
+    "updateAt": "Updated At",
+    "empty": "No data available",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "unauth": "Not logged in",
+    "auth_expire": "Login expired",
+    "bad_token": "Invalid token",
+    "userNotFound": "User not found",
+    "unknownError": "Unknown error",
+    "permissionDenied": "Permission denied",
+    "badRequest": {
+      "emptyFile": "Cannot upload empty file",
+      "onlyImage": "Only images can be uploaded",
+      "imageExceedingSizeLimit": "Image exceeds size limit",
+      "duplicateInstallation": "Duplicate installation not allowed"
+    }
+  },
+  "admin": {
+    "category": {
+      "deleteConfirm": "Are you sure you want to delete?",
+      "update": {
+        "success": "Update successful"
+      },
+      "new": {
+        "btn": "New",
+        "nameInputLabel": "Category Name",
+        "success": "Added successfully"
+      }
+    },
+    "post": {
+      "edit": "Edit",
+      "unpin": "Unpin",
+      "pin": "Pin",
+      "del": "Delete",
+      "addCategory": "Add Category",
+      "unclassified": "Unclassified",
+      "sendConfirm": {
+        "title": "Are you sure you want to publish?"
+      },
+      "newButton": "Write a new post",
+      "notMoreData": "No more data"
+    },
+    "setting": {
+      "form": {
+        "ownerBio": "Bio",
+        "ownerName": "Nickname",
+        "ownerAvatar": "Avatar",
+        "social": "Social Media"
+      },
+      "toast": {
+        "submit": {
+          "success": "Saved successfully"
+        }
+      }
+    }
+  }
+}
