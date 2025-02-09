@@ -25,18 +25,26 @@ function hideCategories() {
     categoriesVisible.value = false;
   }, 300);
 }
+const { clear } = useUserSession();
+const profile = useProfile();
+function onLogout() {
+  clear()
+    .then(() => {
+      profile.value = null;
+    });
+}
 </script>
 
 <template>
   <header class="sticky top-2 z-50 mx-auto w-full max-w-xl max-[576px]:top-0 max-[576px]:rounded-none max-[576px]:bg-transparent">
-    <DefCategoriesList>
+    <def-categories-list>
       <ul>
         <navbar-item v-for="category in categories" :key="category.id" class="w-full" :url="{ path: '/category', query: { id: category.id } }">
           {{ category.name }}
         </navbar-item>
       </ul>
-    </DefCategoriesList>
-    <DefDesktopNavbar>
+    </def-categories-list>
+    <def-desktop-navbar>
       <nav class="w-full">
         <ul class="flex max-h-40 items-center gap-2.5 rounded-full border border-border bg-default-900/50 px-4 py-3 backdrop-blur">
           <navbar-item url="/">
@@ -49,32 +57,54 @@ function hideCategories() {
               </navbar-item>
             </ui-popover-trigger>
             <ui-popover-content :side-offset="8" class="rounded-lg border border-border bg-default-900/50 backdrop-blur" @mouseenter="showCategories" @mouseleave="hideCategories">
-              <CategoriesList />
+              <categories-list />
             </ui-popover-content>
           </ui-popover>
           <li class="ml-auto">
-            <float-button-avatar />
+            <ui-hover-card>
+              <ui-hover-card-trigger>
+                <float-button-avatar />
+              </ui-hover-card-trigger>
+              <ui-hover-card-content class="w-fit border-none bg-transparent py-2 shadow-none" :side-offset="16">
+                <div class="flex flex-col space-y-2">
+                  <float-button-color-switch />
+                  <auth-state>
+                    <template #default="{ loggedIn }">
+                      <float-button-logout v-if="loggedIn" @click="onLogout" />
+                    </template>
+                  </auth-state>
+                </div>
+              </ui-hover-card-content>
+            </ui-hover-card>
           </li>
         </ul>
       </nav>
-    </DefDesktopNavbar>
-    <DesktopNavbar v-if="isDesktop" />
+    </def-desktop-navbar>
+    <desktop-navbar v-if="isDesktop" />
     <div v-else class="flex w-full items-center justify-between bg-default-900 px-4 py-3">
       <ui-drawer as-child class="bg-default-950">
         <ui-drawer-trigger>
           <ui-button variant="ghost" size="icon">
-            <MenuIcon />
+            <menu-icon />
           </ui-button>
         </ui-drawer-trigger>
         <ui-drawer-content>
           <div class="min-h-64 space-y-2 p-2">
+            <div class="ml-auto mr-0 flex w-fit items-center space-x-2">
+              <float-button-color-switch />
+              <auth-state>
+                <template #default="{ loggedIn }">
+                  <float-button-logout v-if="loggedIn" @click="onLogout" />
+                </template>
+              </auth-state>
+            </div>
             <ul class="w-full">
               <navbar-item url="/" class="w-full">
                 {{ $t('navbar.index') }}
               </navbar-item>
             </ul>
             <ul class="w-full">
-              <CategoriesList />
+              <categories-list />
             </ul>
           </div>
         </ui-drawer-content>

@@ -27,7 +27,6 @@ function createState(doc?: MaybeRef<string>) {
       extensions,
       EditorView.domEventHandlers({
         scroll(event) {
-          el = event.target as HTMLElement;
           emits('scroll', (event.target as HTMLElement).scrollTop);
         },
       }),
@@ -157,27 +156,54 @@ defineExpose({
 .cm-panels {
   background-color: transparent !important;
 }
-.cm-activeLine{
-  background: theme('colors.zinc.900') !important;
+.dark{
+  .cm-activeLine{
+    background: theme('colors.zinc.900') !important;
+  }
+}
+.light{
+  .cm-activeLine{
+    background: theme('colors.zinc.100') !important;
+  }
 }
 .cm-gutters {
   background-color: transparent !important;
   color: theme('colors.zinc.500') !important;
   border: none !important;
 }
-.cm-activeLineGutter {
+.dark .cm-activeLineGutter {
   background-color: transparent !important;
   color: theme('colors.zinc.300') !important;
 }
+
+.light .cm-activeLineGutter {
+  background-color: transparent !important;
+  color: theme('colors.zinc.800') !important;
+}
+
 .cm-foldPlaceholder {
   background: transparent !important;
   border: none !important;
   color: theme('colors.zinc.500') !important;
 }
-.cm-tooltip {
+.dark .cm-tooltip {
   border: 1px solid theme('colors.zinc.600') !important;
   background-color: theme('colors.zinc.900') !important;
 }
+
+.cm-tooltip-autocomplete ul li[aria-selected] {
+  background: theme('colors.blue.500') !important;
+}
+.light .cm-tooltip.cm-tooltip-autocomplete {
+  background: theme('colors.zinc.200') !important;
+  border-radius: 8px;
+  color: theme('colors.zinc.800');
+}
+
+.cm-panels {
+  background: red !important;
+}
+
 .cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .ͼo .cm-selectionBackground, .ͼo .cm-content ::selection{
   background: theme('colors.blue.800/50') !important;
 }
