@@ -97,6 +97,19 @@ export default defineI18nConfig(() => {
             newButton: '写一篇新文章',
             notMoreData: '到底了~',
           },
+          setting: {
+            form: {
+              ownerBio: '简介',
+              ownerName: '昵称',
+              ownerAvatar: '头像',
+              social: '社交媒体',
+            },
+            toast: {
+              submit: {
+                success: '保存成功',
+              },
+            },
+          },
         },
       },
     },

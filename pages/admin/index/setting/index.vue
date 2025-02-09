@@ -5,6 +5,7 @@ import { watchOnce } from '@vueuse/core';
 import { GripVertical, Plus, Trash } from 'lucide-vue-next';
 import { v4 } from 'uuid';
 import { useForm } from 'vee-validate';
+import { toast } from 'vue-sonner';
 import Draggable from 'vuedraggable';
 import { z } from 'zod';
 import { socialIconNames } from '~/components/icon';
@@ -15,18 +16,19 @@ const { removeItem } = useExpireLocalStorage();
 definePageMeta({
   name: 'admin::site-setting',
 });
+const { t } = useI18n();
 const useId = () => v4();
 const schema = z.object({
-  ownerName: z.string().describe('管理员昵称').min(1), // todo: i18n
-  ownerBio: z.string().describe('管理员简介').min(1), // todo: i18n
-  ownerAvatar: z.string().describe('管理员头像'), // todo: i18n
+  ownerName: z.string().min(1),
+  ownerBio: z.string().min(1),
+  ownerAvatar: z.string(),
   social: z.array(
     z.object({
       icon: z.enum(socialIconNames as [string, ...string[]]),
       url: z.string().url(),
       _id: z.string().optional(),
-    }).describe('社交媒体'),
-  ).describe('社交媒体').optional(),
+    }),
+  ).optional(),
 });
 
 const form = useForm({
@@ -65,9 +67,6 @@ function uploadImage(base64Url: string) {
     })
     .then((body) => {
       return $fetch(`/api/upload`, { body, method: 'post' });
-    })
-    .then(() => {
-      // todo: Toast
     });
   return file;
 }
@@ -84,6 +83,12 @@ const onSubmit = form.handleSubmit(async (value) => {
       },
     });
   })
+    .then(() => {
+      toast.success(t('admin.setting.toast.submit.success'), { position: 'top-center' });
+    })
+    .catch((err) => {
+      toast.error(err.data.message, { position: 'top-center' });
+    })
     .finally(() => {
       loading.value = false;
     });
@@ -96,7 +101,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       <ui-form-field v-slot="{ componentField }" name="ownerName">
         <ui-form-item>
           <ui-form-label>
-            Owner Name
+            {{ t('admin.setting.form.ownerName') }}
           </ui-form-label>
           <ui-form-control>
             <ui-skeleton v-if="status === 'pending'" class="h-8 w-full" />
@@ -109,7 +114,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       <ui-form-field v-slot="{ componentField }" name="ownerBio">
         <ui-form-item>
           <ui-form-label>
-            Owner Bio
+            {{ t('admin.setting.form.ownerBio') }}
           </ui-form-label>
           <ui-form-control>
             <ui-skeleton v-if="status === 'pending'" class="h-8 w-full" />
@@ -122,7 +127,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       <ui-form-field v-slot="{ componentField }" name="ownerAvatar">
         <ui-form-item>
           <ui-form-label>
-            Owner Avatar
+            {{ t('admin.setting.form.ownerAvatar') }}
           </ui-form-label>
           <ui-form-control>
             <ui-avatar-upload v-model:url="componentField.modelValue" @update:url="(val) => componentField['onUpdate:modelValue']?.(val)" />
@@ -134,7 +139,7 @@ const onSubmit = form.handleSubmit(async (value) => {
       <ui-form-field v-slot="{ componentField }" name="social">
         <ui-form-label>
           <div class="flex w-full items-center justify-between">
-            Social
+            {{ t('admin.setting.form.social') }}
             <ui-button
               variant="ghost"
               @click="() => {
