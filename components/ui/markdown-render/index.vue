@@ -12,7 +12,7 @@ const value = ref(props.value);
 
 watchThrottled(() => props, () => {
   value.value = props.value;
-}, { throttle: 300 });
+}, { throttle: 300, immediate: true, deep: true});
 </script>
 
 <template>

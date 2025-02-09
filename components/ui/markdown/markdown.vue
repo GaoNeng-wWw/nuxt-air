@@ -15,15 +15,11 @@ defineExpose({
 });
 
 const getEditorInstance = () => editor.value?.getInstance();
-function editorScroll() {
+function editorScroll(scrollTop: number) {
   if (!editor.value || !render.value) {
     return;
   }
-  const editorInstance = getEditorInstance();
-  if (!editorInstance) {
-    return;
-  }
-  render.value.scrollTop = editorInstance.scrollTop;
+  render.value.scrollTop = scrollTop;
 }
 function renderScroll() {
   if (!editor.value || !render.value) {
@@ -36,7 +32,7 @@ function renderScroll() {
   if (editorInstance.scrollTop === render.value.scrollTop) {
     return;
   }
-  editorInstance.scrollTop = render.value.scrollTop;
+  editor.value.setScroll(render.value.scrollTop);
 }
 const cursor = reactive({ from: 0, to: 0 });
 function onCursorUpdate({ from, to }: MininalCursor) {
@@ -100,16 +96,16 @@ const triggerUpload = () => uploader.value?.click();
         <input ref="uploader" multiple class="fixed left-0 top-0 hidden" type="file" @change="onUploadFile">
         <ui-toggle-group v-model="commands" type="multiple" class="ml-0 w-fit" @update:model-value="commands = []">
           <ui-toggle-group-item value="bold" @click="baseReplace('**', '**')">
-            <Bold class="size-4" />
+            <bold class="size-4" />
           </ui-toggle-group-item>
           <ui-toggle-group-item value="italic" @click="baseReplace('*', '*')">
-            <Italic class="size-4" />
+            <italic class="size-4" />
           </ui-toggle-group-item>
           <ui-toggle-group-item value="strikethrough" @click="baseReplace('~', '~')">
-            <Strikethrough class="size-4" />
+            <strikethrough class="size-4" />
           </ui-toggle-group-item>
           <ui-toggle-group-item value="image" @click="triggerUpload">
-            <ImageUp class="size-4" />
+            <image-up class="size-4" />
           </ui-toggle-group-item>
         </ui-toggle-group>
       </div>
