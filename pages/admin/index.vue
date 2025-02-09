@@ -9,6 +9,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
+  SidebarFooter
 } from '@/components/ui/sidebar';
 
 definePageMeta({
@@ -28,6 +29,9 @@ definePageMeta({
         </sidebar-group>
       </sidebar-content>
       <sidebar-rail />
+      <sidebar-footer class="py-1 px-2 items-end group-data-[collapsible=icon]:items-center">
+        <float-button-color-switch class="border-none " />
+      </sidebar-footer>
     </sidebar>
     <sidebar-inset class="w-[calc(100%_-_var(--sidebar-width-icon))] overflow-auto peer-data-[collapsible]:w-[calc(100%_-_var(--sidebar-width))]">
       <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

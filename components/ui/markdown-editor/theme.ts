@@ -42,9 +42,9 @@ export const Theme = EditorView.theme({
   // ".cm-cursor, .cm-dropCursor": {borderLeftColor: cursor},
   '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: selection },
 
-  '.cm-panels': { backgroundColor: darkBackground, color: ivory },
-  '.cm-panels.cm-panels-top': { borderBottom: '2px solid black' },
-  '.cm-panels.cm-panels-bottom': { borderTop: '2px solid black' },
+  // '.cm-panels': { backgroundColor: darkBackground, color: ivory },
+  // '.cm-panels.cm-panels-top': { borderBottom: '2px solid black' },
+  // '.cm-panels.cm-panels-bottom': { borderTop: '2px solid black' },
 
   '.cm-searchMatch': {
     backgroundColor: '#72a1ff59',
@@ -57,30 +57,6 @@ export const Theme = EditorView.theme({
   '&.cm-focused .cm-matchingBracket, &.cm-focused .cm-nonmatchingBracket': {
     backgroundColor: '#bad0f847',
   },
-  // ".cm-foldPlaceholder": {
-  //   backgroundColor: "transparent",
-  //   border: "none",
-  //   color: "#ddd"
-  // },
-
-  // ".cm-tooltip": {
-  //   border: "none",
-  //   backgroundColor: tooltipBackground
-  // },
-  // ".cm-tooltip .cm-tooltip-arrow:before": {
-  //   borderTopColor: "transparent",
-  //   borderBottomColor: "transparent"
-  // },
-  // ".cm-tooltip .cm-tooltip-arrow:after": {
-  //   borderTopColor: tooltipBackground,
-  //   borderBottomColor: tooltipBackground
-  // },
-  // ".cm-tooltip-autocomplete": {
-  //   "& > ul > li[aria-selected]": {
-  //     backgroundColor: highlightBackground,
-  //     color: ivory
-  //   }
-  // }
 }, { dark: true });
 
 export const highlightStyle = HighlightStyle.define([
