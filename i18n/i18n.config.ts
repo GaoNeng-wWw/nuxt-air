@@ -42,11 +42,15 @@ export default defineI18nConfig(() => {
             'admin::category': {
               label: '分类管理',
             },
+            'admin::site-setting': {
+              label: '站点设置',
+            },
           },
         },
         menu: {
           post: '文章管理',
           categories: '分组管理',
+          setting: '站点设置',
         },
         common: {
           notFound: '资源不存在',

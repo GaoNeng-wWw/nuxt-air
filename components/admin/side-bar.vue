@@ -24,6 +24,12 @@ const items: Ref<MenuItem[]> = ref(
       active: computed(() => router.currentRoute.value.path === '/admin/categories'),
       icon: Hash,
     },
+    {
+      label: t('menu.setting'),
+      link: '/admin/setting',
+      active: computed(() => router.currentRoute.value.path === '/admin/setting'),
+      icon: Hash,
+    },
   ],
 );
 

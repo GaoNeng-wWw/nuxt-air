@@ -12,6 +12,9 @@ import { socialIconNames } from '~/components/icon';
 const { data, status } = useFetch('/api/site-info', { method: 'get', server: false });
 const siteInfo = useSiteInfo();
 const { removeItem } = useExpireLocalStorage();
+definePageMeta({
+  name: 'admin::site-setting',
+});
 const useId = () => v4();
 const schema = z.object({
   ownerName: z.string().describe('管理员昵称').min(1), // todo: i18n
@@ -191,7 +194,6 @@ const onSubmit = form.handleSubmit(async (value) => {
             </template>
           </draggable>
         </div>
-        {{ componentField.modelValue }}
       </ui-form-field>
       <ui-button type="submit" class="mt-2" :loading="loading">
         提交
