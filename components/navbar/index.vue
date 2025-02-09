@@ -25,6 +25,14 @@ function hideCategories() {
     categoriesVisible.value = false;
   }, 300);
 }
+const { clear } = useUserSession();
+const profile = useProfile();
+function onLogout() {
+  clear()
+    .then(() => {
+      profile.value = null;
+    });
+}
 </script>
 
 <template>
@@ -58,11 +66,11 @@ function hideCategories() {
                 <float-button-avatar />
               </ui-hover-card-trigger>
               <ui-hover-card-content class="w-fit border-none bg-transparent py-2 shadow-none" :side-offset="16">
-                <div class="flex flex-col space-y-4">
+                <div class="flex flex-col space-y-2">
                   <float-button-color-switch />
                   <auth-state>
                     <template #default="{ loggedIn }">
-                      <float-button-logout v-if="loggedIn" />
+                      <float-button-logout v-if="loggedIn" @click="onLogout" />
                     </template>
                   </auth-state>
                 </div>
@@ -82,6 +90,14 @@ function hideCategories() {
         </ui-drawer-trigger>
         <ui-drawer-content>
           <div class="min-h-64 space-y-2 p-2">
+            <div class="ml-auto mr-0 flex w-fit items-center space-x-2">
+              <float-button-color-switch />
+              <auth-state>
+                <template #default="{ loggedIn }">
+                  <float-button-logout v-if="loggedIn" @click="onLogout" />
+                </template>
+              </auth-state>
+            </div>
             <ul class="w-full">
               <navbar-item url="/" class="w-full">
                 {{ $t('navbar.index') }}

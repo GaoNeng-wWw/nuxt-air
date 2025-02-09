@@ -3,13 +3,13 @@ import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarInset,
   SidebarMenu,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-  SidebarFooter
 } from '@/components/ui/sidebar';
 
 definePageMeta({
@@ -29,7 +29,7 @@ definePageMeta({
         </sidebar-group>
       </sidebar-content>
       <sidebar-rail />
-      <sidebar-footer class="py-1 px-2 items-end group-data-[collapsible=icon]:items-center">
+      <sidebar-footer class="items-end bg-background px-2 py-1 group-data-[collapsible=icon]:items-center">
         <float-button-color-switch class="border-none " />
       </sidebar-footer>
     </sidebar>
