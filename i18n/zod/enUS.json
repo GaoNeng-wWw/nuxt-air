@@ -1,0 +1,115 @@
+{
+  "zodI18n": {
+    "errors": {
+      "custom": "Invalid input format",
+      "invalid_arguments": "Invalid function argument format",
+      "invalid_date": "Invalid date format",
+      "invalid_enum_value": "Invalid enum value '{received}'. Expected {options}",
+      "invalid_intersection_types": "Intersection types cannot be merged",
+      "invalid_literal": "Invalid literal value, expected {expected}",
+      "invalid_return_type": "Invalid function return type format",
+      "invalid_string": {
+        "cuid": "Invalid {validation} format",
+        "datetime": "Invalid {validation} format",
+        "email": "Invalid {validation} format",
+        "endsWith": "Text must end with \"{endsWith}\"",
+        "regex": "Invalid format",
+        "startsWith": "Text must start with \"{startsWith}\"",
+        "url": "Invalid {validation} format",
+        "uuid": "Invalid {validation} format"
+      },
+      "invalid_type": "Expected {expected}, received {received}",
+      "invalid_type_received_undefined": "Required",
+      "invalid_union": "Does not match any of the union types",
+      "invalid_union_discriminator": "Discriminator value cannot be distinguished. Expected {options}",
+      "not_finite": "Value must be finite",
+      "not_multiple_of": "Value must be a multiple of {multipleOf}",
+      "required": "Required",
+      "too_big": {
+        "array": {
+          "exact": "Array must have exactly {maximum} elements",
+          "inclusive": "Array must have at most {maximum} elements",
+          "not_inclusive": "Array must have fewer than {maximum} elements"
+        },
+        "date": {
+          "exact": "Date must be exactly {maximum}",
+          "inclusive": "Date must be at most {maximum}",
+          "not_inclusive": "Date must be later than {maximum}"
+        },
+        "number": {
+          "exact": "Value must be exactly {maximum}",
+          "inclusive": "Value must be at most {maximum}",
+          "not_inclusive": "Value must be less than {maximum}"
+        },
+        "set": {
+          "exact": "Invalid input format",
+          "inclusive": "Invalid input format",
+          "not_inclusive": "Invalid input format"
+        },
+        "string": {
+          "exact": "Text must be exactly {maximum} characters long",
+          "inclusive": "Text must be at most {maximum} characters long",
+          "not_inclusive": "Text must be shorter than {maximum} characters"
+        }
+      },
+      "too_small": {
+        "array": {
+          "exact": "Array must have exactly {minimum} elements",
+          "inclusive": "Array must have at least {minimum} elements",
+          "not_inclusive": "Array must have more than {minimum} elements"
+        },
+        "date": {
+          "exact": "Date must be exactly {minimum}",
+          "inclusive": "Date must be at least {minimum}",
+          "not_inclusive": "Date must be earlier than {minimum}"
+        },
+        "number": {
+          "exact": "Value must be exactly {minimum}",
+          "inclusive": "Value must be at least {minimum}",
+          "not_inclusive": "Value must be greater than {minimum}"
+        },
+        "set": {
+          "exact": "Invalid input format",
+          "inclusive": "Invalid input format",
+          "not_inclusive": "Invalid input format"
+        },
+        "string": {
+          "exact": "Text must be exactly {minimum} characters long",
+          "inclusive": "Text must be at least {minimum} characters long",
+          "not_inclusive": "Text must be longer than {minimum} characters"
+        }
+      },
+      "unrecognized_keys": "Unrecognized keys in object: {keys}"
+    },
+    "types": {
+      "array": "array",
+      "bigint": "bigint",
+      "boolean": "boolean",
+      "date": "date",
+      "float": "float",
+      "function": "function",
+      "integer": "integer",
+      "map": "map",
+      "nan": "NaN",
+      "never": "never",
+      "null": "null",
+      "number": "number",
+      "object": "object",
+      "promise": "promise",
+      "set": "set",
+      "string": "string",
+      "symbol": "symbol",
+      "undefined": "undefined",
+      "unknown": "unknown",
+      "void": "void"
+    },
+    "validations": {
+      "cuid": "cuid",
+      "datetime": "datetime",
+      "email": "email",
+      "regex": "regex",
+      "url": "url",
+      "uuid": "uuid"
+    }
+  }
+}
