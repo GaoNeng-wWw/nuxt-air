@@ -8,6 +8,5 @@ export default defineNuxtRouteMiddleware(async () => {
   }
   const profile = useProfile();
   $fetch('/api/profile')
-    .then(realProfile => profile.value = realProfile)
-    .catch(console.log);
+    .then(realProfile => profile.value = realProfile);
 });
