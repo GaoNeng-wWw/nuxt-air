@@ -4,7 +4,7 @@ import { GitMerge, GitPullRequest, GitPullRequestClosed, GitPullRequestDraft } f
 const props = defineProps<{
   owner: string;
   repo: string;
-  prNumber: number;
+  prNumber: string;
 }>();
 const { data, status } = useFetch('/api/pr-card', {
   query: {
@@ -34,10 +34,10 @@ const prInfo = computed(() => data.value?.info);
     <nuxt-link v-if="!loading && prInfo" :href="prInfo.link" class="mx-auto no-underline">
       <div class="size-fit max-w-full rounded border border-border bg-default-900 p-2">
         <div class="grid w-full grid-cols-[theme('size.6')_1fr] items-center gap-2">
-          <GitMerge v-if="prInfo.merged" class="size-6 text-purple-600" />
-          <GitPullRequestClosed v-else-if="prInfo.state === 'closed'" class="size-6 text-red-600" />
-          <GitPullRequestDraft v-else-if="prInfo.draft" class="size-6 text-default-600" />
-          <GitPullRequest v-else class="size-6 text-green-600" />
+          <git-merge v-if="prInfo.merged" class="size-6 text-purple-600" />
+          <git-pull-request-closed v-else-if="prInfo.state === 'closed'" class="size-6 text-red-600" />
+          <git-pull-request-draft v-else-if="prInfo.draft" class="size-6 text-default-600" />
+          <git-pull-request v-else class="size-6 text-green-600" />
           <div class="flex items-center gap-1.5">
             <span class="line-clamp-2 text-xl no-underline" :title="prInfo?.title">
               {{ prInfo?.title }}
