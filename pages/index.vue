@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 definePageMeta({
-  scrollToTop: true
-})
+  scrollToTop: true,
+});
 </script>
 
 <template>

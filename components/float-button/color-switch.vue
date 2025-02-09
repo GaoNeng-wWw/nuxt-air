@@ -5,8 +5,8 @@ import { Moon, Sun } from 'lucide-vue-next';
 <template>
   <float-button-item>
     <color-scheme>
-      <moon v-if="$colorMode.preference === 'dark'" @click="$colorMode.preference = 'light'" />
-      <sun v-else @click="$colorMode.preference = 'dark'" />
+      <Moon v-if="$colorMode.preference === 'dark'" @click="$colorMode.preference = 'light'" />
+      <Sun v-else @click="$colorMode.preference = 'dark'" />
     </color-scheme>
   </float-button-item>
 </template>

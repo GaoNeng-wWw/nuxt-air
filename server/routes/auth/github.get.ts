@@ -1,6 +1,6 @@
-import prisma from "~/lib/prisma"
-import { useOAuthId } from "../../utils/oauth-id"
-import ms from "ms";
+import ms from 'ms';
+import prisma from '~/lib/prisma';
+import { useOAuthId } from '../../utils/oauth-id';
 
 export default defineOAuthGitHubEventHandler({
   config: {
@@ -9,31 +9,31 @@ export default defineOAuthGitHubEventHandler({
   async onSuccess(event, result) {
     const OAuthId = useOAuthId('github', result.user.id);
     const oauth = await prisma.oAuth.findFirst({
-      where:{
+      where: {
         openid: OAuthId,
-        provider: 'github'
-      }
-    })
-    if(!oauth){
+        provider: 'github',
+      },
+    });
+    if (!oauth) {
       await prisma.user.create({
-        data:{
+        data: {
           name: result.user.name,
           bio: result.user.bio,
-          owner:false,
+          owner: false,
           avatar: result.user.avatar_url,
-          oauth:{
-            create:{
+          oauth: {
+            create: {
               openid: OAuthId,
-              provider: 'github'
-            }
-          }
-        }
-      })
+              provider: 'github',
+            },
+          },
+        },
+      });
     }
     const tokenPair = {
-      accessToken: await sign({id:OAuthId,provider: 'github', avatar:result.user.avatar_url, type: 'access'}, ms('5s')),
-      refreshToken: await sign({id:OAuthId,provider: 'github', type: 'refresh'}, ms('1d')),
-    }
+      accessToken: await sign({ id: OAuthId, provider: 'github', avatar: result.user.avatar_url, type: 'access' }, ms('5s')),
+      refreshToken: await sign({ id: OAuthId, provider: 'github', type: 'refresh' }, ms('1d')),
+    };
     const redis = useRedis();
     await setUserSession(event, {
       user: {
@@ -41,19 +41,18 @@ export default defineOAuthGitHubEventHandler({
         provider: 'github',
         avatar: result.user.avatar_url,
         owner: await redis.getItem('site::owner') === OAuthId,
-        ...tokenPair
+        ...tokenPair,
       },
-      loggedInAt: Date.now()
+      loggedInAt: Date.now(),
     }, {
-      maxAge: ms('1d') / 1000
-    })
-    const {access, refresh} = useTokenNamespace(OAuthId);
+      maxAge: ms('1d') / 1000,
+    });
+    const { access, refresh } = useTokenNamespace(OAuthId);
     await redis.setItem(access, tokenPair.accessToken);
     await redis.setItem(refresh, tokenPair.refreshToken);
-    return sendRedirect(event, '/oauth/redirect?type=success')
+    return sendRedirect(event, '/oauth/redirect?type=success');
   },
-  onError(event,err){
-    console.log(err)
-    return sendRedirect(event, `/oauth/redirect?type=fail&reason=${err.message}`)
-  }
-})
+  onError(event, err) {
+    return sendRedirect(event, `/oauth/redirect?type=fail&reason=${err.message}`);
+  },
+});

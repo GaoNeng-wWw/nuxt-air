@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { SIDEBAR_WIDTH_MOBILE, useSidebar } from './utils';
 import type { SidebarProps } from '.';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import { SIDEBAR_WIDTH_MOBILE, useSidebar } from './utils';
 
 defineOptions({
   inheritAttrs: false,
@@ -36,12 +36,12 @@ const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
       data-sidebar="sidebar"
       data-mobile="true"
       :side="side"
-      class="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+      class="bg-sidebar text-sidebar-foreground w-[--sidebar-width] p-0 [&>button]:hidden"
       :style="{
         '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
       }"
     >
-      <div class="flex h-full w-full flex-col">
+      <div class="flex size-full flex-col">
         <slot />
       </div>
     </SheetContent>
@@ -82,7 +82,7 @@ const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
     >
       <div
         data-sidebar="sidebar"
-        class="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
+        class="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex size-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow"
       >
         <slot />
       </div>

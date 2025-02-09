@@ -11,7 +11,7 @@ export default defineApi(async (event) => {
     where: {
       id,
     },
-    include:{
+    include: {
       categories: true,
     },
   });
@@ -19,13 +19,13 @@ export default defineApi(async (event) => {
     const t = await useTranslation(event);
     throw new HttpException(t('common.notFound'), status.NOT_FOUND);
   }
-  const {toc} = await parseMarkdown(post.content, {
+  const { toc } = await parseMarkdown(post.content, {
     toc: {
-      depth: 5
-    }
-  })
+      depth: 5,
+    },
+  });
   return {
     post,
-    toc
+    toc,
   };
 });

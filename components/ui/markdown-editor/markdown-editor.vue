@@ -1,40 +1,39 @@
 <script lang="ts" setup>
-import { EditorView } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
-import { highlightStyle, Theme } from './theme';
 import { syntaxHighlighting } from '@codemirror/language';
-import { dragImageUpload } from './extensions/drag-image-upload';
-import { extensions } from './extensions';
+import { EditorState } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
 import { watchPausable } from '@vueuse/core';
+import { extensions } from './extensions';
+import { dragImageUpload } from './extensions/drag-image-upload';
+import { highlightStyle, Theme } from './theme';
 
-export type MininalCursor = {
+export interface MininalCursor {
   from: number;
   to: number;
 }
 
+const emits = defineEmits<{
+  scroll: [Event];
+  cursorUpdate: [MininalCursor];
+}>();
 const modelValue = defineModel<string>();
 const editorEl = useTemplateRef('editor');
-let state:EditorState | null = null;
-let view:EditorView | null = null;
+let state: EditorState | null = null;
+let view: EditorView | null = null;
 
-const emits = defineEmits<{
-  scroll: [Event],
-  cursorUpdate: [MininalCursor]
-}>();
-
-const createState = (doc?:MaybeRef<string>) => {
+function createState(doc?: MaybeRef<string>) {
   return EditorState.create({
     doc: unref(doc),
     extensions: [
       extensions,
       EditorView.updateListener.of((updater) => {
-        const {main} = updater.state.selection
-        emits('cursorUpdate', {from: main.from,to: main.to})
-        if (!updater.docChanged){
+        const { main } = updater.state.selection;
+        emits('cursorUpdate', { from: main.from, to: main.to });
+        if (!updater.docChanged) {
           return;
         }
         const doc = updater.state.doc;
-        if (!doc){
+        if (!doc) {
           return;
         }
         modelValue.value = doc.toString();
@@ -50,70 +49,72 @@ const createState = (doc?:MaybeRef<string>) => {
             {
               method: 'post',
               body,
-            }
+            },
           )
-          .then((url)=>{
-            return {
-              status: 'success',
-              url,
-              name,
-              id,
-              pos
-            }
-          })
+            .then((url) => {
+              return {
+                status: 'success',
+                url,
+                name,
+                id,
+                pos,
+              };
+            });
         },
-      })
-    ]
+      }),
+    ],
   });
 }
 
-const createView = (state:EditorState | null) => {
+function createView(state: EditorState | null) {
   return new EditorView({
     state: unref(state)!,
-    parent: unref(editorEl)!
-  })
+    parent: unref(editorEl)!,
+  });
 }
 const destory = () => view ? view.destroy() : null;
-onMounted(()=>{
+onMounted(() => {
   state = createState(modelValue.value);
-  if(!state){
+  if (!state) {
     return;
   }
   view = createView(state);
-})
+});
 
 const getDoc = () => view?.state.doc.toString();
-const setDoc = (doc: string) => view?.dispatch({
-  changes:{
-    from: 0,
-    to: view.state.doc.length,
-    insert: doc
-  }
-})
+function setDoc(doc: string) {
+  return view?.dispatch({
+    changes: {
+      from: 0,
+      to: view.state.doc.length,
+      insert: doc,
+    },
+  });
+}
 
-onUnmounted(()=>destory())
+onUnmounted(() => destory());
 
-const {pause, resume} = watchPausable(modelValue, ()=>{
-  if (modelValue.value !== getDoc()){
+const { pause, resume } = watchPausable(modelValue, () => {
+  if (modelValue.value !== getDoc()) {
     setDoc(unref(modelValue) ?? '');
   }
-})
+});
 
-const onScroll = (event:Event) => {
+function onScroll(event: Event) {
   emits('scroll', event);
 }
-const insert = (selection: MininalCursor, content: string) => {
+function insert(selection: MininalCursor, content: string) {
   view?.dispatch({
-    changes:{
+    changes: {
       from: selection.from,
       to: selection.to,
-      insert: content
-    }
-  })
+      insert: content,
+    },
+  });
 }
-const replace = ({from,to}: {from: number, to: number}, content: string) => {
-  if (!view?.state){
-    throw new Error('view.state is undefined.')
+function replace({ from, to }: { from: number; to: number }, content: string) {
+  if (!view?.state) {
+    throw new Error('view.state is undefined.');
   }
   pause();
   view.dispatch(
@@ -121,24 +122,24 @@ const replace = ({from,to}: {from: number, to: number}, content: string) => {
       changes: {
         from,
         to,
-        insert: content
-      }
-    }
-  )
+        insert: content,
+      },
+    },
+  );
   resume();
 }
 
 defineExpose({
-  getInstance: ()=>editorEl.value,
-  getView: ()=>unref(view),
+  getInstance: () => editorEl.value,
+  getView: () => unref(view),
   insert,
-  replace
-})
+  replace,
+});
 </script>
-<template>
-  <div ref="editor" class="w-full h-full border border-border rounded box-border outline-none overflow-auto" @scroll="onScroll"/>
-</template>
 
+<template>
+  <div ref="editor" class="box-border size-full overflow-auto rounded border border-border outline-none" @scroll="onScroll" />
+</template>
 
 <style>
 .cm-cursor, .cm-dropCursor {

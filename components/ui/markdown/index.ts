@@ -1,2 +1,3 @@
 import markdown from './markdown.vue';
-export {markdown}
+
+export { markdown };

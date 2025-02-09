@@ -1,1 +1,1 @@
-export const useOAuthId = (provider: string, id: string) => `${provider.toUpperCase()}::${id}`
+export const useOAuthId = (provider: string, id: string) => `${provider.toUpperCase()}::${id}`;

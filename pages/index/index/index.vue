@@ -1,5 +1,6 @@
 <template>
-  <section class="max-w-xl w-full h-full px-2 sm:px-0 py-4 mx-auto overflow-auto">
+  <section class="mx-auto size-full max-w-xl overflow-auto px-2 py-4 sm:px-0">
+    <lazy-site-info-card />
     <post-list show-categories />
   </section>
 </template>

@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { ChevronRight } from 'lucide-vue-next'
+import type { DropdownMenuSubTriggerProps } from 'radix-vue';
+import type { HTMLAttributes } from 'vue';
+import { cn } from '@/lib/utils';
+import { ChevronRight } from 'lucide-vue-next';
 import {
   DropdownMenuSubTrigger,
-  type DropdownMenuSubTriggerProps,
-  useForwardProps,
-} from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<DropdownMenuSubTriggerProps & { class?: HTMLAttributes['class'] }>()
+  useForwardProps,
+} from 'radix-vue';
+import { computed } from 'vue';
+
+const props = defineProps<DropdownMenuSubTriggerProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+  const { class: _, ...delegated } = props;
 
-  return delegated
-})
+  return delegated;
+});
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
@@ -28,6 +30,6 @@ const forwardedProps = useForwardProps(delegatedProps)
     )"
   >
     <slot />
-    <ChevronRight class="ml-auto h-4 w-4" />
+    <ChevronRight class="ml-auto size-4" />
   </DropdownMenuSubTrigger>
 </template>

@@ -1,9 +1,9 @@
-import type {Completion, CompletionContext, CompletionResult} from '@codemirror/autocomplete';
+import type { Completion, CompletionContext, CompletionResult } from '@codemirror/autocomplete';
 import { syntaxTree } from '@codemirror/language';
 
-const heading = ['#','##','###','####','#####','######'].map((tag) => ({label: tag, type: 'keyword'}))
+const heading = ['#', '##', '###', '####', '#####', '######'].map(tag => ({ label: tag, type: 'keyword' }));
 
-const codeBlock = ():Completion => {
+function codeBlock(): Completion {
   return {
     label: '```',
     type: 'keyword',
@@ -13,41 +13,41 @@ const codeBlock = ():Completion => {
           changes: {
             from,
             to,
-            insert: '```\n```'
-          }
+            insert: '```\n```',
+          },
         },
-      )
+      );
       view.dispatch({
         selection: {
-          anchor:from+3,
-        }
-      })
+          anchor: from + 3,
+        },
+      });
     },
-  }
-}
-
-const unorderedList = ():Completion => {
-  return {
-    label: '-',
-    type: 'keyword',
-    apply: '- '
   };
 }
 
-export function MarkdownAutoComplete(ctx:CompletionContext):CompletionResult | null{
+function unorderedList(): Completion {
+  return {
+    label: '-',
+    type: 'keyword',
+    apply: '- ',
+  };
+}
+
+export function MarkdownAutoComplete(ctx: CompletionContext): CompletionResult | null {
   const tree = syntaxTree(ctx.state);
-  if (ctx.view?.state.selection.main){
+  if (ctx.view?.state.selection.main) {
     const cursor = ctx.view?.state.selection.main.head;
     const node = tree.resolve(cursor);
-    if(!node){
+    if (!node) {
       return null;
     }
-    if (node.name.toLocaleLowerCase().includes('code')){
+    if (node.name.toLocaleLowerCase().includes('code')) {
       return null;
     }
   }
   const word = ctx.matchBefore(/.*/);
-  if(!word || word.from === word.to && ctx.explicit){
+  if (!word || (word.from === word.to && ctx.explicit)) {
     return null;
   }
   return {
@@ -56,6 +56,6 @@ export function MarkdownAutoComplete(ctx:CompletionContext):CompletionResult | n
       ...heading,
       codeBlock(),
       unorderedList(),
-    ]
-  }
+    ],
+  };
 }

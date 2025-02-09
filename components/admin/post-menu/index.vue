@@ -1,65 +1,65 @@
 <script lang="ts" setup>
-import {Loader2} from 'lucide-vue-next';
-import {buttonVariants} from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import { Loader2 } from 'lucide-vue-next';
 
-const {id, pin=false} = defineProps<{
-  id: number
-  pin: boolean
-}>()
+const { id, pin = false } = defineProps<{
+  id: number;
+  pin: boolean;
+}>();
 const emits = defineEmits<{
-  unPin: [],
-  pin: [],
-  remove: [number]
+  unPin: [];
+  pin: [];
+  remove: [number];
 }>();
 
 const ghostDanger = buttonVariants({
   variant: 'ghost',
-  class: 'hover:bg-red-500/50 justify-start'
-})
+  class: 'hover:bg-red-500/50 justify-start',
+});
 const loadingButtonId = ref('');
-const {updatePost} = usePost();
-const unPin = () => {
-  loadingButtonId.value = 'pin'
-  updatePost(id, {pin: false})
+const { updatePost } = usePost();
+function unPin() {
+  loadingButtonId.value = 'pin';
+  updatePost(id, { pin: false });
   emits('unPin');
-  loadingButtonId.value = ''
+  loadingButtonId.value = '';
 }
-const pinPost = () => {
-  loadingButtonId.value = 'pin'
-  updatePost(id, {pin: true})
-  .then((data)=>{
-    if(!data){
-      return;
-    }
-    emits('pin')
-  })
-  loadingButtonId.value = ''
+function pinPost() {
+  loadingButtonId.value = 'pin';
+  updatePost(id, { pin: true })
+    .then((data) => {
+      if (!data) {
+        return;
+      }
+      emits('pin');
+    });
+  loadingButtonId.value = '';
 }
-const remove = () => {
-  loadingButtonId.value = 'del'
-  emits('remove', id)
-  loadingButtonId.value = ''
+function remove() {
+  loadingButtonId.value = 'del';
+  emits('remove', id);
+  loadingButtonId.value = '';
 }
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col gap-2">
+  <div class="flex size-full flex-col gap-2">
     <nuxt-link :to="`/admin/post/edit?id=${id}`" class="w-full">
-      <ui-button variant="ghost" class="justify-start w-full">
-        {{$t('admin.post.edit')}}
+      <ui-button variant="ghost" class="w-full justify-start">
+        {{ $t('admin.post.edit') }}
       </ui-button>
     </nuxt-link>
     <ui-button v-if="pin" variant="ghost" class="justify-start" :disabled="loadingButtonId === 'pin'" @click="unPin">
-      <loader2 v-if="loadingButtonId === 'pin'"/>
-      {{$t('admin.post.unpin')}}
+      <Loader2 v-if="loadingButtonId === 'pin'" />
+      {{ $t('admin.post.unpin') }}
     </ui-button>
     <ui-button v-if="!pin" variant="ghost" class="justify-start" :disabled="loadingButtonId === 'pin'" @click="pinPost">
-      <loader2 v-if="loadingButtonId === 'pin'"/>
-      {{$t('admin.post.pin')}}
+      <Loader2 v-if="loadingButtonId === 'pin'" />
+      {{ $t('admin.post.pin') }}
     </ui-button>
     <ui-button variant="ghost" :class="ghostDanger" :disabled="loadingButtonId === 'del'" @click="remove">
-      <loader2 v-if="loadingButtonId === 'del'"/>
-      {{$t('admin.post.del')}}
+      <Loader2 v-if="loadingButtonId === 'del'" />
+      {{ $t('admin.post.del') }}
     </ui-button>
   </div>
 </template>

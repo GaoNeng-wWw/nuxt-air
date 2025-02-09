@@ -2,22 +2,22 @@
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core';
 import { MenuIcon } from 'lucide-vue-next';
 
-const {categories} = useCategories({
+const { categories } = useCategories({
   page: 1,
-  type: 'scroll'
-})
-let timer:NodeJS.Timeout;
+  type: 'scroll',
+});
+let timer: NodeJS.Timeout;
 const categoriesVisible = ref(false);
 const [DefCategoriesList, CategoriesList] = createReusableTemplate();
 const [DefDesktopNavbar, DesktopNavbar] = createReusableTemplate();
 const isDesktop = useMediaQuery('(min-width: 576px)');
-const showCategories = () => {
+function showCategories() {
   if (timer) {
     clearTimeout(timer);
   }
   categoriesVisible.value = true;
 }
-const hideCategories = () => {
+function hideCategories() {
   if (timer) {
     clearTimeout(timer);
   }
@@ -28,17 +28,17 @@ const hideCategories = () => {
 </script>
 
 <template>
-  <header class="max-w-xl w-full sticky max-[576px]:top-0 top-2 mx-auto max-[576px]:rounded-none max-[576px]:bg-transparent z-50">
+  <header class="sticky top-2 z-50 mx-auto w-full max-w-xl max-[576px]:top-0 max-[576px]:rounded-none max-[576px]:bg-transparent">
     <DefCategoriesList>
       <ul>
-        <navbar-item v-for="category in categories" :key="category.id" class="w-full" :url="{path: '/category', query:{id:category.id}}">
+        <navbar-item v-for="category in categories" :key="category.id" class="w-full" :url="{ path: '/category', query: { id: category.id } }">
           {{ category.name }}
         </navbar-item>
       </ul>
     </DefCategoriesList>
-    <def-desktop-navbar>
+    <DefDesktopNavbar>
       <nav class="w-full">
-        <ul class="flex items-center max-h-40 gap-2.5 bg-default-900/50 backdrop-blur py-3 px-4 rounded-full border border-border">
+        <ul class="flex max-h-40 items-center gap-2.5 rounded-full border border-border bg-default-900/50 px-4 py-3 backdrop-blur">
           <navbar-item url="/">
             {{ $t('navbar.index') }}
           </navbar-item>
@@ -48,36 +48,38 @@ const hideCategories = () => {
                 {{ $t('navbar.post') }}
               </navbar-item>
             </ui-popover-trigger>
-            <ui-popover-content :side-offset="8" class="bg-default-900/50 backdrop-blur border border-border rounded-lg" @mouseenter="showCategories" @mouseleave="hideCategories">
-              <categories-list />
+            <ui-popover-content :side-offset="8" class="rounded-lg border border-border bg-default-900/50 backdrop-blur" @mouseenter="showCategories" @mouseleave="hideCategories">
+              <CategoriesList />
             </ui-popover-content>
           </ui-popover>
-          <li class="ml-auto"><float-button-avatar /></li>
+          <li class="ml-auto">
+            <float-button-avatar />
+          </li>
         </ul>
       </nav>
-    </def-desktop-navbar>
-    <desktop-navbar v-if="isDesktop" />
-    <div v-else class="w-full bg-default-900 flex items-center justify-between py-3 px-4">
+    </DefDesktopNavbar>
+    <DesktopNavbar v-if="isDesktop" />
+    <div v-else class="flex w-full items-center justify-between bg-default-900 px-4 py-3">
       <ui-drawer as-child class="bg-default-950">
         <ui-drawer-trigger>
           <ui-button variant="ghost" size="icon">
-            <menu-icon />
+            <MenuIcon />
           </ui-button>
         </ui-drawer-trigger>
         <ui-drawer-content>
-          <div class="space-y-2 py-2 px-2 min-h-64">
+          <div class="min-h-64 space-y-2 p-2">
             <ul class="w-full">
               <navbar-item url="/" class="w-full">
                 {{ $t('navbar.index') }}
               </navbar-item>
             </ul>
             <ul class="w-full">
-              <categories-list />
+              <CategoriesList />
             </ul>
           </div>
         </ui-drawer-content>
       </ui-drawer>
-      <div class="w-10 h-10">
+      <div class="size-10">
         <float-button-avatar />
       </div>
     </div>

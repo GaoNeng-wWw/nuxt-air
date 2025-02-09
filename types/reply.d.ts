@@ -1,10 +1,10 @@
-export {}
+export {};
 
 declare global {
-  type ReplyAuthor = {
+  interface ReplyAuthor {
     id: number;
     name: string;
-    avatar: string|null;
+    avatar: string | null;
   }
   interface RawReplyNode {
     id: number;
@@ -14,7 +14,7 @@ declare global {
     createAt: string;
     childrenCount: number;
   }
-  interface IReplyNode{
+  interface IReplyNode {
     id: number;
     content: string;
     author: ReplyAuthor;
@@ -23,7 +23,7 @@ declare global {
     childrenTotal: number;
     createAt: string;
   }
-  type LinearReplyNode = Exclude<IReplyNode, 'children'> & {depth: number}
+  type LinearReplyNode = Exclude<IReplyNode, 'children'> & { depth: number };
 
   // RawReplyNode -> ReplyNode(store state) -transform-> LinearReplyNode (used to render)
 }

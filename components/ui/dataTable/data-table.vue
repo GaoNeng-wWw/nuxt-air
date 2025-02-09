@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="Data, Value">
 import type { ColumnDef, SortingState } from '@tanstack/vue-table';
-import { getCoreRowModel, useVueTable, FlexRender, getSortedRowModel } from '@tanstack/vue-table';
+import { FlexRender, getCoreRowModel, getSortedRowModel, useVueTable } from '@tanstack/vue-table';
 
 const props = defineProps<{
   columns: ColumnDef<Data, Value>[];
@@ -38,7 +38,7 @@ const table = useVueTable({
           v-for="head in header.headers"
           :key="head.id"
         >
-          <flex-render
+          <FlexRender
             v-if="!head.placeholderId"
             :render="head.column.columnDef.header"
             :props="head.getContext()"
@@ -56,7 +56,7 @@ const table = useVueTable({
             v-for="cell in row.getVisibleCells()"
             :key="cell.id"
           >
-            <flex-render
+            <FlexRender
               :render="cell.column.columnDef.cell"
               :props="cell.getContext()"
             />

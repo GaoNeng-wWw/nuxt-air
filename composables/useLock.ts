@@ -1,1 +1,1 @@
-export const useLock = () => useState<boolean | null>('lock', ()=>null);
+export const useLock = () => useState<boolean | null>('lock', () => null);
