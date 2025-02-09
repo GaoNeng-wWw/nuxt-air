@@ -13,19 +13,24 @@ export interface MininalCursor {
 }
 
 const emits = defineEmits<{
-  scroll: [Event];
+  scroll: [number];
   cursorUpdate: [MininalCursor];
 }>();
 const modelValue = defineModel<string>();
 const editorEl = useTemplateRef('editor');
 let state: EditorState | null = null;
 let view: EditorView | null = null;
-
 function createState(doc?: MaybeRef<string>) {
   return EditorState.create({
     doc: unref(doc),
     extensions: [
       extensions,
+      EditorView.domEventHandlers({
+        scroll(event) {
+          el = event.target as HTMLElement;
+          emits('scroll', (event.target as HTMLElement).scrollTop);
+        },
+      }),
       EditorView.updateListener.of((updater) => {
         const { main } = updater.state.selection;
         emits('cursorUpdate', { from: main.from, to: main.to });
@@ -65,7 +70,13 @@ function createState(doc?: MaybeRef<string>) {
     ],
   });
 }
+function setScroll(distance: number) {
+  if (!view || !editorEl.value || !view.state.selection) {
+    return;
+  }
 
+  editorEl.value.scroll({ top: distance });
+}
 function createView(state: EditorState | null) {
   return new EditorView({
     state: unref(state)!,
@@ -100,9 +111,6 @@ const { pause, resume } = watchPausable(modelValue, () => {
   }
 });
 
-function onScroll(event: Event) {
-  emits('scroll', event);
-}
 function insert(selection: MininalCursor, content: string) {
   view?.dispatch({
     changes: {
@@ -134,11 +142,12 @@ defineExpose({
   getView: () => unref(view),
   insert,
   replace,
+  setScroll,
 });
 </script>
 
 <template>
-  <div ref="editor" class="box-border size-full overflow-auto rounded border border-border outline-none" @scroll="onScroll" />
+  <div id="editor-dom" ref="editor" class="box-border size-full overflow-auto rounded border border-border outline-none" />
 </template>
 
 <style>
