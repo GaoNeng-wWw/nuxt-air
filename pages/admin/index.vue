@@ -45,6 +45,7 @@ definePageMeta({
         </div>
       </header>
       <div class="h-[calc(100%_-_theme('size.16'))] max-h-full flex-1 basis-0 p-4 pt-0 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[calc(100%_-_theme('size.12'))]">
+        <nuxt-loading-indicator />
         <div class="flex size-full flex-1 flex-col gap-4">
           <nuxt-page />
         </div>
