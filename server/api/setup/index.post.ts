@@ -1,8 +1,10 @@
 import status from 'http-status';
 import prisma from '~/lib/prisma';
+import { CreateSiteInfo } from '../site-info/index.post';
 import { SITE_LOCK_KEY } from './index.get';
 
 export default defineApi(async (event) => {
+  const siteInfo = await useBody(event, CreateSiteInfo);
   const redis = useRedis();
   const lock = await redis.getItem(SITE_LOCK_KEY);
   const t = await useTranslation(event);
@@ -45,5 +47,6 @@ export default defineApi(async (event) => {
     },
     loggedInAt: Date.now(),
   });
+  $fetch('/api/site-info', { method: 'post', body: siteInfo });
   return true;
 });
