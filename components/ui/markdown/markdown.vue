@@ -32,7 +32,11 @@ function renderScroll() {
   if (editorInstance.scrollTop === render.value.scrollTop) {
     return;
   }
-  editor.value.setScroll(render.value.scrollTop);
+  const el = document.querySelector('#editor');
+  if (!el) {
+    return;
+  }
+  el.scrollTop = render.value.scrollTop;
 }
 const cursor = reactive({ from: 0, to: 0 });
 function onCursorUpdate({ from, to }: MininalCursor) {
@@ -133,7 +137,7 @@ const triggerUpload = () => uploader.value?.click();
       </ui-tabs-content>
     </ui-tabs>
     <div class="hidden h-full max-w-full flex-shrink flex-grow basis-0 grid-cols-2 gap-2 overflow-auto py-2 sm:grid">
-      <ui-markdown-editor ref="editor" v-model="modelValue" @cursor-update="onCursorUpdate" @scroll="editorScroll" />
+      <ui-markdown-editor id="editor" ref="editor" v-model="modelValue" @cursor-update="onCursorUpdate" @scroll="editorScroll" />
       <div ref="render" class="size-full overflow-auto rounded border border-border" @scroll="renderScroll">
         <ui-markdown-render :value="modelValue" class="p-2" tag="article" />
       </div>
