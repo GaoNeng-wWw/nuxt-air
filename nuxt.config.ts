@@ -17,7 +17,22 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
     '@nuxt/image',
+    'nuxt-og-image',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
   ],
+  robots: {
+    disallow: ['/admin', '/oauth'],
+  },
+  sitemap: {
+    exclude: ['/admin'],
+    sources: ['/api/__sitemap__/urls'],
+  },
+  ogImage: {
+    fonts: [
+      'Noto+Sans+SC:400',
+    ],
+  },
   runtimeConfig: {
     SESSION_PASSWORD: '',
     JWT_PASSWORD: '',
@@ -28,10 +43,6 @@ export default defineNuxtConfig({
   },
   devtools: {
     enabled: false,
-
-    timeline: {
-      enabled: true,
-    },
   },
   css: [
     '~/assets/css/reset.css',
@@ -69,11 +80,11 @@ export default defineNuxtConfig({
     ssr: {
       external: ['@prisma/client'],
     },
-    resolve: {
-      alias: {
-        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
-      },
-    },
+    // resolve: {
+    //   alias: {
+    //     '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
+    //   },
+    // },
   },
   eslint: {
     checker: true,

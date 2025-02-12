@@ -2,7 +2,6 @@
 import type { MDCParserResult } from '@nuxtjs/mdc';
 import { markdown as UiMarkdown } from '@/components/ui/markdown';
 import { toast } from 'vue-sonner';
-import categoriesSelect from './components/categories-select.vue';
 
 definePageMeta({
   name: 'admin::post::edit',
@@ -119,7 +118,7 @@ function sendPost(force: boolean = false) {
       </ui-popover>
     </div>
     <div class="w-full">
-      <categories-select v-model="categories" />
+      <admin-categories-select v-model="categories" />
     </div>
     <client-only>
       <UiMarkdown v-model="postContent" />
