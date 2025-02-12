@@ -18,14 +18,19 @@ export default defineNuxtConfig({
     'nuxt-seo-utils',
     '@nuxt/image',
     'nuxt-og-image',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
   ],
+  robots:{
+    disallow: ['/admin', '/oauth']
+  },
+  sitemap:{
+    sitemaps: true,
+  },
   ogImage: {
     fonts: [
       'Noto+Sans+SC:400',
     ],
-    compatibility: {
-      'css-inline': true,
-    },
   },
   runtimeConfig: {
     SESSION_PASSWORD: '',
@@ -36,11 +41,7 @@ export default defineNuxtConfig({
     PR_CARD_CACHE_TTL_MS: 5 * 60 * 1000,
   },
   devtools: {
-    enabled: true,
-
-    timeline: {
-      enabled: true,
-    },
+    enabled: false,
   },
   css: [
     '~/assets/css/reset.css',
@@ -78,11 +79,11 @@ export default defineNuxtConfig({
     ssr: {
       external: ['@prisma/client'],
     },
-    resolve: {
-      alias: {
-        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
-      },
-    },
+    // resolve: {
+    //   alias: {
+    //     '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
+    //   },
+    // },
   },
   eslint: {
     checker: true,

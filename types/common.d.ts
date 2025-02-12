@@ -31,9 +31,6 @@ declare global {
 
       NUXT_DEPLOY_MODE: 'vercel' | 'standalone';
       BLOB_BASE_URL: string;
-
-      NUXT_SEO_DESCRIPTION: string;
-      NUXT_SEO_OG_DESCRIPTION: string;
     }
   }
 }
