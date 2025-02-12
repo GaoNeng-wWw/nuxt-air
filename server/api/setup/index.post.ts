@@ -1,6 +1,6 @@
 import status from 'http-status';
 import prisma from '~/lib/prisma';
-import { CreateSiteInfo } from '../site-info/index.post';
+import { CreateSiteInfo, siteInfoKey } from '../site-info/index.post';
 import { SITE_LOCK_KEY } from './index.get';
 
 export default defineApi(async (event) => {
@@ -47,6 +47,8 @@ export default defineApi(async (event) => {
     },
     loggedInAt: Date.now(),
   });
-  $fetch('/api/site-info', { method: 'post', body: siteInfo });
+
+  const { ownerName, ownerAvatar, ownerBio, social } = siteInfo;
+  await redis.setItem(siteInfoKey, JSON.stringify({ ownerName, ownerAvatar, ownerBio, social }));
   return true;
 });
