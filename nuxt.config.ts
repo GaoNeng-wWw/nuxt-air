@@ -21,11 +21,12 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
   ],
-  robots:{
-    disallow: ['/admin', '/oauth']
+  robots: {
+    disallow: ['/admin', '/oauth'],
   },
-  sitemap:{
-    sitemaps: true,
+  sitemap: {
+    exclude: ['/admin'],
+    sources: ['/api/__sitemap__/urls'],
   },
   ogImage: {
     fonts: [
