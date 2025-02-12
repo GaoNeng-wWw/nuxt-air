@@ -5,7 +5,6 @@ const { bid, p, autoPlay } = defineProps<{
   autoPlay?: boolean;
 }>();
 
-// const url = computed(() => `//player.bilibili.com/player.html?isOutside=true&bvid=${unref(bid)}&p=${unref(p)}`)
 const url = computed(() => {
   const base = `https://player.bilibili.com/player.html`;
   const url = new URL(base);

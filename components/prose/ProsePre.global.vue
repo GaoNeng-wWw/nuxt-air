@@ -34,7 +34,7 @@ function copyCode() {
 
 <template>
   <div class="group relative h-fit w-full">
-    <Copy class=" absolute right-2 top-2 size-3.5 cursor-pointer opacity-0 transition-all group-hover:opacity-100" @click="copyCode" />
+    <Copy class=" absolute right-2 top-2 size-3.5 cursor-pointer opacity-0 transition-all group-hover:opacity-100 text-muted" @click="copyCode" />
     <pre :class="$props.class"><slot /></pre>
   </div>
 </template>

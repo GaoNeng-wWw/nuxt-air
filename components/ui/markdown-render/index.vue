@@ -39,3 +39,11 @@ watchThrottled(() => props, () => {
     )"
   />
 </template>
+
+
+<style>
+.prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::after{
+  display: none;
+}
+</style>

@@ -4,7 +4,11 @@ import { Toaster } from 'vue-sonner';
 const nuxtApp = useNuxtApp()
 
 nuxtApp.hook("page:finish", () => {
-  document.querySelector('#__nuxt')?.scrollTo(0,0)
+  const html = document.body.parentElement;
+  if (!html) {
+    return;
+  }
+  html.scrollTop = 0;
 })
 </script>
 

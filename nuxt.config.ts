@@ -76,9 +76,9 @@ export default defineNuxtConfig({
   },
   mdc: {
     highlight: {
-      // noApiRoute: true,
+      noApiRoute: true,
       theme: {
-        default: 'vitesse-light',
+        default: 'material-theme-lighter',
         dark: 'material-theme-palenight',
       },
       shikiEngine: 'javascript',
