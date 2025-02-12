@@ -17,7 +17,16 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     'nuxt-seo-utils',
     '@nuxt/image',
+    'nuxt-og-image',
   ],
+  ogImage: {
+    fonts: [
+      'Noto+Sans+SC:400',
+    ],
+    compatibility: {
+      'css-inline': true,
+    },
+  },
   runtimeConfig: {
     SESSION_PASSWORD: '',
     JWT_PASSWORD: '',
@@ -27,7 +36,7 @@ export default defineNuxtConfig({
     PR_CARD_CACHE_TTL_MS: 5 * 60 * 1000,
   },
   devtools: {
-    enabled: false,
+    enabled: true,
 
     timeline: {
       enabled: true,

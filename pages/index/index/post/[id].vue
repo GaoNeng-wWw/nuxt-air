@@ -21,6 +21,13 @@ function onBeforeEnter(el: Element) {
 }
 
 const title = ref();
+const categories: Ref<string[]> = ref([]);
+
+defineOgImageComponent('Post', {
+  title,
+  categories,
+});
+
 useHead({
   title,
 });
@@ -30,18 +37,19 @@ watch(data, () => {
     return;
   }
   title.value = data.value.post.title;
+  categories.value = data.value.post.categories.map(category => category.name) ?? [];
 }, { immediate: true });
 </script>
 
 <template>
   <transition appear @before-enter="onBeforeEnter">
     <div class="mx-auto mt-4 h-auto w-full max-w-xl px-2 py-4 sm:px-0">
-      <MarkdownRender
+      <markdown-render
         :value="data?.post.content ?? ''"
         tag="article"
       />
       <nuxt-link to="/">
-        <ChevronLeft class="mt-4 size-6 cursor-pointer underline" />
+        <chevron-left class="mt-4 size-6 cursor-pointer underline" />
       </nuxt-link>
       <comment :id="Number.parseInt(id)" class="mt-4" />
     </div>
