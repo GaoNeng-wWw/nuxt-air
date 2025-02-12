@@ -1,4 +1,6 @@
+import type { PutBlobResult } from '@vercel/blob';
 import { createHash } from 'node:crypto';
+import { env } from 'node:process';
 import status from 'http-status';
 import mime from 'mime';
 
@@ -21,9 +23,11 @@ export default defineApi(async (event) => {
   const md5 = createHash('md5').update(data).digest('hex');
   const ext = mime.getExtension(file.type);
   const fileName = `${md5}.${ext}`;
-  if (await oss.has(fileName)) {
-    return `/image/${fileName}`;
+  const url = await findFile(fileName);
+  if (!url) {
+    const url = await oss.put(fileName, file.data);
+    await recordFile(fileName, url);
+    return url;
   }
-  await oss.put(fileName, data);
-  return `/image/${fileName}`;
+  return url;
 });

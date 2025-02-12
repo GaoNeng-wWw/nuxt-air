@@ -1,5 +1,6 @@
 import type { BundledLanguage } from 'shiki/langs.mjs';
 import { resolve } from 'node:path';
+import { env } from 'node:process';
 import { bundledLanguages } from 'shiki/langs.mjs';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -48,8 +49,23 @@ export default defineNuxtConfig({
         base: './.tmp',
       },
     },
+    storage: {
+      redis: {
+        driver: 'vercel-kv',
+        url: env.KV_REST_API_URL,
+        token: env.KV_REST_API_TOKEN,
+      },
+      oss: {
+        driver: 'vercel-blob',
+        token: env.BLOB_READ_WRITE_TOKEN,
+        access: 'public',
+      },
+    },
   },
   vite: {
+    define: {
+      DEPLOY_MODE: JSON.stringify(env.NUXT_DEPLOY_MODE),
+    },
     ssr: {
       external: ['@prisma/client'],
     },
