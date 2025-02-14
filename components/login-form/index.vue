@@ -35,9 +35,5 @@ function openFloatWindow(method: 'google' | 'github') {
       <icon-github class="size-6 fill-foreground text-foreground" />
       GitHub
     </ui-button>
-    <ui-button variant="secondary" size="icon" class="w-full px-2" @click="() => openFloatWindow('google')">
-      <icon-google class="size-6 fill-foreground text-foreground" />
-      Google
-    </ui-button>
   </div>
 </template>
