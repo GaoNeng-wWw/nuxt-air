@@ -2,6 +2,28 @@ import type { BundledLanguage } from 'shiki/langs.mjs';
 import { resolve } from 'node:path';
 import { env } from 'node:process';
 import { bundledLanguages } from 'shiki/langs.mjs';
+import { fileURLToPath } from 'node:url';
+
+function getModulePath(moduleName: string) {
+  try {
+    const moduleUrl = import.meta.resolve(moduleName);
+    const modulePath = fileURLToPath(moduleUrl);
+    return (
+      modulePath
+        .substring(0, modulePath.lastIndexOf("node_modules"))
+        .replace(/\/+$/, "") || ""
+    );
+  } catch (error) {
+    console.error(
+      `Module ${moduleName} resolution failed:`,
+      (error as Error).message,
+    );
+    return "";
+  }
+}
+
+const prismaNodeModulesPath = `${getModulePath("@prisma/client")}/node_modules`;
+console.log(prismaNodeModulesPath)
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -79,7 +101,7 @@ export default defineNuxtConfig({
     },
     resolve: {
       alias: {
-        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js'
+        '.prisma/client/index-browser': `${prismaNodeModulesPath}/.prisma/client/index-browser.js`,
       },
     },
   },
