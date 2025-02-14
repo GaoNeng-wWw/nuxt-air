@@ -80,11 +80,11 @@ export default defineNuxtConfig({
     ssr: {
       external: ['@prisma/client'],
     },
-    // resolve: {
-    //   alias: {
-    //     '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
-    //   },
-    // },
+    resolve: {
+      alias: {
+        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
+      },
+    },
   },
   eslint: {
     checker: true,
