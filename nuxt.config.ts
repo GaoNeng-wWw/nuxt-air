@@ -98,6 +98,8 @@ export default defineNuxtConfig({
   vite: {
     define: {
       DEPLOY_MODE: JSON.stringify(env.NUXT_DEPLOY_MODE),
+      ENABLE_GITHUB_OAUTH: JSON.parse(JSON.stringify(env.ENABLE_GITHUB_OAUTH)),
+      ENABLE_GOOGLE_OAUTH: JSON.parse(JSON.stringify(env.ENABLE_GOOGLE_OAUTH)),
     },
     resolve: {
       alias: {

@@ -4,6 +4,8 @@ export {};
 
 declare global {
   const DEPLOY_MODE: 'standalone' | 'vercel';
+  const ENABLE_GITHUB_OAUTH: boolean;
+  const ENABLE_GOOGLE_OAUTH: boolean;
   interface PaginationMeta {
     totalItem: number;
     totalPages: number;
@@ -18,6 +20,10 @@ declare global {
     interface ProcessEnv {
       NUXT_SESSION_PASSWORD: string;
       NUXT_JWT_PASSWORD: string;
+      NUXT_DEPLOY_MODE: 'vercel' | 'standalone';
+      ENABLE_GITHUB_OAUTH: boolean;
+      ENABLE_GOOGLE_OAUTH: boolean;
+
       KV_URL: string;
       KV_REST_API_READ_ONLY_TOKEN: string;
       KV_REST_API_TOKEN: string;
@@ -28,8 +34,6 @@ declare global {
       BLOB_BASE: string;
       BLOB_ENV_PREFIX: string;
       BLOB_READ_WRITE_TOKEN: string;
-
-      NUXT_DEPLOY_MODE: 'vercel' | 'standalone';
       BLOB_BASE_URL: string;
     }
   }
