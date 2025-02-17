@@ -4,10 +4,13 @@ import prisma from '~/lib/prisma';
 export const GetPostList = z.object({
   content: z.boolean().default(false),
   category: z.number({ coerce: true }).optional(),
+  publish: BooleanStringZod,
 });
 
 export default defineEventHandler(async (event) => {
-  const { page = 1, size = 20, content, category } = await useQuery(event, PageQuery.merge(GetPostList));
+  const { page = 1, size = 20, content, category, publish } = await useQuery(event, PageQuery.merge(GetPostList));
+  const { user } = await getUserSession(event);
+  const isPublish = user?.owner ? publish : true;
   const posts = await prisma.post.findMany({
     take: size,
     skip: (page - 1) * size,
@@ -19,6 +22,7 @@ export default defineEventHandler(async (event) => {
       updateAt: true,
       pin: true,
       categories: true,
+      publish: true,
     },
     orderBy: [
       {
@@ -29,14 +33,17 @@ export default defineEventHandler(async (event) => {
       },
     ],
     where: {
-      categories: {
-        some: {
-          id: category,
-        },
-      },
+      categories: isPublish
+        ? {
+            some: {
+              id: category,
+            },
+          }
+        : undefined,
+      publish: isPublish,
     },
   });
-  const totalPage = await getPostTotal() ?? 0;
+  const totalPage = isPublish ? await getPostTotal() ?? 0 : await getDraftTotal() ?? 0;
   const meta = usePaginationMeta({
     currentPage: page,
     pageSize: size,

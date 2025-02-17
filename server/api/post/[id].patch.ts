@@ -45,5 +45,9 @@ export default defineApi(async (event) => {
       publish: body.publish,
     },
   });
+  if (!post.publish && newPost.publish) {
+    const key = useDraftTotalNameSpace();
+    await decr(key);
+  }
   return newPost;
 }, { guards: [AuthGuard] });

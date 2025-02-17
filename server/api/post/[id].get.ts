@@ -7,6 +7,7 @@ export const GetPostParam = z.object({
 });
 export default defineApi(async (event) => {
   const { id } = await useParam(event, GetPostParam);
+  const { user } = await getUserSession(event);
   const post = await prisma.post.findFirst({
     where: {
       id,
@@ -15,7 +16,7 @@ export default defineApi(async (event) => {
       categories: true,
     },
   });
-  if (!post) {
+  if (!post || (!user?.owner && !post.publish)) {
     const t = await useTranslation(event);
     throw new HttpException(t('common.notFound'), status.NOT_FOUND);
   }
