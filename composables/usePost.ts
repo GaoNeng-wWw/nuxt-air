@@ -29,6 +29,7 @@ export function usePost() {
           pin: post.pin,
           content: post.content,
           categories: post.categories,
+          publish: post.publish,
         },
       },
     )

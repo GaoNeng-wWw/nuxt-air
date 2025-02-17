@@ -22,6 +22,7 @@ const { add } = usePosts({
   page: 1,
   immediate: false,
 });
+const allowAddDraft = ref(false);
 const { updatePost, fetch } = usePost();
 watch(postContent, () => {
   parseMarkdown(postContent.value)
@@ -55,7 +56,7 @@ function sendPost(force: boolean = false) {
       content: postContent.value,
       pin: false,
       categories: categories.value.map(category => category.id),
-    })
+    }, true)
       .catch((err) => {
         if (err.data.statusCode === 403) {
           navigateTo('/');
@@ -88,12 +89,23 @@ function sendPost(force: boolean = false) {
       toast('修改成功');
     });
 }
+onUnmounted(() => {
+  if (!allowAddDraft.value) {
+    return;
+  }
+  add({
+    title: '未命名的文章',
+    content: postContent.value,
+    pin: false,
+    categories: categories.value.map(category => category.id),
+  }, false);
+});
 </script>
 
 <template>
   <div class="flex size-full flex-col gap-2 py-2">
     <div class="flex w-full items-center gap-1.5">
-      <ui-input id="post-title" v-model="postTitle" placeholder="标题" />
+      <ui-input id="post-title" v-model="postTitle" placeholder="标题" @focus="allowAddDraft = true" />
       <ui-popover :open="showConfirm">
         <ui-popover-trigger>
           <ui-button class="!mt-0" @click="() => sendPost(false)">
@@ -121,7 +133,7 @@ function sendPost(force: boolean = false) {
       <admin-categories-select v-model="categories" />
     </div>
     <client-only>
-      <UiMarkdown v-model="postContent" />
+      <ui-markdown v-model="postContent" />
     </client-only>
   </div>
 </template>

@@ -13,6 +13,7 @@ definePageMeta({
 const { status, posts, remove, loadMore, canLoadMore } = usePosts({
   page: 1,
   type: 'scroll',
+  showDraft: false,
 });
 const format = (date: string) => new Date(date).toLocaleDateString();
 </script>
@@ -22,7 +23,7 @@ const format = (date: string) => new Date(date).toLocaleDateString();
     <div class="h-fit w-full flex-auto grow-0 basis-0">
       <nuxt-link to="/admin/post/edit">
         <ui-button>
-          <Pencil class="size-4" />
+          <pencil class="size-4" />
           {{ $t('admin.post.newButton') }}
         </ui-button>
       </nuxt-link>
@@ -33,22 +34,22 @@ const format = (date: string) => new Date(date).toLocaleDateString();
         <template #header>
           <div class="flex w-full content-between">
             <div class="flex w-full items-center gap-2">
-              <Pin v-if="post.pin" class=" size-4 rotate-45 text-rose-400" />
+              <pin v-if="post.pin" class=" size-4 rotate-45 text-rose-400" />
               <span class="text-xl font-bold">
                 {{ post.title }}
               </span>
             </div>
             <client-only>
-              <Popover>
-                <PopoverTrigger>
+              <popover>
+                <popover-trigger>
                   <ui-button variant="ghost" size="icon">
-                    <EllipsisVertical />
+                    <ellipsis-vertical />
                   </ui-button>
-                </PopoverTrigger>
-                <PopoverContent>
+                </popover-trigger>
+                <popover-content>
                   <admin-post-menu :id="post.id" :pin="post.pin" @un-pin="post.pin = false" @pin="post.pin = true" @remove="remove" />
-                </PopoverContent>
-              </Popover>
+                </popover-content>
+              </popover>
             </client-only>
           </div>
         </template>
