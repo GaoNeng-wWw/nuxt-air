@@ -1,10 +1,12 @@
 <script lang="ts" setup>
+import DraftDialog from '@/components/admin/draft-dialog.vue';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { EllipsisVertical, Pencil, Pin } from 'lucide-vue-next';
+import { cn } from '@/lib/utils';
+import { EllipsisVertical, Mailbox as MailBox, Pencil, Pin } from 'lucide-vue-next';
 
 definePageMeta({
   breadcrumb: false,
@@ -13,20 +15,25 @@ definePageMeta({
 const { status, posts, remove, loadMore, canLoadMore } = usePosts({
   page: 1,
   type: 'scroll',
-  showDraft: false,
+  draftOnly: false,
 });
 const format = (date: string) => new Date(date).toLocaleDateString();
+const { render } = useDialog({ content: h(DraftDialog), contentClass: cn('sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-0 max-h-[90dvh]') });
 </script>
 
 <template>
   <div class="flex size-full flex-col gap-1.5">
-    <div class="h-fit w-full flex-auto grow-0 basis-0">
+    <div class="flex h-fit w-full flex-auto grow-0 basis-0 gap-2">
       <nuxt-link to="/admin/post/edit">
         <ui-button>
           <pencil class="size-4" />
           {{ $t('admin.post.newButton') }}
         </ui-button>
       </nuxt-link>
+      <ui-button @click="render">
+        <mail-box class="size-4" />
+        {{ $t('admin.post.draft-btn') }}
+      </ui-button>
     </div>
 
     <ui-list :load-more="loadMore" :can-load-more="canLoadMore">

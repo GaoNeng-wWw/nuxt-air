@@ -73,7 +73,8 @@
         "title": "确认要发布吗"
       },
       "newButton": "写一篇新文章",
-      "notMoreData": "到底了~"
+      "notMoreData": "到底了~",
+      "draft-btn": "草稿箱"
     },
     "setting": {
       "form": {

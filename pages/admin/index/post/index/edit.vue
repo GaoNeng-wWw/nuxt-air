@@ -75,6 +75,7 @@ function sendPost(force: boolean = false) {
     title: postTitle.value,
     content: postContent.value,
     categories: categories.value.map(category => category.id),
+    publish: true,
   })
     .catch((err) => {
       if (err.data.statusCode === 403) {
@@ -91,6 +92,9 @@ function sendPost(force: boolean = false) {
 }
 onUnmounted(() => {
   if (!allowAddDraft.value) {
+    return;
+  }
+  if (id.value !== null) {
     return;
   }
   add({

@@ -29,7 +29,7 @@ const {
   page,
   type,
   category: category.value ?? null,
-  showDraft,
+  draftOnly: showDraft,
 });
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('zh-CN', {

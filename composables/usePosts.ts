@@ -23,18 +23,20 @@ export interface UsePostsOptions {
   type?: MaybeRef<'page' | 'scroll'>;
   immediate?: MaybeRef<boolean>;
   category?: MaybeRef<number | null>;
-  showDraft?: MaybeRef<boolean>;
+  draftOnly?: MaybeRef<boolean>;
+  size?: MaybeRef<number>;
 }
-export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null, showDraft }: UsePostsOptions) {
+export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null, draftOnly, size: _size = 10 }: UsePostsOptions) {
   const page = ref(_page);
   const type = ref(_type);
   const category = ref(_category);
+  const size = ref(_size);
   const { data, status, error } = useFetch(
     '/api/post',
     {
       method: 'get',
       server: false,
-      query: ref({ page, publish: !showDraft }),
+      query: ref({ page, publish: !draftOnly, size }),
       watch: [page],
       immediate: unref(immediate),
     },

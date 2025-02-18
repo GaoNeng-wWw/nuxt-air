@@ -1,4 +1,5 @@
 import type { VNode } from 'vue';
+import { cn } from '@/lib/utils';
 import { isClient } from '@vueuse/core';
 import { DialogPortal } from 'radix-vue';
 import { render } from 'vue';
@@ -14,6 +15,7 @@ export interface UseDialogOptions {
   description: VNode;
   content: VNode;
   footer: VNode;
+  contentClass?: string;
 }
 
 interface DialogIntsnace {
@@ -62,7 +64,9 @@ export function useDialog(opts: Partial<UseDialogOptions> = {}) {
       );
       const dialogContent = h(
         DialogContent,
-        null,
+        {
+          class: cn(opts.contentClass),
+        },
         {
           default: [h(dialogHeader), content ? h(content) : null, h(dialogFooter)],
         },
