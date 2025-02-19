@@ -15,7 +15,7 @@ definePageMeta({
 const { status, posts, remove, loadMore, canLoadMore } = usePosts({
   page: 1,
   type: 'scroll',
-  draftOnly: false,
+  publish: true,
 });
 const format = (date: string) => new Date(date).toLocaleDateString();
 const { render } = useDialog({ content: h(DraftDialog), contentClass: cn('sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-0 max-h-[90dvh]') });

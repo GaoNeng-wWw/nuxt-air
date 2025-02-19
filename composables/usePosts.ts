@@ -23,10 +23,11 @@ export interface UsePostsOptions {
   type?: MaybeRef<'page' | 'scroll'>;
   immediate?: MaybeRef<boolean>;
   category?: MaybeRef<number | null>;
-  draftOnly?: MaybeRef<boolean>;
+  publish?: MaybeRef<boolean>;
   size?: MaybeRef<number>;
+  includeUnPublish?: MaybeRef<boolean>;
 }
-export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null, draftOnly, size: _size = 10 }: UsePostsOptions) {
+export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null, publish, size: _size = 10, includeUnPublish = false }: UsePostsOptions) {
   const page = ref(_page);
   const type = ref(_type);
   const category = ref(_category);
@@ -36,7 +37,7 @@ export function usePosts({ page: _page = 1, type: _type = 'page', immediate = tr
     {
       method: 'get',
       server: false,
-      query: ref({ page, publish: !draftOnly, size }),
+      query: ref({ page, publish, size, includeUnPublish }),
       watch: [page],
       immediate: unref(immediate),
     },

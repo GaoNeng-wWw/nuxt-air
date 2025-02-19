@@ -27,7 +27,7 @@ const ghostDanger = buttonVariants({
 const { posts, meta, remove } = usePosts({
   type: 'page',
   page: currentPage,
-  draftOnly: true,
+  publish: false,
   immediate: true,
   size: 10,
 });

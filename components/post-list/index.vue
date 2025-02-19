@@ -9,6 +9,7 @@ const props = withDefaults(
     type?: 'scroll' | 'page';
     showCategories?: boolean;
     showDraft?: boolean;
+    includeUnPublish?: boolean;
   }>(),
   {
     defaultPage: 1,
@@ -16,9 +17,10 @@ const props = withDefaults(
     category: null,
     showCategories: false,
     showDraft: false,
+    includeUnPublish: false,
   },
 );
-const { defaultPage, type, category, showCategories, showDraft } = toRefs(props);
+const { defaultPage, type, category, showCategories, showDraft, includeUnPublish } = toRefs(props);
 const page = ref(props.defaultPage);
 const {
   posts,
@@ -29,7 +31,8 @@ const {
   page,
   type,
   category: category.value ?? null,
-  draftOnly: showDraft,
+  publish: !showDraft.value,
+  includeUnPublish: includeUnPublish.value,
 });
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('zh-CN', {

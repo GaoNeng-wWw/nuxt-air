@@ -5,12 +5,14 @@ export const GetPostList = z.object({
   content: z.boolean().default(false),
   category: z.number({ coerce: true }).optional(),
   publish: BooleanStringZod,
+  includeUnPublish: BooleanStringZod.default(false),
 });
 
 export default defineEventHandler(async (event) => {
-  const { page = 1, size = 20, content, category, publish } = await useQuery(event, PageQuery.merge(GetPostList));
+  const { page = 1, size = 20, content, category, publish, includeUnPublish = false } = await useQuery(event, PageQuery.merge(GetPostList));
   const { user } = await getUserSession(event);
   const isPublish = user?.owner ? publish : true;
+  const all = user?.owner ? includeUnPublish : false;
   const posts = await prisma.post.findMany({
     take: size,
     skip: (page - 1) * size,
@@ -40,7 +42,7 @@ export default defineEventHandler(async (event) => {
             },
           }
         : undefined,
-      publish: isPublish,
+      publish: all ? undefined : isPublish,
     },
   });
   const totalPage = isPublish ? await getPostTotal() ?? 0 : await getDraftTotal() ?? 0;
