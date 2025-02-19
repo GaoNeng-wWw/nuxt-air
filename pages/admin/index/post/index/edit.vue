@@ -91,10 +91,15 @@ function sendPost(force: boolean = false) {
     });
 }
 onUnmounted(() => {
-  if (!allowAddDraft.value) {
+  if (id.value === null && !allowAddDraft.value) {
     return;
   }
   if (id.value !== null) {
+    updatePost(Number.parseInt(id.value), {
+      title: postTitle.value,
+      content: postContent.value,
+      categories: categories.value.map(category => category.id),
+    });
     return;
   }
   add({

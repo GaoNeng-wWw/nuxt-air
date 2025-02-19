@@ -67,6 +67,7 @@
       "unpin": "取消置顶",
       "pin": "置顶",
       "del": "删除",
+      "publish": "发布",
       "addCategory": "添加分类",
       "unclassified": "未分类",
       "sendConfirm": {

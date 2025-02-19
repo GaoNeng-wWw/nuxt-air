@@ -53,7 +53,7 @@ export function usePosts({ page: _page = 1, type: _type = 'page', immediate = tr
     return meta.value.totalPages > page.value && status.value !== 'error';
   };
   const remove = (id: number) => {
-    $fetch(`/api/post/${id}`, { method: 'delete' })
+    return $fetch(`/api/post/${id}`, { method: 'delete' })
       .then(() => {
         posts.value = posts.value.filter(post => post.id !== id);
       })

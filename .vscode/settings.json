@@ -46,7 +46,13 @@
     "className",
     "ngClass",
     "class:list",
-    "exact-active-class"
+    "exact-active-class",
+    "leave-active-class",
+    "enter-active-class",
+    "enter-from-class",
+    "enter-to-class",
+    "leave-from-class",
+    "leave-to-class"
   ],
   "tailwindCSS.experimental.classRegex": [
     "cn\\('([^']*)'\\)"

@@ -23,23 +23,29 @@ interface DialogIntsnace {
   anchor: HTMLDivElement;
 }
 
-const dialogStack: DialogIntsnace[] = [];
+let dialogStack: DialogIntsnace[] = [];
 
 export function useDialog(opts: Partial<UseDialogOptions> = {}) {
   const { title, description, content, footer } = opts;
   const removeByInstance = (instance: DialogIntsnace) => {
-    dialogStack
-      .filter(_instance => _instance === instance)
-      .forEach(({ anchor }) => {
-        setTimeout(() => {
-          render(null, anchor);
-          anchor.remove();
-        }, 300);
+    const p = new Promise<HTMLDivElement>((resolve) => {
+      dialogStack
+        .filter(_instance => _instance === instance)
+        .forEach(({ anchor }) => {
+          setTimeout(() => {
+            render(null, anchor);
+            anchor.remove();
+            resolve(anchor);
+          }, 300);
+        });
+    })
+      .then((_anchor) => {
+        dialogStack = dialogStack.filter(({ anchor }) => anchor !== _anchor);
       });
+    return p;
   };
   function remove() {
     removeByInstance(dialogStack[0]);
-    dialogStack.shift();
   }
   const vm = getCurrentInstance();
   return {
@@ -57,7 +63,7 @@ export function useDialog(opts: Partial<UseDialogOptions> = {}) {
       }
       const dialogTtile = h(DialogTitle, title);
       const dialogDescription = h(DialogDescription, description);
-      const dialogHeader = h(DialogHeader, [dialogTtile, dialogDescription]);
+      const dialogHeader = h(DialogHeader, null, () => [dialogTtile, dialogDescription]);
       const dialogFooter = h(
         DialogFooter,
         footer,
@@ -67,9 +73,11 @@ export function useDialog(opts: Partial<UseDialogOptions> = {}) {
         {
           class: cn(opts.contentClass),
         },
-        {
-          default: [h(dialogHeader), content ? h(content) : null, h(dialogFooter)],
-        },
+        () => [
+          h(dialogHeader),
+          content ? h(content) : null,
+          h(dialogFooter),
+        ],
       );
       const anchor = document.createElement('div');
       anchor.style.position = 'fixed';
@@ -83,7 +91,7 @@ export function useDialog(opts: Partial<UseDialogOptions> = {}) {
           to: anchor,
           forceMount: true,
         },
-        [
+        () => [
           dialogContent,
         ],
       );
@@ -98,7 +106,7 @@ export function useDialog(opts: Partial<UseDialogOptions> = {}) {
             }
           },
         },
-        dialogPortal,
+        () => dialogPortal,
       );
       dialog.appContext = vm?.appContext ?? null;
       const instance = { dialog, anchor };

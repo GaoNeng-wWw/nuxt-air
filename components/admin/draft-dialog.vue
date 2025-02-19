@@ -12,10 +12,17 @@ import {
 import { EllipsisVertical, Mailbox } from 'lucide-vue-next';
 import { buttonVariants } from '../ui/button';
 
+enum LoadingEnum {
+  Remove,
+  Publish,
+  None,
+}
+const loading = ref(LoadingEnum.None);
+
 const currentPage = ref(1);
 const ghostDanger = buttonVariants({
   variant: 'ghost',
-  class: 'hover:bg-red-500/50 justify-start w-full',
+  class: 'hover:bg-red-500/50 justify-start w-fit',
 });
 const { posts, meta, remove } = usePosts({
   type: 'page',
@@ -25,6 +32,25 @@ const { posts, meta, remove } = usePosts({
   size: 10,
 });
 const formatDate = (date: string) => localeDate(date);
+const { remove: removeCurrent } = useDialog();
+const { updatePost } = usePost();
+const router = useRouter();
+function publish(id: number) {
+  loading.value = LoadingEnum.Publish;
+  updatePost(id, {
+    publish: true,
+  })
+    .finally(() => removeCurrent())
+    .finally(() => {
+      loading.value = LoadingEnum.None;
+      router.go(0);
+    });
+}
+function removePost(id: number) {
+  loading.value = LoadingEnum.Remove;
+  remove(id)
+    .finally(() => loading.value = LoadingEnum.None);
+}
 </script>
 
 <template>
@@ -44,12 +70,15 @@ const formatDate = (date: string) => localeDate(date);
                   </ui-button>
                 </ui-popover-trigger>
                 <ui-popover-content class="space-y-2">
-                  <nuxt-link :to="`/admin/post/edit?id=${post.id}`">
-                    <ui-button class="w-full justify-start">
-                      编辑
-                    </ui-button>
-                  </nuxt-link>
-                  <ui-button variant="ghost" :class="ghostDanger" @click="remove(post.id)">
+                  <ui-button variant="ghost" class="w-fit" @click="removeCurrent()">
+                    <nuxt-link :to="`/admin/post/edit?id=${post.id}`">
+                      {{ $t('admin.post.edit') }}
+                    </nuxt-link>
+                  </ui-button>
+                  <ui-button variant="ghost" class="w-fit" @click="() => publish(post.id)">
+                    {{ $t('admin.post.publish') }}
+                  </ui-button>
+                  <ui-button variant="ghost" :class="ghostDanger" :loading="loading === LoadingEnum.Remove" @click="removePost(post.id)">
                     {{ $t('admin.post.del') }}
                   </ui-button>
                 </ui-popover-content>
