@@ -1,3 +1,4 @@
+import { useRoute } from 'vue-router';
 import { z } from 'zod';
 import prisma from '~/lib/prisma';
 
@@ -10,6 +11,8 @@ export const GetPostList = z.object({
 export default defineEventHandler(async (event) => {
   const { page = 1, size = 20, content, category, publish } = await useQuery(event, PageQuery.merge(GetPostList));
   const { user } = await getUserSession(event);
+  // debug
+  console.log(user?.owner, publish);
   const isPublish = user?.owner ? publish : true;
   const posts = await prisma.post.findMany({
     take: size,
