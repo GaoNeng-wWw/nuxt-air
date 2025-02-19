@@ -202,7 +202,6 @@ const onSubmit = form.handleSubmit(async (value) => {
                       @click.prevent.stop="() => {
                         componentField.modelValue = componentField.modelValue.filter((item: any) => item._id !== element._id);
                         form.setFieldValue('social', componentField.modelValue ?? [])
-                        console.log(componentField.modelValue);
                       }"
                     >
                       <trash />

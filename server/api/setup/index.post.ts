@@ -50,5 +50,6 @@ export default defineApi(async (event) => {
 
   const { ownerName, ownerAvatar, ownerBio, social } = siteInfo;
   await redis.setItem(siteInfoKey, JSON.stringify({ ownerName, ownerAvatar, ownerBio, social }));
+  await redis.setItem(SITE_OWNER_NAMESPACE, id);
   return true;
 });

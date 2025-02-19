@@ -35,13 +35,12 @@ export default defineOAuthGitHubEventHandler({
       refreshToken: await sign({ id: OAuthId, provider: 'github', type: 'refresh' }, ms('1d')),
     };
     const redis = useRedis();
-    console.log(OAuthId, await redis.getItem('site::owner'));
     await setUserSession(event, {
       user: {
         id: OAuthId,
         provider: 'github',
         avatar: result.user.avatar_url,
-        owner: await redis.getItem('site::owner') === OAuthId,
+        owner: await redis.getItem(SITE_OWNER_NAMESPACE) === OAuthId,
         ...tokenPair,
       },
       loggedInAt: Date.now(),

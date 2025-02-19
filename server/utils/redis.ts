@@ -2,6 +2,7 @@ export const useRedis = () => useStorage('redis');
 export const usePostTotalNameSpace = () => 'POST-TOTAL';
 export const useDraftTotalNameSpace = () => 'DRAFT-TOTAL';
 export const useCategoriesNameSpace = () => `CATEGORIES::COUNT`;
+export const SITE_OWNER_NAMESPACE = `SITE::OWNER`;
 export const usePostReplyNamespace = (id: number) => `POST::REPLIES::${id}`;
 export const useReplyRepliesNamespace = (id: number) => `REPLY::REPLIES::${id}`;
 export const useOSSRecord = (fileName: string) => `OSS::RECORD::${fileName}`;
