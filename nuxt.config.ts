@@ -1,8 +1,8 @@
 import type { BundledLanguage } from 'shiki/langs.mjs';
 import { resolve } from 'node:path';
 import { env } from 'node:process';
-import { bundledLanguages } from 'shiki/langs.mjs';
 import { fileURLToPath } from 'node:url';
+import { bundledLanguages } from 'shiki/langs.mjs';
 
 function getModulePath(moduleName: string) {
   try {
@@ -10,20 +10,20 @@ function getModulePath(moduleName: string) {
     const modulePath = fileURLToPath(moduleUrl);
     return (
       modulePath
-        .substring(0, modulePath.lastIndexOf("node_modules"))
-        .replace(/\/+$/, "") || ""
+        .substring(0, modulePath.lastIndexOf('node_modules'))
+        .replace(/\/+$/, '') || ''
     );
   } catch (error) {
     console.error(
       `Module ${moduleName} resolution failed:`,
       (error as Error).message,
     );
-    return "";
+    return '';
   }
 }
 
-const prismaNodeModulesPath = `${getModulePath("@prisma/client")}/node_modules`;
-console.log(prismaNodeModulesPath)
+const prismaNodeModulesPath = `${getModulePath('@prisma/client')}/node_modules`;
+console.log(prismaNodeModulesPath);
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -47,8 +47,9 @@ export default defineNuxtConfig({
     disallow: ['/admin', '/oauth'],
   },
   sitemap: {
-    exclude: ['/admin'],
+    exclude: ['/admin', '/setup'],
     sources: ['/api/__sitemap__/urls'],
+    autoI18n: false,
   },
   ogImage: {
     fonts: [
@@ -118,6 +119,9 @@ export default defineNuxtConfig({
     experimental: {
       localeDetector: 'localeDetector.ts',
     },
+    locales: ['zh'],
+    defaultLocale: 'zh',
+
   },
   shadcn: {
     prefix: 'ui',
