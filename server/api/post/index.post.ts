@@ -6,10 +6,11 @@ export const CreatePost = z.object({
   content: z.string(),
   pin: z.boolean().optional().default(false),
   categories: z.array(z.number()).optional(),
+  publish: z.boolean(),
 });
 
 export default defineApi(async (event) => {
-  const { title, content, pin, categories = [] } = await useBody(event, CreatePost);
+  const { title, content, pin, categories = [], publish = true } = await useBody(event, CreatePost);
   const categoryDatas = await prisma.category.findMany({
     where: {
       id: {
@@ -25,10 +26,10 @@ export default defineApi(async (event) => {
       categories: {
         connect: categoryDatas,
       },
-      publish: true,
+      publish,
     },
   });
-  const id = usePostTotalNameSpace();
+  const id = publish ? usePostTotalNameSpace() : useDraftTotalNameSpace();
   await incr(id);
   return post;
 }, { guards: [AuthGuard] });

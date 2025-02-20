@@ -3,6 +3,7 @@ import type { PrimitiveProps } from 'radix-vue';
 import type { HTMLAttributes } from 'vue';
 import type { ButtonVariants } from '.';
 import { cn } from '@/lib/utils';
+import { vAutoAnimate } from '@formkit/auto-animate';
 import { Loader2 } from 'lucide-vue-next';
 import { Primitive } from 'radix-vue';
 import { buttonVariants } from '.';
@@ -23,15 +24,16 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <Primitive
+  <primitive
+    v-auto-animate="{ duration: 100 }"
     :as="as"
     :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class)"
+    :class="cn(buttonVariants({ variant, size }), props.class, 'flex')"
     :disabled="props.disabled || props.loading"
   >
-    <slot v-if="props.loading" name="loading">
-      <Loader2 class="mr-2 size-4 animate-spin" />
-    </slot>
     <slot />
-  </Primitive>
+    <slot v-if="props.loading" name="loading">
+      <loader2 :data-loading="props.loading" class="size-4 animate-spin" />
+    </slot>
+  </primitive>
 </template>

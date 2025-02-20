@@ -4,3 +4,7 @@ const router = useRouter();
 const to: string = route.query.to?.toString() ?? '/';
 router.replace(to);
 </script>
+
+<template>
+  <span>Loading...</span>
+</template>

@@ -67,13 +67,15 @@
       "unpin": "取消置顶",
       "pin": "置顶",
       "del": "删除",
+      "publish": "发布",
       "addCategory": "添加分类",
       "unclassified": "未分类",
       "sendConfirm": {
         "title": "确认要发布吗"
       },
       "newButton": "写一篇新文章",
-      "notMoreData": "到底了~"
+      "notMoreData": "到底了~",
+      "draft-btn": "草稿箱"
     },
     "setting": {
       "form": {

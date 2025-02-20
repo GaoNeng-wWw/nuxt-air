@@ -23,8 +23,8 @@ export default defineApi(async (event) => {
     accessToken: await sign<Payload>(payload, ms('2d')),
     refreshToken: await sign({ id, provider: 'github', type: 'refresh' }, ms('1d')),
   };
-  await redis.setItem(access, tokenPair.accessToken);
-  await redis.setItem(refresh, tokenPair.refreshToken);
+  await redis.setItem(access, tokenPair.accessToken, { ttl: ms('2d') });
+  await redis.setItem(refresh, tokenPair.refreshToken, { ttl: ms('1d') });
   setUserSession(event, {
     user: {
       ...user,

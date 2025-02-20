@@ -40,7 +40,7 @@ export default defineOAuthGitHubEventHandler({
         id: OAuthId,
         provider: 'github',
         avatar: result.user.avatar_url,
-        owner: await redis.getItem('site::owner') === OAuthId,
+        owner: await redis.getItem(SITE_OWNER_NAMESPACE) === OAuthId,
         ...tokenPair,
       },
       loggedInAt: Date.now(),

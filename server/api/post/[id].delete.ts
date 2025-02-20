@@ -23,7 +23,7 @@ export default defineApi(async (event) => {
       id: post.id,
     },
   });
-  const postTotalNs = usePostTotalNameSpace();
+  const postTotalNs = post.publish ? usePostTotalNameSpace() : useDraftTotalNameSpace();
   await decr(postTotalNs);
   return removedPost;
 }, { guards: [AuthGuard] });

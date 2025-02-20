@@ -16,23 +16,28 @@ export interface Post {
   createAt: Date;
   updateAt: Date;
   categories: Category[];
+  publish: boolean;
 }
 export interface UsePostsOptions {
   page?: MaybeRef<number>;
   type?: MaybeRef<'page' | 'scroll'>;
   immediate?: MaybeRef<boolean>;
   category?: MaybeRef<number | null>;
+  publish?: MaybeRef<boolean>;
+  size?: MaybeRef<number>;
+
 }
-export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null }: UsePostsOptions) {
+export function usePosts({ page: _page = 1, type: _type = 'page', immediate = true, category: _category = null, publish, size: _size = 10 }: UsePostsOptions) {
   const page = ref(_page);
   const type = ref(_type);
   const category = ref(_category);
+  const size = ref(_size);
   const { data, status, error } = useFetch(
     '/api/post',
     {
       method: 'get',
       server: false,
-      query: ref({ page }),
+      query: ref({ page, publish, size }),
       watch: [page],
       immediate: unref(immediate),
     },
@@ -49,7 +54,7 @@ export function usePosts({ page: _page = 1, type: _type = 'page', immediate = tr
     return meta.value.totalPages > page.value && status.value !== 'error';
   };
   const remove = (id: number) => {
-    $fetch(`/api/post/${id}`, { method: 'delete' })
+    return $fetch(`/api/post/${id}`, { method: 'delete' })
       .then(() => {
         posts.value = posts.value.filter(post => post.id !== id);
       })
@@ -60,10 +65,13 @@ export function usePosts({ page: _page = 1, type: _type = 'page', immediate = tr
         }
       });
   };
-  const add = (data: CreatePost) => {
+  const add = (data: CreatePost, publish: boolean = false) => {
     return $fetch('/api/post', {
       method: 'POST',
-      body: data,
+      body: {
+        ...data,
+        publish,
+      },
     })
       .catch((err) => {
         if (err.data.statusCode === 403) {

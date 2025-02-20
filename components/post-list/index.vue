@@ -8,15 +8,19 @@ const props = withDefaults(
     defaultPage?: number;
     type?: 'scroll' | 'page';
     showCategories?: boolean;
+    showDraft?: boolean;
+    includeUnPublish?: boolean;
   }>(),
   {
     defaultPage: 1,
     type: 'scroll',
     category: null,
     showCategories: false,
+    showDraft: false,
+    includeUnPublish: false,
   },
 );
-const { defaultPage, type, category, showCategories } = toRefs(props);
+const { defaultPage, type, category, showCategories, showDraft, includeUnPublish } = toRefs(props);
 const page = ref(props.defaultPage);
 const {
   posts,
@@ -27,6 +31,8 @@ const {
   page,
   type,
   category: category.value ?? null,
+  publish: !showDraft.value,
+  includeUnPublish: includeUnPublish.value,
 });
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('zh-CN', {
@@ -60,7 +66,7 @@ watch(defaultPage, () => {
         >
           <div class="5 flex w-full flex-col gap-1">
             <div class="flex w-full items-center gap-1.5">
-              <Pin v-if="post.pin" class="mt-1 size-5 text-rose-500" />
+              <pin v-if="post.pin" class="mt-1 size-5 text-rose-500" />
               <div class="flex flex-auto items-center justify-between">
                 <nuxt-link :to="{ path: `/post/${post.id}` }">
                   <span class="text-2xl transition duration-300 hover:text-primary">
@@ -71,12 +77,12 @@ watch(defaultPage, () => {
             </div>
             <div class="flex w-full gap-2">
               <div class="flex items-center gap-0.5">
-                <CalendarDays class="size-4" />
+                <calendar-days class="size-4" />
                 <span class="text-sm"> {{ formatDate(post.updateAt) }} </span>
               </div>
               <div v-if="showCategories" class="flex w-fit flex-wrap">
                 <div v-for="categoryItem of post.categories" :key="categoryItem.id" class="flex cursor-pointer items-center gap-0.5 hover:text-primary">
-                  <Hash class="size-4" />
+                  <hash class="size-4" />
                   <span class="text-sm">{{ categoryItem.name }}</span>
                 </div>
               </div>
