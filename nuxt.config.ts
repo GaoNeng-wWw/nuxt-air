@@ -119,9 +119,20 @@ export default defineNuxtConfig({
     experimental: {
       localeDetector: 'localeDetector.ts',
     },
-    locales: ['zh'],
+    lazy: true,
     defaultLocale: 'zh',
-
+    locales: [
+      {
+        code: 'zh',
+        name: '中文',
+      },
+      {
+        code: 'en',
+        name: 'English',
+      },
+    ],
+    skipSettingLocaleOnNavigate: true,
+    strategy: 'no_prefix',
   },
   shadcn: {
     prefix: 'ui',
