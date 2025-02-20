@@ -70,6 +70,7 @@ export function defineApi<T extends EventHandlerRequest, D>(handler: EventHandle
       }
       const message = (status as any)[respHandle.statusCode] ?? status['500'];
       setResponseStatus(event, respHandle.statusCode, message);
+      console.log(err);
       return { ...err.cause as object };
     }
   });

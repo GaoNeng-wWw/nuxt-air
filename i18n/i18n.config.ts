@@ -18,5 +18,6 @@ export default defineI18nConfig(() => {
         ...zhCN,
       },
     },
+    availableLocales: ['zh'],
   };
 });
