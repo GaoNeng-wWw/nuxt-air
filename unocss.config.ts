@@ -1,8 +1,9 @@
 import { extractorArbitraryVariants } from '@unocss/extractor-arbitrary-variants';
-import { defineConfig, presetIcons, presetWind4 } from 'unocss';
+import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWind4 } from 'unocss';
 
 export default defineConfig({
   presets: [
+    presetAttributify(),
     presetWind4({
       preflights: {
         reset: true,
@@ -11,6 +12,7 @@ export default defineConfig({
     presetIcons({
       autoInstall: true,
     }),
+    presetTypography(),
   ],
   extractors: [extractorArbitraryVariants()],
 });
