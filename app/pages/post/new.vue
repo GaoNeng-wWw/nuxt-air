@@ -6,11 +6,11 @@ import { EditorContent, useEditor } from '@tiptap/vue-3';
 
 const editor = useEditor({
   // autofocus: true,
-  content: '<h1>Hello world</h1>',
+  content: '',
   extensions: [
     Placeholder.configure({
       placeholder: 'write something...',
-      emptyNodeClass: 'text-zinc-500',
+      emptyNodeClass: 'text-foreground/50',
     }),
     StarterKit,
     TaskList.configure({
@@ -32,14 +32,14 @@ const editor = useEditor({
   <div class="w-full h-full py-4">
     <nuxt-link to="/">
       <ui-button icon variant="ghost">
-        <div class="i-material-symbols:chevron-left-rounded size-6 text-zinc-800 dark:text-zinc-200" />
+        <div class="i-material-symbols:chevron-left-rounded size-6 text-foreground" />
       </ui-button>
     </nuxt-link>
     <input
       type="text"
       placeholder="Unititled Post"
       class="
-       w-full outline-none py-2 text-zinc-800 dark:text-zinc-200 placeholder-zinc-600 dark:placeholder-zinc-400 text-4xl wrap-anywhere whitespace-normal
+       w-full outline-none py-2 text-foreground placeholder-foreground/80 text-4xl wrap-anywhere whitespace-normal
        border-b border-zinc-600 dark:border-zinc-300
       "
     >
@@ -49,7 +49,6 @@ const editor = useEditor({
 
 <style>
 .tiptap p.is-editor-empty:first-child::before {
-  color: #adb5bd;
   content: attr(data-placeholder);
   float: left;
   height: 0;
