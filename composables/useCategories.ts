@@ -17,7 +17,7 @@ export function useCategories({ page: _page = 1, type: _types = 'page' }: UseCat
     {
       query: ref({ page }),
       method: 'get',
-      server: false,
+      server: true,
       watch: [page],
     },
   );

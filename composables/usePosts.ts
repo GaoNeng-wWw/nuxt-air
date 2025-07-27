@@ -36,7 +36,6 @@ export function usePosts({ page: _page = 1, type: _type = 'page', immediate = tr
     '/api/post',
     {
       method: 'get',
-      server: false,
       query: ref({ page, publish, size }),
       watch: [page],
       immediate: unref(immediate),
