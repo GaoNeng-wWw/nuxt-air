@@ -3,6 +3,7 @@ import { TaskItem, TaskList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
+import { PopoverArrow, PopoverClose, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
 
 const editor = useEditor({
   // autofocus: true,
@@ -43,6 +44,22 @@ const editor = useEditor({
        border-b border-zinc-600 dark:border-zinc-300
       "
     >
+    <div class="w-full flex flex-wrap gap-2 py-2">
+      <popover-root>
+        <popover-trigger as-child>
+          <ui-button icon variant="ghost">
+            <i class="i-material-symbols:add-2 size-5" />
+          </ui-button>
+        </popover-trigger>
+        <popover-portal>
+          <popover-content :side-offset="8" class="bg-default-100 w-200px max-h-200px h-full p-3 rounded border border-default-300 light:shadow text-foreground">
+            <div class="w-full h-10">
+              <ui-input class="h-10" />
+            </div>
+          </popover-content>
+        </popover-portal>
+      </popover-root>
+    </div>
     <editor-content :editor="editor" />
   </div>
 </template>
