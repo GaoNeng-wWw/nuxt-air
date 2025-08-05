@@ -7,7 +7,7 @@ export interface FetcherQuery {
 export function fetchTags(
   query?: FetcherQuery,
 ) {
-  return useFetch('/api/tag', {
+  return $fetch('/api/tag', {
     method: 'get',
     query: {
       page: toValue(query?.page) ?? 1,

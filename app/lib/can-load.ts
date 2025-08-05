@@ -6,5 +6,5 @@ export interface CanLoad {
 export function canLoad(
   { page, size, total }: CanLoad,
 ) {
-  return (toValue(page) * toValue(size)) < toValue(total);
+  return (toValue(page) * toValue(size)) <= toValue(total);
 }

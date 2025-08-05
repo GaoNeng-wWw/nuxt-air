@@ -5,7 +5,7 @@ export interface CreateTagBody {
 export function createTag() {
   return (body: CreateTagBody) => {
     return $fetch('/api/tag', {
-      method: 'delete',
+      method: 'put',
       body,
     });
   };

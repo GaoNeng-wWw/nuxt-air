@@ -3,7 +3,15 @@ import { TaskItem, TaskList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { PopoverArrow, PopoverClose, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
+import { useScroll } from '@vueuse/core';
+import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui';
+
+const popoverMenuContent = useTemplateRef('popover-menu-content');
+const { arrivedState } = useScroll(
+  popoverMenuContent,
+);
+
+const { bottom } = toRefs(arrivedState);
 
 const editor = useEditor({
   // autofocus: true,
@@ -27,6 +35,28 @@ const editor = useEditor({
     },
   },
 });
+
+const { tags, selectedTag, total, create, selectTag, nextPage, searchName, canShowShadowTag } = useTag({ immediate: true });
+function onHandleCreate() {
+  create({
+    name: searchName.value,
+    desc: '',
+  })
+    .then((tag) => {
+      if (!tag) {
+        return;
+      }
+      if (!tags.value) {
+        return;
+      }
+      tags.value.push({ ...tag, deleteAt: tag.deleteAt?.toString() ?? null });
+      total.value += 1;
+      searchName.value = '';
+    });
+}
+watch(bottom, () => {
+  nextPage();
+}, { immediate: true });
 </script>
 
 <template>
@@ -48,13 +78,32 @@ const editor = useEditor({
       <popover-root>
         <popover-trigger as-child>
           <ui-button icon variant="ghost">
-            <i class="i-material-symbols:add-2 size-5" />
+            <i v-if="!selectedTag.length" class="i-material-symbols:add-2 size-5" />
+            <span v-else class="min-w-5 min-h-5">{{ selectedTag[0]?.name }}</span>
           </ui-button>
         </popover-trigger>
         <popover-portal>
-          <popover-content :side-offset="8" class="bg-default-100 w-200px max-h-200px h-full p-3 rounded border border-default-300 light:shadow text-foreground">
-            <div class="w-full h-10">
-              <ui-input class="h-10" />
+          <popover-content :side-offset="8" class="relative flex flex-col bg-default-100 w-200px max-h-200px h-full rounded border border-default-300 light:shadow text-foreground">
+            <div class="w-full sticky top-0 bg-default-100 p-3 border-b border-default-300">
+              <ui-input v-model="searchName" class="h-10" @keydown.enter="onHandleCreate" />
+            </div>
+            <div v-if="tags" ref="popover-menu-content" class="w-full h-full my-2 p-3 pt-0 space-y-2 overflow-auto">
+              <div
+                v-for="tag in searchName ? tags.filter(t => t.name.includes(searchName)) : tags"
+                :key="tag.id"
+                :data-active="selectedTag.filter(t => t.id === tag.id).length > 0"
+                class="
+                w-full p-2 hover:bg-default-200 rounded
+                transition ease-in-out cursor-pointer border border-transparent hover:border-default-300
+                data-[active=true]:bg-default-200 data-[active=true]:border-default-200
+                "
+                @click="() => selectTag(tag)"
+              >
+                {{ tag.name }}
+              </div>
+            </div>
+            <div v-if="canShowShadowTag" class="w-full p-2">
+              {{ searchName }}
             </div>
           </popover-content>
         </popover-portal>

@@ -23,5 +23,6 @@ export default defineEventHandler(async (event) => {
       name,
       desc,
     },
-  });
+  })
+    .then(tag => tag);
 });

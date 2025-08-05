@@ -17,17 +17,18 @@ model Tag {
   deleteAt DateTime?
 
   Post Post[]
+
   @@index([name])
 }
 
 model Post {
-  id        Int @id @default(autoincrement())
-  title     String
-  content   String
-  createAt  DateTime   @default(now())
-  updateAt  DateTime?  @updatedAt
-  tag       Tag @relation(fields: [tagId], references: [id])
-  tagId     Int
+  id       Int       @id @default(autoincrement())
+  title    String
+  content  String
+  createAt DateTime  @default(now())
+  updateAt DateTime? @updatedAt
+  tag      Tag       @relation(fields: [tagId], references: [id])
+  tagId    Int
 }
 
 model User {
