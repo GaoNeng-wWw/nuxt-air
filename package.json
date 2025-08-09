@@ -38,11 +38,13 @@
   "devDependencies": {
     "@antfu/eslint-config": "^5.0.0",
     "@iconify-json/material-symbols": "^1.2.30",
+    "@iconify-json/material-symbols-light": "^1.2.30",
     "@tiptap/pm": "^3.0.7",
     "@tiptap/starter-kit": "^3.0.7",
     "@tiptap/vue-3": "^3.0.7",
     "@types/node": "^24.1.0",
     "@unocss/nuxt": "^66.3.3",
+    "prosemirror-model": "^1.25.3",
     "typescript": "^5.8.3",
     "unocss": "^66.3.3"
   }

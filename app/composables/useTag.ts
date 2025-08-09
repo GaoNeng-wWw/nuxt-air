@@ -27,9 +27,18 @@ export function useTag(
   const total = ref(-1);
   const loading = ref(false);
   const executeCreateTag = createTag();
-  const canShowShadowTag = computed(() => searchName.value && tags.value.every(t => !t.name.includes(searchName.value)));
+  const canShowShadowTag = computed(() => Boolean(searchName.value.length) && tags.value.every(t => !t.name.includes(searchName.value)));
+  const unSelect = (tag: SerializeObject<Tag>) => {
+    selectedTag.value = selectedTag.value.filter(t => t.id !== tag.id);
+  };
   const selectTag = (tag: SerializeObject<Tag>) => {
-    selectedTag.value = [tag];
+    if (
+      selectedTag.value.some(t => t.id === tag.id)
+    ) {
+      selectedTag.value = selectedTag.value.filter(t => t.id !== tag.id);
+      return;
+    }
+    selectedTag.value.push(tag);
   };
   const create = (tag: CreateTagBody) => {
     loading.value = true;
@@ -59,5 +68,5 @@ export function useTag(
   watch(status, () => {
     loading.value = status.value === 'pending';
   });
-  return { tags, total, status, error, loading, selectedTag, searchName, canShowShadowTag, nextPage, prevPage, create, executeFetchTags, selectTag, to };
+  return { tags, total, status, error, loading, selectedTag, searchName, canShowShadowTag, nextPage, prevPage, create, executeFetchTags, selectTag, to, unSelect };
 }
