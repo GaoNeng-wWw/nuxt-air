@@ -4,6 +4,7 @@ import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
 
+const postId = ref(-1);
 const postTitle = ref('');
 const syncTitle = ref(true);
 const { tags, total, create, nextPage, selectTag, canShowShadowTag, selectedTag, unSelect, searchName } = useTag({ immediate: true });
@@ -51,6 +52,19 @@ function createTag(tagName: string) {
       searchName.value = '';
     });
 }
+onMounted(() => {
+  $fetch('/api/post', {
+    method: 'put',
+    body: {
+      title: postTitle.value,
+      content: '',
+      tagId: [],
+    },
+  })
+    .then((post) => {
+      postId.value = post.id;
+    });
+});
 </script>
 
 <template>

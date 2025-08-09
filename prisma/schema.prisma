@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["strictUndefinedChecks"]
 }
 
 datasource db {
@@ -25,10 +26,11 @@ model Post {
   id       Int       @id @default(autoincrement())
   title    String
   content  String
+  daft     Boolean  @default(true)
   createAt DateTime  @default(now())
   updateAt DateTime? @updatedAt
-  tag      Tag       @relation(fields: [tagId], references: [id])
-  tagId    Int
+  deleteAt DateTime?
+  tag      Tag[]
 }
 
 model User {
@@ -41,6 +43,11 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
 
   @@unique([email])
   @@map("user")
@@ -56,6 +63,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")
