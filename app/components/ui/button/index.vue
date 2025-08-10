@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ButtonProps, ButtonVariant } from './button.props';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '~/lib/utils';
 
 const props = withDefaults(
   defineProps<ButtonProps>(),
@@ -19,9 +19,10 @@ const clazz: Record<ButtonVariant | 'default', string> = {
   <button
     :data-icon="props.icon"
     :class="[
-      twMerge(
+      cn(
         clazz.default,
         clazz[props.variant],
+        props.class,
         'data-[icon=true]:size-fit data-[icon=true]:p-1',
       ),
     ]"

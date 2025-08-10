@@ -1,3 +1,7 @@
+*{
+  scrollbar-width: thin;
+  scrollbar-color: var(--default-100) var(--default-300);
+}
 :root {
   --foreground: var(--default-950);
   --background: var(--default-50);

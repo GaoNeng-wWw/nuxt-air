@@ -3,7 +3,7 @@ import { adminAc, defaultStatements } from 'better-auth/plugins/admin/access';
 
 export const statement = {
   ...defaultStatements,
-  post: ['create', 'read', 'hidden', 'update', 'read::daft'],
+  post: ['create', 'read', 'hidden', 'update', 'read::draft'],
   comment: ['create', 'read', 'hidden'],
   tag: ['create', 'read'],
 } as const;
@@ -16,7 +16,7 @@ export const user = ac.newRole({
 });
 export const admin = ac.newRole({
   ...adminAc.statements,
-  post: ['create', 'read', 'hidden', 'update', 'read::daft'],
+  post: ['create', 'read', 'hidden', 'update', 'read::draft'],
   comment: ['create', 'read', 'hidden'],
   tag: ['create', 'read'],
 });

@@ -23,21 +23,6 @@ const { arrivedState } = useScroll(
 const { bottom } = toRefs(arrivedState);
 function onHandleCreate() {
   emits('create', searchName.value);
-  // create({
-  //   name: searchName.value,
-  //   desc: '',
-  // })
-  //   .then((tag) => {
-  //     if (!tag) {
-  //       return;
-  //     }
-  //     if (!tags.value) {
-  //       return;
-  //     }
-  //     tags.value.push({ ...tag, deleteAt: tag.deleteAt?.toString() ?? null });
-  //     total.value += 1;
-  //     searchName.value = '';
-  //   });
 }
 watch(bottom, () => {
   nextPage();

@@ -1,15 +1,13 @@
-import { unref } from 'node:process';
-import status from 'http-status';
 import z from 'zod';
-import { auth } from '~~/shared/auth';
+
+export const queryPost = z.object({
+  id: z.coerce.number(),
+});
 
 export default defineEventHandler(async (event) => {
-  const query = pagination.extend({
-    publish: z.transform(input => typeof input === 'string' && input.toLowerCase() === 'true'),
-  });
-  const { page, size, publish } = await useQuery(
+  const { id } = await useQuery(
     event,
-    query,
+    queryPost,
   );
   // if (!publish) {
   //   // const session = await auth.api.getSession({
@@ -36,20 +34,12 @@ export default defineEventHandler(async (event) => {
   //   //   });
   //   // }
   // }
-  const total = await prisma.post.count({
+  return prisma.post.findFirst({
     where: {
-      draft: !publish,
+      id,
+    },
+    include: {
+      tag: true,
     },
   });
-  const post = await prisma.post.findMany({
-    where: {
-      draft: !publish,
-    },
-    skip: (page - 1) * size,
-    take: size,
-  });
-  return {
-    post,
-    total,
-  };
 });

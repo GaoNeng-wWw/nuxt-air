@@ -1,8 +1,18 @@
-import { extractorArbitraryVariants } from '@unocss/extractor-arbitrary-variants';
 import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWind4 } from 'unocss';
 
 export default defineConfig({
   theme: {
+    animation: {
+      durations: {
+        'zoom-in': '200ms',
+        'zoom-out': '200ms',
+        'fast': '200ms',
+      },
+      timingFns: {
+        'zoom-in': 'cubic-bezier(0.35, 0, 0.2, 1)',
+        'zoom-out': 'cubic-bezier(0, 0, 0.2, 1)',
+      },
+    },
     colors: {
       foreground: 'var(--foreground)',
       background: 'var(--background)',
@@ -47,5 +57,4 @@ export default defineConfig({
     }),
     presetTypography(),
   ],
-  extractors: [extractorArbitraryVariants()],
 });

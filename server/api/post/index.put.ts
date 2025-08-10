@@ -10,37 +10,37 @@ export const createPostBody = z.object({
 });
 
 export default defineEventHandler(async (ctx) => {
-  const sesssion = await auth.api.getSession({
-    headers: ctx.headers,
-  });
-  if (!sesssion) {
-    throw createError({
-      status: status.UNAUTHORIZED,
-      message: '未登录',
-    });
-  }
-  const userId = sesssion.user.id;
-  const data = await auth.api.userHasPermission({
-    body: {
-      userId,
-      role: 'admin',
-      permission: {
-        post: ['create'],
-      },
-    },
-  });
-  if (!data.success) {
-    throw createError({
-      status: status.FORBIDDEN,
-      message: '权限不足',
-    });
-  }
+  // const sesssion = await auth.api.getSession({
+  //   headers: ctx.headers,
+  // });
+  // if (!sesssion) {
+  //   throw createError({
+  //     status: status.UNAUTHORIZED,
+  //     message: '未登录',
+  //   });
+  // }
+  // const userId = sesssion.user.id;
+  // const data = await auth.api.userHasPermission({
+  //   body: {
+  //     userId,
+  //     role: 'admin',
+  //     permission: {
+  //       post: ['create'],
+  //     },
+  //   },
+  // });
+  // if (!data.success) {
+  //   throw createError({
+  //     status: status.FORBIDDEN,
+  //     message: '权限不足',
+  //   });
+  // }
   const { title, content, tagId, publish } = await useBody(ctx, createPostBody);
   const post = await prisma.post.create({
     data: {
       title,
       content,
-      daft: !publish,
+      draft: !publish,
       tag: {
         connect: tagId.map(id => ({ id })),
       },

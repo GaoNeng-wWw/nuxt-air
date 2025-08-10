@@ -4,6 +4,9 @@ import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
 
+const route = useRoute();
+const draftRaw: Ref<boolean[]> = ref([]);
+const draft = computed(() => draftRaw.value[0]);
 const postId = ref(-1);
 const postTitle = ref('');
 const syncTitle = ref(true);
@@ -53,6 +56,27 @@ function createTag(tagName: string) {
     });
 }
 onMounted(() => {
+  if (route.query.id) {
+    $fetch(`/api/post/:id`, {
+      query: {
+        id: route.query.id,
+      },
+    })
+      .then((post) => {
+        if (!post) {
+          return;
+        }
+        postId.value = post.id;
+        postTitle.value = post.title;
+        syncTitle.value = false;
+        draftRaw.value = [post.draft];
+        if (!editor.value) {
+          return;
+        }
+        editor.value.commands.setContent(post.content);
+      });
+    return;
+  }
   $fetch('/api/post', {
     method: 'put',
     body: {
@@ -69,11 +93,13 @@ onMounted(() => {
 
 <template>
   <div class="w-full h-full py-4">
-    <nuxt-link to="/">
-      <ui-button icon variant="ghost">
-        <div class="i-material-symbols:chevron-left-rounded size-6 text-foreground" />
-      </ui-button>
-    </nuxt-link>
+    <div class="w-full flex justify-between">
+      <nuxt-link to="/">
+        <ui-button icon variant="ghost">
+          <div class="i-material-symbols:chevron-left-rounded size-6 text-foreground" />
+        </ui-button>
+      </nuxt-link>
+    </div>
     <input
       v-model="postTitle"
       type="text"
@@ -119,6 +145,23 @@ onMounted(() => {
         :can-show-shadow-tag="canShowShadowTag"
         @create="createTag"
       />
+      <client-only>
+        <ui-select v-model="draftRaw">
+          <ui-select-trigger>
+            <ui-button variant="ghost">
+              {{draft ? '草稿中' : '已发布'}}
+            </ui-button>
+          </ui-select-trigger>
+          <ui-select-content>
+            <ui-select-option :value="true">
+              草稿中
+            </ui-select-option>
+            <ui-select-option :value="false">
+              已发布
+            </ui-select-option>
+          </ui-select-content>
+        </ui-select>
+      </client-only>
     </div>
     <editor-content :editor="editor" />
   </div>

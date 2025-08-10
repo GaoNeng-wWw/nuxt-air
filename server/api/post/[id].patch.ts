@@ -52,7 +52,7 @@ export default defineEventHandler(async (ctx) => {
         : {
             connect: tags,
           },
-      daft: publish !== undefined ? !publish : Prisma.skip,
+      draft: publish !== undefined ? !publish : Prisma.skip,
     },
   });
 });
