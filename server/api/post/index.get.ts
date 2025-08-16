@@ -45,6 +45,9 @@ export default defineEventHandler(async (event) => {
     where: {
       draft: !publish,
     },
+    orderBy: {
+      createAt: 'desc'
+    },
     skip: (page - 1) * size,
     take: size,
   });

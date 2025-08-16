@@ -3,14 +3,47 @@ import { TaskItem, TaskList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
+import { refDebounced, useThrottle, useThrottleFn } from '@vueuse/core';
 
 const route = useRoute();
 const draftRaw: Ref<boolean[]> = ref([]);
-const draft = computed(() => draftRaw.value[0]);
+const draft = computed(() => draftRaw.value[0] ?? true);
 const postId = ref(-1);
 const postTitle = ref('');
 const syncTitle = ref(true);
 const { tags, total, create, nextPage, selectTag, canShowShadowTag, selectedTag, unSelect, searchName } = useTag({ immediate: true });
+const executeUpdate = updatePost();
+const saveing = shallowRef(false);
+const saveingDebounced = refDebounced(saveing, 500);
+const onUpdate = useThrottleFn(() => {
+  if (postId.value === -1 || saveing.value) {
+    return;
+  }
+  // eslint-disable-next-line ts/no-use-before-define
+  if (!editor.value) {
+    return;
+  }
+  // eslint-disable-next-line ts/no-use-before-define
+  const content = editor.value.getJSON();
+  if (!content) {
+    return;
+  }
+  const contentString = JSON.stringify(content);
+  saveing.value = true;
+  executeUpdate({
+    id: toValue(postId),
+    title: toValue(postTitle),
+    publish: !toValue(draft),
+    content: contentString,
+    tagId: selectedTag.value.map(tag => tag.id)
+  })
+    .finally(() => {
+      saveing.value = false;
+    });
+}, 2000, true, false);
+watch([draft, postTitle, selectedTag], () => {
+  onUpdate();
+}, {deep: true});
 const editor = useEditor({
   content: '',
   extensions: [
@@ -32,6 +65,7 @@ const editor = useEditor({
     },
   },
   onUpdate(props) {
+    onUpdate();
     if (!syncTitle.value) {
       return;
     }
@@ -70,10 +104,11 @@ onMounted(() => {
         postTitle.value = post.title;
         syncTitle.value = false;
         draftRaw.value = [post.draft];
+        selectedTag.value = post.tag;
         if (!editor.value) {
           return;
         }
-        editor.value.commands.setContent(post.content);
+        editor.value.commands.setContent(JSON.parse(post.content));
       });
     return;
   }
@@ -93,12 +128,13 @@ onMounted(() => {
 
 <template>
   <div class="w-full h-full py-4">
-    <div class="w-full flex justify-between">
+    <div class="w-full flex items-center gap-1">
       <nuxt-link to="/">
         <ui-button icon variant="ghost">
           <div class="i-material-symbols:chevron-left-rounded size-6 text-foreground" />
         </ui-button>
       </nuxt-link>
+      <span class="text-foreground">{{ saveingDebounced ? '保存中' : '保存成功' }}</span>
     </div>
     <input
       v-model="postTitle"
@@ -149,7 +185,7 @@ onMounted(() => {
         <ui-select v-model="draftRaw">
           <ui-select-trigger>
             <ui-button variant="ghost">
-              {{draft ? '草稿中' : '已发布'}}
+              {{ draft ? '草稿中' : '已发布' }}
             </ui-button>
           </ui-select-trigger>
           <ui-select-content>

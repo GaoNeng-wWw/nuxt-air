@@ -23,7 +23,6 @@ const { multiple, defaultSelect } = withDefaults(
   },
 );
 const modelValue = defineModel<T[]>({ default: [] });
-// const selectedValue: Ref<T[]> = ref([]);
 function onSelect(value: T) {
   if (!multiple) {
     if (modelValue.value.includes(value)) {
