@@ -2,10 +2,16 @@
 import { useInfiniteScroll } from '@vueuse/core';
 import usePosts from '~/composables/use-posts';
 
-const { publish = false } = defineProps<{
+const {
+  publish = false,
+  showCreateAt = false,
+  showUpdateAt = false,
+} = defineProps<{
   publish?: boolean;
+  showCreateAt?: boolean;
+  showUpdateAt?: boolean;
 }>();
-const { posts, canLoadMore, loadMore } = usePosts({
+const { posts, desc, canLoadMore, loadMore } = usePosts({
   immediate: true,
   publish: computed(() => publish),
 });
@@ -23,13 +29,15 @@ function formatDate(date: string) {
     <ul v-if="posts" class="space-y-4">
       <nuxt-link v-for="post in posts" :key="post.id" :to="`/post/editor?id=${post.id}`" class="p-2 rounded-md cursor-pointer transition border border-transparent hover:border-default-300 hover:bg-default-200 block">
         <li>
-          <p class="text-lg">
+          <p class="text-lg text-default-900">
             {{ post.title ? post.title : 'Untitled Post' }}
           </p>
-          <p class="text-sm text-default-600 font-800">
+          <slot name="tag" :tags="post.tag" />
+          <slot name="desc" :desc="desc[post.id]" />
+          <p v-if="showCreateAt" class="text-sm text-default-600 font-800">
             创建于: {{ formatDate(post.createAt) }}
           </p>
-          <p v-if="post.updateAt" class="text-sm text-default-600 font-800">
+          <p v-if="post.updateAt && showUpdateAt" class="text-sm text-default-600 font-800">
             最后一次修改 {{ formatDate(post.updateAt) }}
           </p>
         </li>

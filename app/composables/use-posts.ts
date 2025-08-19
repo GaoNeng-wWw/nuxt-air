@@ -1,4 +1,4 @@
-import type { Post } from '@prisma/client';
+import type { Post, Tag } from '@prisma/client';
 import type { SerializeObject } from 'nitropack';
 import { canLoad } from '~/lib/can-load';
 import { DEFAULT_PAGE_SIZE } from '~/lib/constants';
@@ -8,7 +8,8 @@ export interface UsePosts {
   publish: MaybeRefOrGetter<boolean>;
 }
 export default function usePosts(opts: UsePosts) {
-  const posts = ref<SerializeObject<Post>[]>([]);
+  const posts = ref<SerializeObject<Post & { tag: Tag[] }>[]>([]);
+  const desc = reactive<Record<number, string>>({});
   const total = ref(-1);
   const page = ref(1);
   const size = ref(DEFAULT_PAGE_SIZE);
@@ -31,6 +32,13 @@ export default function usePosts(opts: UsePosts) {
       return;
     }
     posts.value = posts.value.concat(data.value.post);
+    for (let i = 0; i < data.value.desc.length; i++) {
+      const id = data.value.desc[i]?.id;
+      const descContent = data.value.desc[i]?.desc ?? '';
+      if (id !== undefined && desc !== undefined) {
+        desc[id] = descContent;
+      }
+    }
     total.value = data.value.total;
   }, { deep: true, immediate: true });
   watch(() => opts.publish, () => {
@@ -40,6 +48,7 @@ export default function usePosts(opts: UsePosts) {
   });
   return {
     posts,
+    desc,
     total,
     page,
     size,

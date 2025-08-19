@@ -14,9 +14,7 @@
         <ui-dialog-trigger>
           <ui-button class="flex gap-2">
             <i class="i-material-symbols:inbox-rounded size-6" />
-            <span>
-              draft
-            </span>
+            <span>draft</span>
           </ui-button>
         </ui-dialog-trigger>
         <ui-dialog-content>
@@ -32,5 +30,6 @@
         </ui-dialog-content>
       </ui-dialog>
     </div>
+    <app-post-list publish />
   </div>
 </template>

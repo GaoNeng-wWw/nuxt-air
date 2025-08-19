@@ -1,7 +1,14 @@
 import { unref } from 'node:process';
 import status from 'http-status';
 import z from 'zod';
+import { findNode } from '~~/server/utils/prosemirror';
+import { tryParseJson } from '~~/server/utils/try-parse-json';
 import { auth } from '~~/shared/auth';
+
+export interface Desc {
+  id: number;
+  desc: string;
+}
 
 export default defineEventHandler(async (event) => {
   const query = pagination.extend({
@@ -46,13 +53,36 @@ export default defineEventHandler(async (event) => {
       draft: !publish,
     },
     orderBy: {
-      createAt: 'desc'
+      createAt: 'desc',
     },
     skip: (page - 1) * size,
     take: size,
+    include: {
+      tag: {
+        select: {
+          name: true,
+        }
+      }
+    }
   });
+  const desc: Desc[] = [];
+  for (const _post of post) {
+    const obj = tryParseJson(_post.content);
+    if (!obj) {
+      continue;
+    }
+    const node = findNode('paragraph', obj);
+    if (!node) {
+      continue;
+    }
+    desc.push({
+      id: _post.id,
+      desc: node?.content?.[0]?.text ?? '',
+    });
+  }
   return {
     post,
+    desc,
     total,
   };
 });
