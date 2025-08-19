@@ -2,13 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/test-utils', '@nuxt/image', '@unocss/nuxt'],
+  css: ['~/assets/theme.css'],
+  modules: ['@nuxt/eslint', '@nuxt/test-utils', '@nuxt/image', '@unocss/nuxt', '@prisma/nuxt'],
   eslint: {
     config: {
       standalone: false,
     },
   },
   imports: {
-    autoImport: false,
+    autoImport: true,
+  },
+  prisma: {
+    autoSetupPrisma: true,
   },
 });

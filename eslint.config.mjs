@@ -9,6 +9,11 @@ export default withNuxt(
       overrides: {
         'style/brace-style': ['warn', '1tbs'],
       },
-    }
+    },
+    vue:{
+      overrides: {
+        'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+      },
+    },
   }),
 );
