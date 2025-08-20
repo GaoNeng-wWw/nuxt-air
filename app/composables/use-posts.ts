@@ -8,8 +8,8 @@ export interface UsePosts {
   publish: MaybeRefOrGetter<boolean>;
 }
 export default function usePosts(opts: UsePosts) {
-  const posts = ref<SerializeObject<Post & { tag: Tag[] }>[]>([]);
-  const desc = reactive<Record<number, string>>({});
+  const posts = ref<SerializeObject<Post & { tag: { name: string }[] }>[]>([]);
+  const desc = ref<Record<number, string>>({});
   const total = ref(-1);
   const page = ref(1);
   const size = ref(DEFAULT_PAGE_SIZE);
@@ -36,7 +36,10 @@ export default function usePosts(opts: UsePosts) {
       const id = data.value.desc[i]?.id;
       const descContent = data.value.desc[i]?.desc ?? '';
       if (id !== undefined && desc !== undefined) {
-        desc[id] = descContent;
+        desc.value = {
+          ...desc.value,
+          [id]: descContent,
+        };
       }
     }
     total.value = data.value.total;

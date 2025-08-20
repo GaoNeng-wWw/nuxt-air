@@ -5,18 +5,20 @@ useDark();
 </script>
 
 <template>
-  <div class="w-full min-h-vh bg-stone-100 dark:bg-stone-950">
-    <div class="max-w-xl w-full mx-auto">
-      <nuxt-page />
+  <div class="w-full min-h-dvh bg-stone-100 dark:bg-stone-950">
+    <div class="w-full h-full">
+      <nuxt-page keepalive />
     </div>
   </div>
 </template>
 
 <style>
-html,body,#__nuxt {
+html, body, #__nuxt{
   width: 100%;
-  min-height: 100dvh;
-  padding: 0;
-  margin: 0%;
 }
+body {
+  min-height: 100dvh;
+  height: 100%;
+}
+html {overflow: auto;}
 </style>

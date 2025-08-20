@@ -3,9 +3,15 @@ import { TaskItem, TaskList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
 import { StarterKit } from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { refDebounced, useThrottle, useThrottleFn } from '@vueuse/core';
+import { refDebounced, useThrottleFn } from '@vueuse/core';
+
+definePageMeta({
+  keepalive: false,
+});
 
 const route = useRoute();
+const isEdit = computed(() => route.query.edit);
+const id = computed(() => route.params.id);
 const draftRaw: Ref<boolean[]> = ref([]);
 const draft = computed(() => draftRaw.value[0] ?? true);
 const postId = ref(-1);
@@ -35,7 +41,7 @@ const onUpdate = useThrottleFn(() => {
     title: toValue(postTitle),
     publish: !toValue(draft),
     content: contentString,
-    tagId: selectedTag.value.map(tag => tag.id)
+    tagId: selectedTag.value.map(tag => tag.id),
   })
     .finally(() => {
       saveing.value = false;
@@ -43,7 +49,7 @@ const onUpdate = useThrottleFn(() => {
 }, 2000, true, false);
 watch([draft, postTitle, selectedTag], () => {
   onUpdate();
-}, {deep: true});
+}, { deep: true });
 const editor = useEditor({
   content: '',
   extensions: [
@@ -90,10 +96,10 @@ function createTag(tagName: string) {
     });
 }
 onMounted(() => {
-  if (route.query.id) {
-    $fetch(`/api/post/:id`, {
+  if (isEdit.value) {
+    $fetch(`/api/post/${id.value}`, {
       query: {
-        id: route.query.id,
+        id: id.value,
       },
     })
       .then((post) => {
@@ -127,7 +133,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full py-4">
+  <div class="max-w-md mx-auto w-full h-full py-4">
     <div class="w-full flex items-center gap-1">
       <nuxt-link to="/">
         <ui-button icon variant="ghost">
