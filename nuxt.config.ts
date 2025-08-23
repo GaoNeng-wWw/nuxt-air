@@ -3,7 +3,15 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/theme.css'],
-  modules: ['@nuxt/eslint', '@nuxt/test-utils', '@nuxt/image', '@unocss/nuxt', '@prisma/nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/test-utils',
+    '@nuxt/image',
+    '@unocss/nuxt',
+    '@prisma/nuxt',
+    '@nuxt/content',
+    '@nuxtjs/i18n',
+  ],
   eslint: {
     config: {
       standalone: false,
@@ -14,5 +22,22 @@ export default defineNuxtConfig({
   },
   prisma: {
     autoSetupPrisma: true,
+  },
+  content: {
+    experimental: { nativeSqlite: true },
+  },
+  i18n: {
+    defaultLocale: 'zh',
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'zh',
+        name: '中',
+      },
+      {
+        code: 'en',
+        name: 'En',
+      },
+    ],
   },
 });

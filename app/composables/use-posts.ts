@@ -1,64 +1,87 @@
-import type { Post, Tag } from '@prisma/client';
-import type { SerializeObject } from 'nitropack';
+import type { PostCollectionItem } from '@nuxt/content';
 import { canLoad } from '~/lib/can-load';
-import { DEFAULT_PAGE_SIZE } from '~/lib/constants';
 
 export interface UsePosts {
-  immediate?: boolean;
-  publish: MaybeRefOrGetter<boolean>;
+  tag?: MaybeRefOrGetter<string>;
 }
-export default function usePosts(opts: UsePosts) {
-  const posts = ref<SerializeObject<Post & { tag: { name: string }[] }>[]>([]);
-  const desc = ref<Record<number, string>>({});
-  const total = ref(-1);
+
+export async function usePosts(
+  opts?: UsePosts,
+) {
   const page = ref(1);
-  const size = ref(DEFAULT_PAGE_SIZE);
-  const { data, status, error, execute } = useFetch('/api/post', {
-    query: {
-      publish: toValue(opts.publish),
-      page,
-      size,
-    },
-    watch: [page, size],
-  });
-  const loadMore = () => {
-    page.value += 1;
+  const size = ref(10);
+  const total = ref(await queryCollection('post').count('*'));
+  const posts: Ref<PostCollectionItem[]> = ref([]);
+  const data = computed(() => posts.value);
+  const loading = ref(false);
+  const fullLoaded = computed(() => posts.value.length === total.value);
+  const showLoading = computed(() => loading.value && !fullLoaded.value);
+  const fetchTotal = (tag?: string) => {
+    const handle = queryCollection('post');
+    if (tag) {
+      handle.where('tags', 'LIKE', `%${tag}%`);
+    }
+    handle.count('*')
+      .then((count) => {
+        console.log(count);
+        total.value = count;
+      });
+  };
+  const fetch = (tag?: string) => {
+    loading.value = true;
+    let handle = queryCollection('post')
+      .limit(size.value)
+      .skip((page.value - 1) * size.value);
+    if (tag) {
+      handle = handle.where('tags', 'LIKE', `%${tag}%`);
+    }
+    handle
+      .all()
+      .then((newPosts) => {
+        posts.value = [...posts.value, ...newPosts];
+        return posts;
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   };
   const canLoadMore = () => {
-    return status.value !== 'pending' && canLoad({ page, size, total });
+    return canLoad({ page, size, total });
   };
-  watch(data, () => {
-    if (!data.value) {
+  const loadMore = () => {
+    if (loading.value) {
       return;
     }
-    posts.value = posts.value.concat(data.value.post);
-    for (let i = 0; i < data.value.desc.length; i++) {
-      const id = data.value.desc[i]?.id;
-      const descContent = data.value.desc[i]?.desc ?? '';
-      if (id !== undefined && desc !== undefined) {
-        desc.value = {
-          ...desc.value,
-          [id]: descContent,
-        };
-      }
+    if (total.value === 0) {
+      page.value += 1;
+      return;
     }
-    total.value = data.value.total;
-  }, { deep: true, immediate: true });
-  watch(() => opts.publish, () => {
-    posts.value = [];
-    page.value = 1;
-    execute();
+    page.value += 1;
+  };
+  fetch(
+    toValue(opts?.tag),
+  );
+  fetchTotal(toValue(opts?.tag));
+  watch(
+    () => opts?.tag,
+    () => {
+      if (opts?.tag) {
+        page.value = 0;
+        posts.value = [];
+      }
+    },
+    { deep: true },
+  );
+  watch(page, () => {
+    fetch(
+      toValue(opts?.tag),
+    );
   });
   return {
-    posts,
-    desc,
-    total,
-    page,
-    size,
-    status,
-    error,
-    loadMore,
+    data,
+    loading,
+    showLoading,
     canLoadMore,
-    execute,
+    loadMore,
   };
 }

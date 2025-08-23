@@ -1,0 +1,13 @@
+{
+  "$schema": "./introduction.schema.json",
+  "profile": {
+    "name": "GaoNeng-wWw",
+    "desc": "前端开发者",
+    "avatar": "",
+    "social": [
+      {
+        "icon": "github"
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWind4 } from 'unocss';
+import { loadCustomIconSet } from './helper/resolve-svg';
 
+const icons = Object.keys(loadCustomIconSet()().icons).map(key => `i-air:${key}`);
 export default defineConfig({
   theme: {
     animation: {
@@ -54,7 +56,11 @@ export default defineConfig({
     }),
     presetIcons({
       autoInstall: true,
+      collections: {
+        air: loadCustomIconSet(),
+      },
     }),
     presetTypography(),
   ],
+  safelist: [...icons],
 });
