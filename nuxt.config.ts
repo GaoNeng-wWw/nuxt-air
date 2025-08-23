@@ -25,6 +25,16 @@ export default defineNuxtConfig({
   },
   content: {
     experimental: { nativeSqlite: true },
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'material-theme-lighter',
+            dark: 'material-theme-palenight',
+          },
+        },
+      },
+    },
   },
   i18n: {
     defaultLocale: 'zh',

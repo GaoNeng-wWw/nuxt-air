@@ -14,7 +14,7 @@ const {
     <div class="max-w-4xl w-full mx-auto px-8">
       <ul class="space-y-4 h-full">
         <nuxt-link v-for="post of data" :key="post.id" :href="post.path" class="block">
-          <li class=" text-default-900">
+          <li class="text-default-900">
             {{ post.title }}
           </li>
         </nuxt-link>

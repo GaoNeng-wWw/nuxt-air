@@ -17,7 +17,7 @@ const {
         <div class="max-w-4xl py-4 px-8 mx-auto rounded-full bg-default-100 bg-opacity-10 backdrop-blur border border-solid border-default-300">
           <hover-card-root>
             <hover-card-trigger>
-              <nuxt-link to="/" active-class="text-default-900">
+              <nuxt-link to="/" active-class="text-default-900" class="text-default-700">
                 文章
               </nuxt-link>
             </hover-card-trigger>
