@@ -29,8 +29,9 @@ export default defineNuxtConfig({
       markdown: {
         highlight: {
           theme: {
-            default: 'material-theme-lighter',
-            dark: 'material-theme-palenight',
+            default: 'nord',
+            light: 'min-light',
+            dark: 'nord',
           },
         },
       },

@@ -72,7 +72,7 @@ function open() {
         </popover-content>
       </popover-portal>
     </popover-root>
-    <pre :class="$props.class"><slot /></pre>
+    <pre :class="$props.class" class="not-prose"><slot /></pre>
   </div>
 </template>
 

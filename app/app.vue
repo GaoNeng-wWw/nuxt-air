@@ -13,7 +13,7 @@ const {
 <template>
   <div class="w-full h-full min-h-dvh bg-stone-100 dark:bg-stone-950 relative">
     <lazy-client-only>
-      <div class="w-full fixed top-4 px-4">
+      <div class="w-full fixed top-4 px-4 z-10">
         <div class="max-w-4xl py-4 px-8 mx-auto rounded-full bg-default-100 bg-opacity-10 backdrop-blur border border-solid border-default-300">
           <hover-card-root>
             <hover-card-trigger>

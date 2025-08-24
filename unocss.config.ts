@@ -53,7 +53,7 @@ export default defineConfig({
       preflights: {
         reset: true,
       },
-      dark: 'media',
+      dark: 'class',
     }),
     presetIcons({
       autoInstall: true,
