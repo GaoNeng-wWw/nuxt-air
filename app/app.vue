@@ -18,7 +18,7 @@ const {
           <hover-card-root>
             <hover-card-trigger>
               <nuxt-link to="/" active-class="text-default-900" class="text-default-700">
-                文章
+                {{ $t('posts') }}
               </nuxt-link>
             </hover-card-trigger>
             <hover-card-portal>

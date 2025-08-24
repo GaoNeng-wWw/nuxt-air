@@ -44,10 +44,12 @@ export default defineNuxtConfig({
       {
         code: 'zh',
         name: '中',
+        file: 'zh.json',
       },
       {
         code: 'en',
         name: 'En',
+        file: 'en.json',
       },
     ],
   },

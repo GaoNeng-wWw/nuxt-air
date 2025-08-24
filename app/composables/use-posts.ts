@@ -23,7 +23,6 @@ export async function usePosts(
     }
     handle.count('*')
       .then((count) => {
-        
         total.value = count;
       });
   };

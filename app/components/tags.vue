@@ -9,8 +9,8 @@ const { locale } = useI18n();
 
 <template>
   <div class="w-full h-fit flex gap-2 my-2">
-    <span v-for="tag of postTag" :key="tag" class="px-2 py-px bg-default-200 text-sm rounded-full">
+    <ui-tag v-for="tag of postTag" :key="tag" class="bg-default-200">
       {{ tagMap.get(tag)?.[locale] }}
-    </span>
+    </ui-tag>
   </div>
 </template>
