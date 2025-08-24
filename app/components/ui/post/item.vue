@@ -11,9 +11,9 @@ const { locale } = useI18n();
 
 <template>
   <li class="text-default-900 p-2 rounded hover:bg-default-200">
-    <h2 class="text-xl">
+    <h1 class="text-xl">
       {{ post.title }}
-    </h2>
+    </h1>
     <div v-if="post.tags && post.tags.length" class="w-full flex flex-wrap gap-2 my-2">
       <nuxt-link v-for="tag of post.tags" :key="tag" :to="`/posts/${tag}`">
         <ui-tag :key="tag" class="px-0 text-white text-sm flex items-center space-x-1">

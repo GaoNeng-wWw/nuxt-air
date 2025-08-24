@@ -7,6 +7,7 @@ html {overflow: auto;}
 *{
   scrollbar-width: thin;
   scrollbar-color: var(--default-100) var(--default-300);
+  scrollbar-gutter: both;
 }
 :root {
   --foreground: var(--default-950);

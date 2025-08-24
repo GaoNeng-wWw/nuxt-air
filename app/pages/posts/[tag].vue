@@ -15,7 +15,7 @@ useSaveScrollPosition(postList);
 
 <template>
   <div ref="post-list" v-infinite-scroll="[loadMore, { canLoadMore, throttle: 200 }]" class="w-full h-dvh pt-24 mx-auto overflow-auto">
-    <div class="max-w-4xl w-full mx-auto px-8">
+    <div class="max-w-4xl w-full mx-auto px-6">
       <ul class="space-y-4 h-full">
         <nuxt-link v-for="post of data" :key="post.id" :href="post.path" class="block">
           <ui-post-item :post="post" />
