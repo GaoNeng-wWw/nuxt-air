@@ -1,4 +1,5 @@
 import type { PostCollectionItem } from '@nuxt/content';
+import { useDebounceFn, useThrottleFn } from '@vueuse/core';
 import { canLoad } from '~/lib/can-load';
 
 export interface UsePosts {
@@ -47,16 +48,13 @@ export async function usePosts(
   const canLoadMore = () => {
     return canLoad({ page, size, total });
   };
-  const loadMore = () => {
-    if (loading.value) {
-      return;
-    }
+  const loadMore = useThrottleFn(() => {
     if (total.value === 0) {
       page.value += 1;
       return;
     }
     page.value += 1;
-  };
+  }, 200);
   fetch(
     toValue(opts?.tag),
   );

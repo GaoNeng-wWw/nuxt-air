@@ -8,7 +8,7 @@ const next = computed(() => surrounding.value?.[1]);
 </script>
 
 <template>
-  <div class="w-full h-full px-8 pt-24 pb-12 max-w-4xl mx-auto">
+  <div class="w-full h-full px-8 pt-4 pb-12 max-w-4xl mx-auto">
     <content-renderer
       v-if="data" :data="data" :value="data"
       class="
