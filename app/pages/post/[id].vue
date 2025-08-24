@@ -1,219 +1,66 @@
 <script lang="ts" setup>
-import { TaskItem, TaskList } from '@tiptap/extension-list';
-import { Placeholder } from '@tiptap/extensions';
-import { StarterKit } from '@tiptap/starter-kit';
-import { EditorContent, useEditor } from '@tiptap/vue-3';
-import { refDebounced, useThrottleFn } from '@vueuse/core';
-
-definePageMeta({
-  keepalive: false,
-});
-
 const route = useRoute();
-const isEdit = computed(() => route.query.edit);
-const id = computed(() => route.params.id);
-const draftRaw: Ref<boolean[]> = ref([]);
-const draft = computed(() => draftRaw.value[0] ?? true);
-const postId = ref(-1);
-const postTitle = ref('');
-const syncTitle = ref(true);
-const { tags, total, create, nextPage, selectTag, canShowShadowTag, selectedTag, unSelect, searchName } = useTag({ immediate: true });
-const executeUpdate = updatePost();
-const saveing = shallowRef(false);
-const saveingDebounced = refDebounced(saveing, 500);
-const onUpdate = useThrottleFn(() => {
-  if (postId.value === -1 || saveing.value) {
-    return;
-  }
-  // eslint-disable-next-line ts/no-use-before-define
-  if (!editor.value) {
-    return;
-  }
-  // eslint-disable-next-line ts/no-use-before-define
-  const content = editor.value.getJSON();
-  if (!content) {
-    return;
-  }
-  const contentString = JSON.stringify(content);
-  saveing.value = true;
-  executeUpdate({
-    id: toValue(postId),
-    title: toValue(postTitle),
-    publish: !toValue(draft),
-    content: contentString,
-    tagId: selectedTag.value.map(tag => tag.id),
-  })
-    .finally(() => {
-      saveing.value = false;
-    });
-}, 2000, true, false);
-watch([draft, postTitle, selectedTag], () => {
-  onUpdate();
-}, { deep: true });
-const editor = useEditor({
-  content: '',
-  extensions: [
-    Placeholder.configure({
-      placeholder: 'write something...',
-      emptyNodeClass: 'text-foreground/50',
-    }),
-    StarterKit,
-    TaskList.configure({
-      HTMLAttributes: {
-        class: '[&_li]:flex [&_li]:items-center [&_li]:gap-2 [&_li_p]:my-0',
-      },
-    }),
-    TaskItem,
-  ],
-  editorProps: {
-    attributes: {
-      class: 'prose dark:prose-invert prose-stone outline-none',
-    },
-  },
-  onUpdate(props) {
-    onUpdate();
-    if (!syncTitle.value) {
-      return;
-    }
-    postTitle.value = props.editor.$doc.querySelector('heading')?.textContent ?? '';
-  },
-});
-function createTag(tagName: string) {
-  create({
-    name: tagName,
-    desc: '',
-  })
-    .then((tag) => {
-      if (!tag) {
-        return;
-      }
-      if (!tags.value) {
-        return;
-      }
-      tags.value.push({ ...tag, deleteAt: tag.deleteAt?.toString() ?? null });
-      total.value += 1;
-      searchName.value = '';
-    });
-}
-onMounted(() => {
-  if (isEdit.value) {
-    $fetch(`/api/post/${id.value}`, {
-      query: {
-        id: id.value,
-      },
-    })
-      .then((post) => {
-        if (!post) {
-          return;
-        }
-        postId.value = post.id;
-        postTitle.value = post.title;
-        syncTitle.value = false;
-        draftRaw.value = [post.draft];
-        selectedTag.value = post.tag;
-        if (!editor.value) {
-          return;
-        }
-        editor.value.commands.setContent(JSON.parse(post.content));
-      });
-    return;
-  }
-  $fetch('/api/post', {
-    method: 'put',
-    body: {
-      title: postTitle.value,
-      content: '',
-      tagId: [],
-    },
-  })
-    .then((post) => {
-      postId.value = post.id;
-    });
-});
+const { data } = useAsyncData(route.path, async () => await queryCollection('post').path(route.path).first());
+
+const { data: surrounding } = useAsyncData(`${route.path}-surrounding`, async () => await queryCollectionItemSurroundings('post', route.path).order('date', 'DESC'));
+const prev = computed(() => surrounding.value?.[0]);
+const next = computed(() => surrounding.value?.[1]);
 </script>
 
 <template>
-  <div class="max-w-md mx-auto w-full h-full py-4">
-    <div class="w-full flex items-center gap-1">
-      <nuxt-link to="/">
-        <ui-button icon variant="ghost">
-          <div class="i-material-symbols:chevron-left-rounded size-6 text-foreground" />
-        </ui-button>
-      </nuxt-link>
-      <span class="text-foreground">{{ saveingDebounced ? '保存中' : '保存成功' }}</span>
-    </div>
-    <input
-      v-model="postTitle"
-      type="text"
-      placeholder="Unititled Post"
+  <div class="w-full h-full px-8 pt-4 pb-12 max-w-4xl mx-auto">
+    <content-renderer
+      v-if="data" :data="data" :value="data"
       class="
-       w-full outline-none py-2 text-foreground placeholder-foreground/80 text-4xl wrap-anywhere whitespace-normal
-       border-b border-zinc-600 dark:border-zinc-300
+        prose
+        prose-stone
+        max-w-full
+        dark:prose-invert
+        prose-headings:my-4
+        prose-headings:no-underline
+        prose-headings:before:mr-2
+        prose-headings:before:text-default-600
+        prose-headings:before:content-none
+        prose-h1:mb-0
+        prose-p:my-0
+        prose-p:before:content-none
+        prose-p:after:content-none
+        prose-a:no-underline
+        prose-blockquote:not-italic
+        prose-pre:block
+        prose-pre:prose-code:*:block
+        prose-ul:prose-li:my-0
+        prose-table:table prose-table:w-full
+        prose-table:max-w-full prose-table:mx-auto prose-table:w-fit
+        prose-td:b-none prose-tr:bg-transparent! prose-th:b-none
+        prose-th:b-t-2 prose-th:b-t-solid prose-th:b-t-default-500
+        prose-th:b-b-1 prose-th:b-b-solid prose-th:b-b-default-500
+        [&_tbody_tr:last-child]:b-b-2 [&_tbody_tr:last-child]:b-b-solid [&_tbody_tr:last-child]:b-b-default-500
       "
-      @keydown="() => syncTitle = false"
-    >
-    <div class="w-full flex flex-wrap gap-2 py-2">
-      <div class="w-fit flex text-foreground gap-2">
-        <transition-group
-          enter-active-class="transition"
-          leave-active-class="transition"
-          enter-from-class="scale-0"
-          leave-to-class="scale-0"
-        >
-          <span
-            v-for="tag of selectedTag"
-            :key="tag.id"
-            class="
-            min-w-5 min-h-5 px-2 py-1 rounded bg-default-200  inline-flex gap-2 items-center justify-center group
-            w-fit transition-all relative
-          "
-          >
-            <span class="flex-1 group-hover:pr-5 transition-all">
-              {{ tag?.name }}
-            </span>
-            <i
-              class="i-material-symbols:close-rounded group-hover:size-4 cursor-pointer group-hover:scale-100 group-hover:rotate-[0deg] absolute right-1 -rotate-45 size-0 transition-all"
-              @click="() => unSelect(tag)"
-            />
-          </span>
-        </transition-group>
-      </div>
-      <app-tag-select
-        v-model="selectedTag"
-        v-model:search-name="searchName"
-        :tags="tags"
-        :next-page="nextPage"
-        :select-tag="selectTag"
-        :can-show-shadow-tag="canShowShadowTag"
-        @create="createTag"
-      />
-      <client-only>
-        <ui-select v-model="draftRaw">
-          <ui-select-trigger>
-            <ui-button variant="ghost">
-              {{ draft ? '草稿中' : '已发布' }}
-            </ui-button>
-          </ui-select-trigger>
-          <ui-select-content>
-            <ui-select-option :value="true">
-              草稿中
-            </ui-select-option>
-            <ui-select-option :value="false">
-              已发布
-            </ui-select-option>
-          </ui-select-content>
-        </ui-select>
-      </client-only>
+    />
+    <div class="w-full flex mt-2">
+      <nuxt-link v-if="prev" class="w-fit text-white flex items-center" :href="prev.path">
+        <div class="i-material-symbols-light:chevron-left size-6" />
+        <span class="text-sm">{{ prev.title }}</span>
+      </nuxt-link>
+      <nuxt-link v-if="next" class="w-fit text-white flex items-center ml-auto " :href="next.path">
+        <span class="text-sm">{{ next.title }}</span>
+        <div class="i-material-symbols-light:chevron-left size-6 rotate-180" />
+      </nuxt-link>
     </div>
-    <editor-content :editor="editor" />
   </div>
 </template>
 
-<style>
-.tiptap p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
+<style scoped>
+.prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::before,
+.prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::after{
+  display: none;
+}
+.prose :where(ul > li):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin: 0;
+  padding: 0;
+}
+.prose :where(ol > li):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin: 0;
 }
 </style>
