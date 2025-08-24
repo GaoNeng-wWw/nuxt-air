@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/image',
     '@unocss/nuxt',
-    '@prisma/nuxt',
     '@nuxt/content',
     '@nuxtjs/i18n',
   ],
@@ -19,9 +18,6 @@ export default defineNuxtConfig({
   },
   imports: {
     autoImport: true,
-  },
-  prisma: {
-    autoSetupPrisma: true,
   },
   content: {
     experimental: { nativeSqlite: true },
