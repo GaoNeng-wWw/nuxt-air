@@ -48,6 +48,9 @@ const next = computed(() => surrounding.value?.[1]);
         <div class="i-material-symbols-light:chevron-left size-6 rotate-180" />
       </nuxt-link>
     </div>
+    <div class="w-full h-fit">
+      <ui-tiptap />
+    </div>
   </div>
 </template>
 
