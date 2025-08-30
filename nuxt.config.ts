@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/i18n',
     '@prisma/nuxt',
+    'vue-sonner/nuxt'
   ],
   eslint: {
     config: {

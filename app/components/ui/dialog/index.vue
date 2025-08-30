@@ -28,11 +28,16 @@ function onTriggerClick(ev: MouseEvent) {
   _show.value = true;
 }
 
+function close() {
+  _show.value = false;
+}
+
 createDialogContext({
   show: _show,
   onHiddenFinish,
   onTriggerClick,
   transformOrigin,
+  close,
 });
 
 watch(props, () => {
@@ -41,7 +46,7 @@ watch(props, () => {
 </script>
 
 <template>
-  <dialog-root v-bind="forward" data-slot="dialog">
+  <dialog-root v-bind="forward" v-model:open="_show" data-slot="dialog">
     <lazy-client-only>
       <slot />
     </lazy-client-only>

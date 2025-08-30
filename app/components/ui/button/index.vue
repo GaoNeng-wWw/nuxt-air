@@ -18,12 +18,14 @@ const clazz: Record<ButtonVariant | 'default', string> = {
 <template>
   <button
     :data-icon="props.icon"
+    :data-full="props.full"
     :class="[
       cn(
         clazz.default,
         clazz[props.variant],
         props.class,
         'data-[icon=true]:size-fit data-[icon=true]:p-1',
+        'data-[full=true]:w-full'
       ),
     ]"
   >

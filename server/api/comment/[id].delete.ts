@@ -1,6 +1,5 @@
 import status from 'http-status';
 import z from 'zod';
-import { auth } from '~~/shared/auth';
 import prisma from '~~/shared/prisma';
 
 export const RemoveComment = z.object({

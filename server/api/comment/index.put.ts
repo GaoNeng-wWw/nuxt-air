@@ -1,6 +1,5 @@
 import status from 'http-status';
 import z from 'zod';
-import { auth } from '~~/shared/auth';
 import prisma from '~~/shared/prisma';
 
 export const CreateComment = z.object({
@@ -17,6 +16,8 @@ export default defineProductApi(async (event) => {
     throw createError({
       status: status.UNAUTHORIZED,
       message: '未登录',
+      stack: undefined,
+      fatal: true,
     });
   }
   return prisma.comment.create({

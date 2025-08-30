@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const route = useRoute();
 const { data } = useAsyncData(route.path, async () => await queryCollection('post').path(route.path).first());
+const id = computed(() => route.params.id?.toString());
 
 const { data: surrounding } = useAsyncData(`${route.path}-surrounding`, async () => await queryCollectionItemSurroundings('post', route.path).order('date', 'DESC'));
 const prev = computed(() => surrounding.value?.[0]);
@@ -38,19 +39,17 @@ const next = computed(() => surrounding.value?.[1]);
         [&_tbody_tr:last-child]:b-b-2 [&_tbody_tr:last-child]:b-b-solid [&_tbody_tr:last-child]:b-b-default-500
       "
     />
-    <div class="w-full flex mt-2">
-      <nuxt-link v-if="prev" class="w-fit text-white flex items-center" :href="prev.path">
+    <div class="w-full flex mt-8">
+      <nuxt-link v-if="prev" class="w-fit text-default-950 flex items-center" :href="prev.path">
         <div class="i-material-symbols-light:chevron-left size-6" />
         <span class="text-sm">{{ prev.title }}</span>
       </nuxt-link>
-      <nuxt-link v-if="next" class="w-fit text-white flex items-center ml-auto " :href="next.path">
+      <nuxt-link v-if="next" class="w-fit text-default-950 flex items-center ml-auto " :href="next.path">
         <span class="text-sm">{{ next.title }}</span>
         <div class="i-material-symbols-light:chevron-left size-6 rotate-180" />
       </nuxt-link>
     </div>
-    <div class="w-full h-fit">
-      <ui-tiptap />
-    </div>
+    <app-comment-editor v-if="id" :id="id" />
   </div>
 </template>
 

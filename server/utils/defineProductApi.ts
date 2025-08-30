@@ -1,6 +1,6 @@
 import type { EventHandler, EventHandlerRequest } from 'h3';
+import { auth } from '#imports';
 import status from 'http-status';
-import { auth } from '~~/shared/auth';
 
 export interface Permissions {
   readonly comment?: ('create' | 'read' | 'hidden')[] | undefined;

@@ -5,7 +5,6 @@ import { reactiveOmit } from '@vueuse/core';
 import {
   DialogClose,
   DialogContent,
-
   DialogPortal,
   useForwardPropsEmits,
 } from 'reka-ui';
@@ -13,14 +12,16 @@ import { cn } from '@/lib/utils';
 import { useDialogContext } from '~/composables/use-dialog';
 import DialogOverlay from './overlay.vue';
 
-const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>();
+const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class']; x?: number; y?: number }>();
 const emits = defineEmits<DialogContentEmits>();
 
 const delegatedProps = reactiveOmit(props, 'class');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
-const { show, transformOrigin, onHiddenFinish } = useDialogContext();
+const { transformOrigin, onHiddenFinish } = useDialogContext();
+const x = props.x ? `${props.x}px` : transformOrigin.x;
+const y = props.y ? `${props.y}px` : transformOrigin.y;
 function onLeave(_: Element) {
   onHiddenFinish();
 }
@@ -29,13 +30,13 @@ function onLeave(_: Element) {
 <template>
   <dialog-portal>
     <transition enter-active-class="transition duration-200 ease-in-out" leave-active-class="transition duration-200 ease-in-out" enter-to-class="opacity-100" leave-to-class="opacity-0">
-      <dialog-overlay v-if="show" />
+      <dialog-overlay />
     </transition>
-    <transition name="zoom" appear @before-leave="onLeave">
+    <transition name="zoom" appear @after-leave="onLeave">
       <dialog-content
         data-slot="dialog-content"
-        v-bind="forwarded"
-        :style="{ '--x': transformOrigin.x, '--y': transformOrigin.y }"
+        v-bind="{ ...forwarded }"
+        :style="{ '--x': x, '--y': y }"
         :class="
           cn(
             `
@@ -48,7 +49,6 @@ function onLeave(_: Element) {
           )"
       >
         <slot />
-
         <dialog-close
           class="w-fit h-fit text-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none"
         >
