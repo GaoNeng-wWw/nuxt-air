@@ -6,8 +6,10 @@ import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { ColorHighlighter } from './extension/color-display';
 import suggestion from './extension/emoji/suggestion';
 
-const { maxWord = 200 } = defineProps<{
+const { maxWord = 200, content, readonly = false } = defineProps<{
   maxWord?: number;
+  content?: Record<string, any>;
+  readonly?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -15,9 +17,9 @@ const emits = defineEmits<{
 }>();
 
 const curCharacterCount = ref(0);
-
 const editor = useEditor({
-  content: '',
+  content,
+  editable: !readonly,
   extensions: [
     CharacterCount.configure({
       limit: maxWord,

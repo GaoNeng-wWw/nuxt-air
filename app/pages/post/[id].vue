@@ -50,6 +50,9 @@ const next = computed(() => surrounding.value?.[1]);
       </nuxt-link>
     </div>
     <app-comment-editor v-if="id" :id="id" />
+    <div class="py-4" v-if="id">
+      <app-comment-list :post-id="id" />
+    </div>
   </div>
 </template>
 

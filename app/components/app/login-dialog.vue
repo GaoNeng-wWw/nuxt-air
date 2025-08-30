@@ -6,9 +6,6 @@ function signIn(provider: string) {
   client.signIn.social({
     provider,
   })
-    .then((data) => {
-      console.log(data.data);
-    });
 }
 </script>
 

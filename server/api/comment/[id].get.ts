@@ -16,6 +16,9 @@ export default defineProductApi(async (event) => {
     orderBy: {
       createdAt: 'desc',
     },
+    include: {
+      user: true,
+    },
   });
   return { comments, total };
 }, { comment: ['read'] });
