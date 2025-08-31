@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const {avatar, createAt, content} = defineProps<{
+const {avatar, content} = defineProps<{
   avatar: string;
   createAt: string;
   content: Record<string, any>;

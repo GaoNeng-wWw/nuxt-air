@@ -61,7 +61,11 @@ function getJSONContent() {
   return editor.value.getJSON();
 }
 
-defineExpose({ getJSONContent });
+function clearContent() {
+  editor.value?.commands.clearContent(true);
+}
+
+defineExpose({ getJSONContent, clearContent });
 
 const scope = effectScope();
 

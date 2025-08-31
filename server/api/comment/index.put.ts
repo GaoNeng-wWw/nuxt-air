@@ -30,6 +30,9 @@ export default defineProductApi(async (event) => {
         },
       },
     },
+    include: {
+      user: true,
+    },
   })
     .then((comment) => {
       return incrBy(`COMMENT::${postId}::TOTAL`, 1)

@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import type { H3Error } from 'h3';
+import type { IComment } from '~/composables/use-comment-list';
 import { toast } from 'vue-sonner';
 
 import { authClient } from '~~/shared/auth';
 
 const { id } = defineProps<{ id: string }>();
+
+const emits = defineEmits<{
+  sendSuccess: [IComment];
+}>();
 
 const rawSession = authClient.useSession();
 
@@ -18,6 +23,7 @@ const tiptap = useTemplateRef('tiptap');
 function onCharacterUpdate(count: number) {
   character.value = count;
 }
+
 function sendComment() {
   const content = tiptap.value?.getJSONContent();
   if (!content) {
@@ -30,6 +36,10 @@ function sendComment() {
       content: JSON.stringify(content),
     },
   })
+    .then((comment: IComment) => {
+      emits('sendSuccess', comment);
+      tiptap.value?.clearContent();
+    })
     .catch((err: H3Error<H3Error>) => {
       if (!err.data) {
         return;
