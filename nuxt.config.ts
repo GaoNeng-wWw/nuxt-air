@@ -10,6 +10,8 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxt/content',
     '@nuxtjs/i18n',
+    '@prisma/nuxt',
+    'vue-sonner/nuxt'
   ],
   eslint: {
     config: {
@@ -48,5 +50,8 @@ export default defineNuxtConfig({
         file: 'en.json',
       },
     ],
+  },
+  prisma: {
+    installStudio: false,
   },
 });

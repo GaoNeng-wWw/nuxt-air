@@ -5,4 +5,6 @@ export interface ButtonProps {
   icon?: boolean;
   as?: string;
   class?: string;
+  full?: boolean;
+  loading?: boolean;
 }
