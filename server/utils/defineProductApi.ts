@@ -25,20 +25,21 @@ export function defineProductApi<T extends EventHandlerRequest, D>(
           });
         }
         if (permissions) {
-          auth.api.userHasPermission({
+          return auth.api.userHasPermission({
             body: {
               permissions,
+              userId: session.user.id
             },
           })
             .then(({ success }) => {
               if (!success) {
-                throw createError({
+                return createError({
                   statusCode: status.FORBIDDEN,
                   message: '权限不足',
                 });
               }
               return handler(_ctx);
-            });
+            })
         }
         return handler(_ctx);
       })

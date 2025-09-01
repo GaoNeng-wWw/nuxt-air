@@ -6,7 +6,7 @@ const { postId } = defineProps<{
   postId: string;
 }>();
 
-const { comments, addExtract, extractComment } = useCommenList({ postId });
+const { comments, addExtract, extractComment, remove } = useCommenList({ postId });
 
 function onReloadComments(comment: IComment) {
   addExtract(comment);
@@ -31,10 +31,12 @@ defineExpose({ onReloadComments });
         }"
       >
         <app-comment-item
+          :id="comment.id"
           :name="comment.user.name"
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
+          @remove-success="remove"
         />
       </motion.div>
       <motion.div
@@ -49,10 +51,12 @@ defineExpose({ onReloadComments });
         }"
       >
         <app-comment-item
+          :id="comment.id"
           :name="comment.user.name"
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
+          @remove-success="remove"
         />
         <template #fallback>
           <motion.div

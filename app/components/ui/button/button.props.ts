@@ -6,4 +6,5 @@ export interface ButtonProps {
   as?: string;
   class?: string;
   full?: boolean;
+  loading?: boolean;
 }

@@ -15,13 +15,17 @@ export function useCommenList({ postId }: UseCommenList) {
     query: { page, size },
   });
   const total = computed(() => data.value?.total ?? 0);
+  const extractComment: Ref<IComment[]> = ref([]);
   const next = () => {
     if (!canLoad({ page, size, total })) {
       return;
     }
     page.value += 1;
   };
-  const extractComment: Ref<IComment[]> = ref([]);
+  const remove = (id: number) => {
+    comments.value = comments.value.filter(val => val.id !== id);
+    extractComment.value = extractComment.value.filter(val => val.id !== id);
+  };
   const addExtract = (comment: IComment) => {
     extractComment.value.unshift(comment);
   };
@@ -31,5 +35,5 @@ export function useCommenList({ postId }: UseCommenList) {
     }
     comments.value.push(...data.value.comments);
   }, { immediate: true, deep: true });
-  return { comments, next, refresh, extractComment, addExtract };
+  return { comments, next, refresh, extractComment, addExtract, remove };
 }
