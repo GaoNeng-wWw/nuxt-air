@@ -10,16 +10,19 @@ const {
   content,
   createAt,
   id,
+  pin,
 } = defineProps<{
   id: number;
   avatar: string;
   createAt: string;
   content: Record<string, any>;
   name: string;
+  pin: boolean;
 }>();
 
 const emits = defineEmits<{
   removeSuccess: [number];
+  togglePin: [number];
 }>();
 
 const rawSession = authClient.useSession();
@@ -45,6 +48,9 @@ function removeComment() {
       loading.value = false;
     });
 }
+function togglePin() {
+  emits('togglePin', id);
+}
 </script>
 
 <template>
@@ -68,9 +74,12 @@ function removeComment() {
             </ui-button>
           </ui-popover-trigger>
           <ui-popover-content>
-            <div class="w-full px-2 py-2">
+            <div class="w-full px-2 py-2 space-y-2">
               <ui-button full variant="ghost" class="hover:bg-red-500/20!" :loading="loading" @click="removeComment">
-                Delete
+                删除
+              </ui-button>
+              <ui-button full variant="ghost" @click="togglePin">
+                {{ !pin ? '置顶' : '取消置顶' }}
               </ui-button>
             </div>
           </ui-popover-content>

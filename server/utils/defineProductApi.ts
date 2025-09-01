@@ -3,7 +3,7 @@ import { auth } from '#imports';
 import status from 'http-status';
 
 export interface Permissions {
-  readonly comment?: ('create' | 'read' | 'hidden')[] | undefined;
+  readonly comment?: ('create' | 'read' | 'hidden' | 'patch')[] | undefined;
   readonly user?: ('create' | 'list' | 'set-role' | 'ban' | 'impersonate' | 'delete' | 'set-password' | 'update')[] | undefined;
   readonly session?: ('list' | 'delete' | 'revoke')[] | undefined;
 }

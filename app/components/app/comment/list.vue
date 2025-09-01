@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import type { Comment } from '@prisma/client';
+import type { H3Error } from 'h3';
 import type { IComment } from '~/composables/use-comment-list';
 import { motion } from 'motion-v';
+import { toast } from 'vue-sonner';
 
 const { postId } = defineProps<{
   postId: string;
@@ -10,6 +13,35 @@ const { comments, addExtract, extractComment, remove } = useCommenList({ postId 
 
 function onReloadComments(comment: IComment) {
   addExtract(comment);
+}
+function patchComment(id: number, comment: Partial<Comment>) {
+  return $fetch(`/api/comment/${id}`, {
+    method: 'patch',
+    body: { ...comment },
+  })
+    .then(comment => comment)
+    .catch((error: H3Error<H3Error>) => {
+      if (error.data) {
+        toast.error(error.data.message);
+      }
+      throw error;
+    });
+}
+
+function togglePin(id: number) {
+  const comment = comments.value.filter(comment => comment.id === id)[0];
+  if (!comment) {
+    return;
+  }
+  patchComment(comment.id, { pin: !comment.pin })
+    .then((newComment) => {
+      comments.value = comments.value.filter(comment => comment.id !== id);
+      if (newComment.pin) {
+        comments.value.unshift(newComment);
+      } else {
+        comments.value.push(newComment);
+      }
+    });
 }
 
 defineExpose({ onReloadComments });
@@ -36,7 +68,9 @@ defineExpose({ onReloadComments });
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
+          :pin="comment.pin"
           @remove-success="remove"
+          @toggle-pin="() => togglePin(comment.id)"
         />
       </motion.div>
       <motion.div
@@ -56,7 +90,9 @@ defineExpose({ onReloadComments });
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
+          :pin="comment.pin"
           @remove-success="remove"
+          @toggle-pin="() => togglePin(comment.id)"
         />
         <template #fallback>
           <motion.div
