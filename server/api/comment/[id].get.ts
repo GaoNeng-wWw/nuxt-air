@@ -13,9 +13,10 @@ export default defineProductApi(async (event) => {
     },
     skip: (page - 1) * size,
     take: size,
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: [
+      { pin: 'desc' },
+      { createdAt: 'desc' },
+    ],
     include: {
       user: true,
     },

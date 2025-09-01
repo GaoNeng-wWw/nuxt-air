@@ -31,6 +31,7 @@ defineExpose({ onReloadComments });
         }"
       >
         <app-comment-item
+          :name="comment.user.name"
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
@@ -48,6 +49,7 @@ defineExpose({ onReloadComments });
         }"
       >
         <app-comment-item
+          :name="comment.user.name"
           :content="JSON.parse(comment.content)"
           :avatar="comment.user.image ?? ''"
           :create-at="comment.createdAt"
