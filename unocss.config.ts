@@ -48,7 +48,6 @@ export default defineConfig({
     },
   },
   presets: [
-    presetAttributify(),
     presetWind4({
       preflights: {
         reset: true,
