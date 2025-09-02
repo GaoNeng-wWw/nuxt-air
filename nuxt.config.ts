@@ -53,5 +53,6 @@ export default defineNuxtConfig({
   },
   prisma: {
     installStudio: false,
+    runMigration: false
   },
 });

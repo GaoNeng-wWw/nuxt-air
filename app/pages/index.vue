@@ -6,6 +6,7 @@ definePageMeta({
 
 <template>
   <div class="max-w-4xl w-full h-full mx-auto pt-4 mx-auto">
+    <app-introduction />
     <ui-post-list />
   </div>
 </template>
