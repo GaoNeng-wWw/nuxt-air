@@ -2,12 +2,53 @@
   "$schema": "./introduction.schema.json",
   "profile": {
     "name": "GaoNeng-wWw",
-    "desc": "前端开发者",
-    "avatar": "",
-    "social": [
-      {
-        "icon": "github"
-      }
-    ]
-  }
+    "avatar": "https://avatars.githubusercontent.com/u/31283122?v=4",
+    "summary": {
+      "type": "static",
+      "content": ["我并非全知全能, 我只是刚好知道"]
+    }
+  },
+  "projects": [
+    {
+      "icon": "https://avatars.githubusercontent.com/u/108050589?s=48&v=4",
+      "name": "TinyVue",
+      "link": "https://github.com/opentiny/tiny-vue"
+    },
+    {
+      "icon": "https://avatars.githubusercontent.com/u/108050589?s=48&v=4",
+      "name": "TinyPro",
+      "link": "https://github.com/opentiny/tiny-pro"
+    },
+    {
+      "icon": "https://avatars.githubusercontent.com/u/41804496?s=48&v=4",
+      "name": "Hello-CTF",
+      "link": "https://github.com/ProbiusOfficial/Hello-CTF"
+    },
+    {
+      "icon": "https://avatars.githubusercontent.com/u/123234039?s=48&v=4",
+      "name": "klpbbs-survey"
+    }
+  ],
+  "organization": [
+    {
+      "icon": "https://avatars.githubusercontent.com/u/108050589?s=200&v=4",
+      "name": "OpenTiny",
+      "link": "https://github.com/opentiny"
+    },
+    {
+      "icon": "https://avatars.githubusercontent.com/u/123234039?s=200&v=4",
+      "name": "TeamVastsea",
+      "link": "https://github.com/TeamVastsea"
+    },
+    {
+      "icon": "https://avatars.githubusercontent.com/u/213263691?s=200&v=4",
+      "name": "klpbbs"
+    }
+  ],
+  "social": [
+    {
+      "icon": "github",
+      "link": "https://github.com/GaoNeng-wWw"
+    }
+  ]
 }
