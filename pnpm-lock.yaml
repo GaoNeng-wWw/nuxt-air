@@ -7404,13 +7404,6 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-<<<<<<< Updated upstream
-  varint@6.0.0:
-    resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
-
-=======
-<<<<<<< Updated upstream
-=======
   varint@6.0.0:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
 
@@ -7420,8 +7413,6 @@ packages:
       reka-ui: ^2.0.0
       vue: ^3.3.0
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
 
@@ -16653,12 +16644,6 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-<<<<<<< Updated upstream
-  varint@6.0.0: {}
-
-=======
-<<<<<<< Updated upstream
-=======
   varint@6.0.0: {}
 
   vaul-vue@0.4.1(reka-ui@2.4.0(typescript@5.8.3)(vue@3.5.18(typescript@5.8.3)))(vue@3.5.18(typescript@5.8.3)):
@@ -16669,8 +16654,6 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
   vfile-location@5.0.3:
     dependencies:
       '@types/unist': 3.0.3
