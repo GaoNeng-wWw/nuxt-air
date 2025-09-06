@@ -1,7 +1,4 @@
-import { createResolver } from '@nuxt/kit';
-
-const resolver = createResolver(import.meta.url);
-
+import { join } from 'node:path';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -56,7 +53,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     alias: {
-      '.prisma/client/default': './app/generated/prisma/default.js',
+      '.prisma/client/default': join(__dirname, './app/generated/prisma/default.js'),
     },
     externals: {
       trace: false,
