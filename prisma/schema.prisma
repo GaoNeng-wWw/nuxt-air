@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["strictUndefinedChecks"]
+  output = "../app/generated/prisma"
 }
 
 datasource db {
