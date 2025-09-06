@@ -1,3 +1,7 @@
+import { createResolver } from '@nuxt/kit';
+
+const resolver = createResolver(import.meta.url);
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -10,8 +14,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxt/content',
     '@nuxtjs/i18n',
-    '@prisma/nuxt',
-    'vue-sonner/nuxt'
+    'vue-sonner/nuxt',
   ],
   eslint: {
     config: {
@@ -51,8 +54,20 @@ export default defineNuxtConfig({
       },
     ],
   },
-  prisma: {
-    installStudio: false,
-    runMigration: false
+  nitro: {
+    alias: {
+      '.prisma/client/default': './app/generated/prisma/default.js',
+    },
+    externals: {
+      trace: false,
+      inline: ['@prisma/client'],
+    },
   },
+  // build: {
+  //   transpile: ['@prisma/client'],
+  // },
+  // alias: {
+  //   '.prisma/client/index-browser': '@prisma/client',
+  //   '.prisma/client/default': '@prisma/client',
+  // },
 });
