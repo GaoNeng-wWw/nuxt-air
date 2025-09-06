@@ -1,3 +1,5 @@
+import { join } from 'node:path';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -10,7 +12,6 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxt/content',
     '@nuxtjs/i18n',
-    '@prisma/nuxt',
     'vue-sonner/nuxt'
   ],
   eslint: {
@@ -51,8 +52,13 @@ export default defineNuxtConfig({
       },
     ],
   },
-  prisma: {
-    installStudio: false,
-    runMigration: false
+  nitro: {
+    alias: {
+      '.prisma/client/default': join(__dirname, './app/generated/prisma/default.js'),
+    },
+    externals: {
+      trace: false,
+      inline: ['@prisma/client'],
+    },
   },
 });
