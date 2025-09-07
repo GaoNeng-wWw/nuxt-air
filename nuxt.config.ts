@@ -59,13 +59,6 @@ export default defineNuxtConfig({
       trace: false,
       inline: ['@prisma/client'],
     },
-    preset: 'vercel'
+    preset: 'node-server'
   },
-  // build: {
-  //   transpile: ['@prisma/client'],
-  // },
-  // alias: {
-  //   '.prisma/client/index-browser': '@prisma/client',
-  //   '.prisma/client/default': '@prisma/client',
-  // },
 });
