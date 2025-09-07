@@ -1,5 +1,4 @@
 import z from 'zod';
-import prisma from '~~/shared/prisma';
 
 export default defineProductApi(async (event) => {
   const { page, size } = await useQuery(event, pagination);
