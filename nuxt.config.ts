@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -12,7 +11,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxt/content',
     '@nuxtjs/i18n',
-    'vue-sonner/nuxt'
+    'vue-sonner/nuxt',
   ],
   eslint: {
     config: {
@@ -61,4 +60,11 @@ export default defineNuxtConfig({
       inline: ['@prisma/client'],
     },
   },
+  // build: {
+  //   transpile: ['@prisma/client'],
+  // },
+  // alias: {
+  //   '.prisma/client/index-browser': '@prisma/client',
+  //   '.prisma/client/default': '@prisma/client',
+  // },
 });
