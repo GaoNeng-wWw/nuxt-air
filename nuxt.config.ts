@@ -53,12 +53,11 @@ export default defineNuxtConfig({
   },
   nitro: {
     alias: {
-      '.prisma/client/default': join(__dirname, './app/generated/prisma/default.js'),
+      '.prisma/client/default': './app/generated/prisma/default.js',
     },
     externals: {
       trace: false,
       inline: ['@prisma/client'],
     },
-    preset: 'node-server'
   },
 });
