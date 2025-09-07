@@ -59,6 +59,7 @@ export default defineNuxtConfig({
       trace: false,
       inline: ['@prisma/client'],
     },
+    preset: 'vercel'
   },
   // build: {
   //   transpile: ['@prisma/client'],
