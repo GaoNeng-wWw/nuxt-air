@@ -52,12 +52,10 @@ export default defineNuxtConfig({
     ],
   },
   nitro: {
-    alias: {
-      '.prisma/client/default': './app/generated/prisma/default.js',
-    },
     externals: {
       trace: false,
-      inline: ['@prisma/client'],
+      // inline: ['@prisma/client'],
     },
+    preset: 'vercel-edge',
   },
 });
