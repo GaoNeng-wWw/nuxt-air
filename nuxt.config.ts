@@ -1,4 +1,3 @@
-import { join } from 'node:path';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -51,20 +50,4 @@ export default defineNuxtConfig({
       },
     ],
   },
-  nitro: {
-    alias: {
-      '.prisma/client/default': join(__dirname, './app/generated/prisma/default.js'),
-    },
-    externals: {
-      trace: false,
-      inline: ['@prisma/client'],
-    },
-  },
-  // build: {
-  //   transpile: ['@prisma/client'],
-  // },
-  // alias: {
-  //   '.prisma/client/index-browser': '@prisma/client',
-  //   '.prisma/client/default': '@prisma/client',
-  // },
 });

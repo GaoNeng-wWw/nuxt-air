@@ -1,6 +1,5 @@
 import status from 'http-status';
 import z from 'zod';
-import prisma from '~~/shared/prisma';
 
 export const RemoveComment = z.object({
   id: z.coerce.number(),

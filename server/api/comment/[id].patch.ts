@@ -1,5 +1,4 @@
 import z from 'zod';
-import prisma from '~~/shared/prisma';
 
 export const PatchComment = z.object({
   pin: z.boolean(),
