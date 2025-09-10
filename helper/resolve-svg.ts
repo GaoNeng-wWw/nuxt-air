@@ -11,7 +11,7 @@ import { compareColors, stringToColor } from '@iconify/utils/lib/colors';
 
 export function loadCustomIconSet() {
   // Load icon set
-  const iconSet = importDirectorySync(join(__dirname, '../app/assets/icons'), {
+  const iconSet = importDirectorySync(join(import.meta.dirname, '../app/assets/icons'), {
     prefix: 'svg',
   });
 
