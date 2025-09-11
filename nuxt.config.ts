@@ -25,6 +25,12 @@ export default defineNuxtConfig({
     experimental: { nativeSqlite: true },
     build: {
       markdown: {
+        remarkPlugins: {
+          'remark-math': {},
+        },
+        rehypePlugins: {
+          'rehype-katex': {},
+        },
         highlight: {
           theme: {
             // Default theme (same as single string)

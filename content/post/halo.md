@@ -31,3 +31,11 @@ caution Card
 caution Card
 :::
 ```
+
+## Math
+
+$$
+a^2+b^2=c^2
+$$
+
+$a^{\frac{1}{2}} = \sqrt{a}$
