@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { breakpointsTailwind, useBreakpoints, useDark } from '@vueuse/core';
-
-useDark();
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 const { greater } = useBreakpoints(breakpointsTailwind);
 const desktop = greater('sm');

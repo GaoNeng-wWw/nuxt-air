@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/i18n',
     'vue-sonner/nuxt',
+    '@nuxtjs/color-mode',
   ],
   eslint: {
     config: {
@@ -26,9 +27,12 @@ export default defineNuxtConfig({
       markdown: {
         highlight: {
           theme: {
-            default: 'nord',
-            light: 'min-light',
-            dark: 'nord',
+            // Default theme (same as single string)
+            default: 'github-light',
+            // Theme used if `html.dark`
+            dark: 'github-dark',
+            // Theme used if `html.sepia`
+            sepia: 'monokai',
           },
         },
       },
@@ -49,5 +53,16 @@ export default defineNuxtConfig({
         file: 'en.json',
       },
     ],
+  },
+  colorMode: {
+    preference: 'system',
+    fallback: 'dark ',
+    hid: 'nuxt-color-mode-script',
+    globalName: '__NUXT_COLOR_MODE__',
+    componentName: 'ColorScheme',
+    classPrefix: '',
+    classSuffix: '',
+    storage: 'localStorage', // or 'sessionStorage' or 'cookie'
+    storageKey: 'nuxt-color-mode',
   },
 });

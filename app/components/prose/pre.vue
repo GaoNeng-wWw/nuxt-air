@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { animate, motion } from 'motion-v';
+import { motion } from 'motion-v';
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui';
 
 const props = defineProps({
@@ -48,7 +48,7 @@ function open() {
 </script>
 
 <template>
-  <div class="group relative h-fit w-full group">
+  <div class="group relative h-fit w-full group p-2 rounded bg-default-200 my-8">
     <popover-root :open="popoverShow">
       <popover-trigger as-child class="absolute right-2 top-2 z-10" @click="open">
         <div
@@ -72,6 +72,9 @@ function open() {
         </popover-content>
       </popover-portal>
     </popover-root>
+    <p class="text-default-500 text-xs">
+      {{ language }}
+    </p>
     <pre :class="$props.class" class="not-prose"><slot /></pre>
   </div>
 </template>
@@ -82,9 +85,14 @@ pre code {
   min-width: 100% !important;
   width: fit-content !important;
 }
+.line::before {
+  content: attr(line);
+  margin-right: 24px;
+  color: var(--default-500);
+  font-size: .8rem;
+}
 code .line {
   display: block !important;
-  padding: 0 24px !important;
 }
 pre {
   padding: 8px 0 !important;
