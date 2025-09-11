@@ -1,4 +1,4 @@
-import type { Component, InjectionKey, VNode } from 'vue';
+import type { InjectionKey, VNode } from 'vue';
 import { UiDialog, UiDialogContent, UiDialogDescription, UiDialogTitle } from '#components';
 import { useMouse } from '@vueuse/core';
 import { VisuallyHidden } from 'reka-ui';
@@ -28,7 +28,7 @@ interface RenderDialogProps {
 }
 export function useDialog() {
   const instances: DialogInstance[] = [];
-  const { x, y } = useMouse();
+  const { x, y } = useMouse({type: 'client'});
   const removeCurrent = () => {
     const cur = instances.pop();
     if (!cur) {
