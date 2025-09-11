@@ -75,7 +75,7 @@ function open() {
     <p class="text-default-500 text-xs">
       {{ language }}
     </p>
-    <pre :class="$props.class" class="not-prose"><slot /></pre>
+    <pre :class="$props.class" class="not-prose [&_code]:overflow-auto! [&_code]:w-full!"><slot /></pre>
   </div>
 </template>
 
@@ -87,12 +87,17 @@ pre code {
 }
 .line::before {
   content: attr(line);
-  margin-right: 24px;
+  display: inline-block;
+  min-width: 24px;
   color: var(--default-500);
+  background-color: var(--colors-default-200);
   font-size: .8rem;
+  position: sticky;
+  left: 0%;
 }
 code .line {
   display: block !important;
+  position: relative;
 }
 pre {
   padding: 8px 0 !important;

@@ -5,7 +5,7 @@ const client = authClient;
 function signIn(provider: string) {
   client.signIn.social({
     provider,
-  })
+  });
 }
 </script>
 
