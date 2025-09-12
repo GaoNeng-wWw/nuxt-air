@@ -1,5 +1,15 @@
 # Halo
 
+## Table
+
+| Name | Age |
+| :--: | :--:|
+| Jack | 18  |
+
+## Image
+
+![](https://avatars.githubusercontent.com/u/31283122 "Avatar")
+
 ## Card
 
 :::card{type=info}

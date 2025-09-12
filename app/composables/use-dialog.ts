@@ -25,10 +25,13 @@ interface DialogInstance {
 interface RenderDialogProps {
   content: string | VNode;
   onDestory?: () => void;
+  pure?: boolean;
+  x?: number;
+  y?: number;
 }
 export function useDialog() {
   const instances: DialogInstance[] = [];
-  const { x, y } = useMouse({type: 'client'});
+  const { x, y } = useMouse({ type: 'client' });
   const removeCurrent = () => {
     const cur = instances.pop();
     if (!cur) {
@@ -40,8 +43,10 @@ export function useDialog() {
     });
   };
   const createDialogVNode = (
-    { content, onDestory }: RenderDialogProps,
+    { content, onDestory, pure, x: _x, y: _y }: RenderDialogProps,
   ) => {
+    const staticX = x.value;
+    const staticY = y.value;
     return h(
       UiDialog,
       {
@@ -54,7 +59,7 @@ export function useDialog() {
       () => [
         h(
           UiDialogContent,
-          { x: x.value, y: y.value },
+          { x: _x ?? staticX, y: _y ?? staticY, pure },
           () => [
             h(VisuallyHidden, null, () => [h(UiDialogTitle), h(UiDialogDescription)]),
             content,
@@ -64,8 +69,8 @@ export function useDialog() {
     );
   };
   let ctx = getCurrentInstance();
-  const _render = ({ content, onDestory }: RenderDialogProps) => {
-    const vnode = createDialogVNode({ content, onDestory });
+  const _render = ({ content, onDestory, pure, x, y }: RenderDialogProps) => {
+    const vnode = createDialogVNode({ content, onDestory, pure, x, y });
     const anchor = document.createElement('div');
     anchor.style = 'position:absolute;inset:0;';
     instances.push({ dialog: vnode, anchor });
