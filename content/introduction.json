@@ -4,8 +4,11 @@
     "name": "GaoNeng-wWw",
     "avatar": "https://avatars.githubusercontent.com/u/31283122?v=4",
     "summary": {
-      "type": "static",
-      "content": ["我并非全知全能, 我只是刚好知道"]
+      "type": "random",
+      "choices": [
+        "我并非全知全能,我只是刚好知道",
+        "万物皆奇迹，乃至黑暗与寂静"
+      ]
     }
   },
   "projects": [

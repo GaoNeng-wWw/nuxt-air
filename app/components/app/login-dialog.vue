@@ -5,7 +5,7 @@ const client = authClient;
 function signIn(provider: string) {
   client.signIn.social({
     provider,
-  })
+  });
 }
 </script>
 
@@ -14,10 +14,6 @@ function signIn(provider: string) {
     <ui-button full class="py-2 flex items-center justify-center gap-1" @click="() => signIn('github')">
       <div class="i-air:github size-4" />
       <span class="text-sm">Github</span>
-    </ui-button>
-    <ui-button full class="py-2 flex items-center justify-center gap-1">
-      <div class="i-air:google size-4" />
-      <span class="text-sm">Google</span>
     </ui-button>
   </div>
 </template>

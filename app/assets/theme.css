@@ -8,6 +8,9 @@ body {overflow: auto;}
   scrollbar-color: var(--default-100) var(--default-300);
   scrollbar-gutter: both;
 }
+.katex *[aria-hidden="true"]{
+  display: none;
+}
 :root {
   --foreground: var(--default-950);
   --background: var(--default-50);

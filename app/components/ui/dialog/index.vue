@@ -23,8 +23,10 @@ function onHiddenFinish() {
 function onTriggerClick(ev: MouseEvent) {
   const el = ev.target as HTMLElement;
   const rect = el.getBoundingClientRect();
-  transformOrigin.x = `${rect.x}px`;
-  transformOrigin.y = `${rect.y}px`;
+  if (props.transformOrigin) {
+    transformOrigin.x = `${rect.x + (rect.width / 2)}px`;
+    transformOrigin.y = `${rect.y + (rect.height / 2)}px`;
+  }
   _show.value = true;
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { animate, motion } from 'motion-v';
+import { motion } from 'motion-v';
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui';
 
 const props = defineProps({
@@ -48,7 +48,7 @@ function open() {
 </script>
 
 <template>
-  <div class="group relative h-fit w-full group">
+  <div class="group relative h-fit w-full group p-2 rounded bg-default-200 my-8">
     <popover-root :open="popoverShow">
       <popover-trigger as-child class="absolute right-2 top-2 z-10" @click="open">
         <div
@@ -72,7 +72,19 @@ function open() {
         </popover-content>
       </popover-portal>
     </popover-root>
-    <pre :class="$props.class" class="not-prose"><slot /></pre>
+    <p class="text-default-500 text-xs">
+      {{ language }}
+    </p>
+    <pre
+      :class="$props.class"
+      class="
+      not-prose [&_code]:overflow-auto! [&_code]:w-full! [&_code_.line.diff.add]:dark:bg-green-800 [&_code_.line.diff.add]:bg-green/40
+      [&_code_.line.diff.remove]:dark:bg-red-800 [&_code_.line.diff.remove]:bg-red/40
+      h-fit flex
+      "
+    >
+      <slot />
+    </pre>
   </div>
 </template>
 
@@ -84,17 +96,13 @@ pre code {
 }
 code .line {
   display: block !important;
-  padding: 0 24px !important;
+  position: relative;
+  padding: 0 8px;
+  border-radius: 1px;
 }
 pre {
   padding: 8px 0 !important;
-}
-code .line.diff.add{
-  background: var(--colors-green-500);
-}
-code .line.diff.remove {
-  background: var(--colors-red-700);
-  opacity: .7;
+  height: fit-content;
 }
 pre.has-focused:hover .line {
   filter: blur(0);
