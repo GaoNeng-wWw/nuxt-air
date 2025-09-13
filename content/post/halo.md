@@ -10,6 +10,19 @@
 
 ![](https://avatars.githubusercontent.com/u/31283122 "Avatar")
 
+## Code
+
+```ts
+console.log('hewwo') // [!code --]
+console.log('hello') // [!code ++]
+console.log('goodbye')
+```
+
+## Bilibili Video
+
+:::bilibili{bvid=BV1GJHRzyEw7}
+:::
+
 ## Card
 
 :::card{type=info}
@@ -42,10 +55,10 @@ caution Card
 :::
 ```
 
-## Math
+<!-- ## Math
 
 $$
 a^2+b^2=c^2
 $$
 
-$a^{\frac{1}{2}} = \sqrt{a}$
+$a^{\frac{1}{2}} = \sqrt{a}$ -->

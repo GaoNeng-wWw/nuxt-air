@@ -75,7 +75,16 @@ function open() {
     <p class="text-default-500 text-xs">
       {{ language }}
     </p>
-    <pre :class="$props.class" class="not-prose [&_code]:overflow-auto! [&_code]:w-full!"><slot /></pre>
+    <pre
+      :class="$props.class"
+      class="
+      not-prose [&_code]:overflow-auto! [&_code]:w-full! [&_code_.line.diff.add]:dark:bg-green-800 [&_code_.line.diff.add]:bg-green/40
+      [&_code_.line.diff.remove]:dark:bg-red-800 [&_code_.line.diff.remove]:bg-red/40
+      h-fit flex
+      "
+    >
+      <slot />
+    </pre>
   </div>
 </template>
 
@@ -85,29 +94,15 @@ pre code {
   min-width: 100% !important;
   width: fit-content !important;
 }
-.line::before {
-  content: attr(line);
-  display: inline-block;
-  min-width: 24px;
-  color: var(--default-500);
-  background-color: var(--colors-default-200);
-  font-size: .8rem;
-  position: sticky;
-  left: 0%;
-}
 code .line {
   display: block !important;
   position: relative;
+  padding: 0 8px;
+  border-radius: 1px;
 }
 pre {
   padding: 8px 0 !important;
-}
-code .line.diff.add{
-  background: var(--colors-green-500);
-}
-code .line.diff.remove {
-  background: var(--colors-red-700);
-  opacity: .7;
+  height: fit-content;
 }
 pre.has-focused:hover .line {
   filter: blur(0);

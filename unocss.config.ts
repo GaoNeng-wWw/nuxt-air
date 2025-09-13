@@ -14,6 +14,9 @@ export default defineConfig({
         'zoom-in': 'cubic-bezier(0.35, 0, 0.2, 1)',
         'zoom-out': 'cubic-bezier(0, 0, 0.2, 1)',
       },
+      keyframes: {
+        'fade-out': '{from: {opacity: 1;} to: {opacity: 0}}',
+      }
     },
     colors: {
       foreground: 'var(--foreground)',
@@ -62,5 +65,5 @@ export default defineConfig({
     }),
     presetTypography(),
   ],
-  safelist: [...icons],
+  safelist: [...icons, 'bg-green-500', 'bg-green-400', 'bg-green-300'],
 });

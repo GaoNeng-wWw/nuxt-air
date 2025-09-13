@@ -39,32 +39,28 @@ const refinedSrc = computed(() => {
 </script>
 
 <template>
-  <lazy-client-only>
-    <div class="w-fit mx-auto text-center space-y-2 size-fit">
-      <ui-dialog transform-origin>
-        <ui-dialog-trigger>
-          <div class="w-fit h-fit relative">
-            <img
-              :src="refinedSrc"
-              :alt="props.alt"
-              :width="props.width"
-              :height="props.height"
-              class="rounded-lg max-w-76"
-            >
-            <div class="w-full h-full bg-black bg-opacity-20 absolute top-0 left-0 hidden dark:block pointer-events-none" />
-            <span v-if="props.title" class="text-default-600">{{ props.title }}</span>
-          </div>
-        </ui-dialog-trigger>
-        <ui-dialog-content pure>
+  <ui-dialog transform-origin>
+    <ui-dialog-trigger as="div" class="w-full flex items-center justify-center text-center">
+      <div class="w-fit h-fit relative">
+        <ui-skeleton class="relative min-w-76 min-h-76">
           <img
             :src="refinedSrc"
             :alt="props.alt"
-            :width="props.width"
-            :height="props.height"
             class="rounded-lg max-w-76"
           >
-        </ui-dialog-content>
-      </ui-dialog>
-    </div>
-  </lazy-client-only>
+          <div class="w-full h-full bg-black bg-opacity-20 absolute top-0 left-0 hidden dark:block pointer-events-none" />
+          <span v-if="props.title" class="text-default-600">{{ props.title }}</span>
+        </ui-skeleton>
+      </div>
+    </ui-dialog-trigger>
+    <ui-dialog-content pure>
+      <img
+        :src="refinedSrc"
+        :alt="props.alt"
+        :width="props.width"
+        :height="props.height"
+        class="rounded-lg max-w-76"
+      >
+    </ui-dialog-content>
+  </ui-dialog>
 </template>

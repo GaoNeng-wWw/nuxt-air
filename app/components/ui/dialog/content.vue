@@ -23,7 +23,6 @@ const { transformOrigin, onHiddenFinish } = useDialogContext();
 const x = computed(() => props.x ? `${props.x}px` : transformOrigin.x);
 const y = computed(() => props.y ? `${props.y}px` : transformOrigin.y);
 
-
 function onLeave(_: Element) {
   onHiddenFinish();
 }
