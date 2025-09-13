@@ -18,11 +18,6 @@ console.log('hello') // [!code ++]
 console.log('goodbye')
 ```
 
-## Bilibili Video
-
-:::bilibili{bvid=BV1GJHRzyEw7}
-:::
-
 ## Card
 
 :::card{type=info}
@@ -52,6 +47,26 @@ caution Card
 ```md
 :::card{type=caution}
 caution Card
+:::
+```
+
+## Bilibili Video
+
+:::bilibili{bvid=BV1GJHRzyEw7}
+:::
+
+```md
+:::bilibili{bvid=BV1GJHRzyEw7}
+:::
+```
+
+## Youtube Card
+
+:::youtube{id=dQw4w9WgXcQ}
+:::
+
+```md
+:::youtube{id=dQw4w9WgXcQ}
 :::
 ```
 
