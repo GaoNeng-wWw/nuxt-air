@@ -27,6 +27,7 @@ export default defineNuxtConfig({
       markdown: {
         remarkPlugins: {
           'remark-math': {},
+          'remark-ref': {},
         },
         rehypePlugins: {
           'rehype-katex': {},

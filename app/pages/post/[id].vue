@@ -26,13 +26,13 @@ function onSendSuccess(comment: IComment) {
         prose-stone
         max-w-full
         dark:prose-invert
-        prose-headings:my-4
+        prose-headings:my-4!
         prose-headings:no-underline
         prose-headings:before:mr-2
         prose-headings:before:text-default-600
         prose-headings:before:content-none
         prose-h1:mb-0
-        prose-p:my-0
+        prose-p:my-2
         prose-p:before:content-none
         prose-p:after:content-none
         prose-a:no-underline
@@ -40,7 +40,8 @@ function onSendSuccess(comment: IComment) {
         prose-pre:block
         prose-pre:prose-code:*:block
         prose-ul:prose-li:my-0
-        prose-table:table prose-table:w-full
+        prose-table:w-full
+        prose-th:min-w-8rem
         prose-table:max-w-full prose-table:mx-auto prose-table:w-fit
         prose-td:b-none prose-tr:bg-transparent! prose-th:b-none
         prose-th:b-t-2 prose-th:b-t-solid prose-th:b-t-default-500

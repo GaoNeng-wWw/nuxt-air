@@ -25,7 +25,9 @@ const summaries = computed(() => {
       <div class="w-fit flex flex-col justify-around">
         <h1 class="text-default-900 font-bold text-xl">{{ profile.name }}</h1>
         <div class="w-full text-default-800 text-xs">
-          <p v-for="summary, idx of summaries" :key="idx"> {{ summary }} </p>
+          <client-only placeholder="loading...">
+            <p v-for="summary, idx of summaries" :key="idx"> {{ summary }} </p>
+          </client-only>
         </div>
       </div>
     </div>

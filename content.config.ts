@@ -44,6 +44,13 @@ export default defineContentConfig({
         tags: z.array(z.string()),
         image: z.string().optional(),
         date: z.date(),
+        references: z.array(
+          z.object({
+            id: z.string(),
+            title: z.string(),
+            doi: z.string(),
+          }),
+        ),
       }),
     }),
     tags: defineCollection({

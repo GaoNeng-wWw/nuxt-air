@@ -41,15 +41,17 @@ const refinedSrc = computed(() => {
 <template>
   <ui-dialog transform-origin>
     <ui-dialog-trigger as="div" class="w-full flex items-center justify-center text-center">
-      <div class="w-fit h-fit relative">
-        <ui-skeleton class="relative min-w-76 min-h-76">
+      <div class="w-fit h-fit relative my-4">
+        <ui-skeleton class="relative">
           <img
             :src="refinedSrc"
             :alt="props.alt"
-            class="rounded-lg max-w-76"
+            class="rounded-lg w-full"
           >
           <div class="w-full h-full bg-black bg-opacity-20 absolute top-0 left-0 hidden dark:block pointer-events-none" />
-          <span v-if="props.title" class="text-default-600">{{ props.title }}</span>
+          <div v-if="props.title" class="w-fit mx-auto mt-2">
+            <span class="text-default-600">{{ props.title }}</span>
+          </div>
         </ui-skeleton>
       </div>
     </ui-dialog-trigger>
@@ -59,7 +61,7 @@ const refinedSrc = computed(() => {
         :alt="props.alt"
         :width="props.width"
         :height="props.height"
-        class="rounded-lg max-w-76"
+        class="rounded-lg max-w-full w-50vw"
       >
     </ui-dialog-content>
   </ui-dialog>

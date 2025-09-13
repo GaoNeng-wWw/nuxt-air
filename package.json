@@ -40,6 +40,7 @@
     "rehype-katex": "^7.0.1",
     "reka-ui": "^2.4.0",
     "remark-math": "^6.0.0",
+    "remark-ref": "file:./markdown-plugins/remark-ref",
     "sass-embedded": "^1.91.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",

@@ -92,6 +92,9 @@ importers:
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
+      remark-ref:
+        specifier: file:./markdown-plugins/remark-ref
+        version: file:markdown-plugins/remark-ref
       sass-embedded:
         specifier: ^1.91.0
         version: 1.91.0
@@ -6518,6 +6521,9 @@ packages:
 
   remark-parse@11.0.0:
     resolution: {integrity: sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==}
+
+  remark-ref@file:markdown-plugins/remark-ref:
+    resolution: {directory: markdown-plugins/remark-ref, type: directory}
 
   remark-rehype@11.1.2:
     resolution: {integrity: sha512-Dh7l57ianaEoIpzbp0PC9UKAdCSVklD8E5Rpw7ETfbTl3FqcOOgq5q2LVDhgGCkaBv7p24JXikPdvhhmHvKMsw==}
@@ -15699,6 +15705,10 @@ snapshots:
       unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
+
+  remark-ref@file:markdown-plugins/remark-ref:
+    dependencies:
+      unist-util-visit: 5.0.0
 
   remark-rehype@11.1.2:
     dependencies:
