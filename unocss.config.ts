@@ -15,8 +15,8 @@ export default defineConfig({
         'zoom-out': 'cubic-bezier(0, 0, 0.2, 1)',
       },
       keyframes: {
-        'fade-out': '{from: {opacity: 1;} to: {opacity: 0}}',
-      }
+        'fade-out': '{from {opacity: 1;} to {opacity: 0}}',
+      },
     },
     colors: {
       foreground: 'var(--foreground)',
