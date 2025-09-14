@@ -42,17 +42,15 @@ const refinedSrc = computed(() => {
   <ui-dialog transform-origin>
     <ui-dialog-trigger as="div" class="w-full flex items-center justify-center text-center">
       <div class="w-fit h-fit relative my-4">
-        <ui-skeleton class="relative">
-          <img
-            :src="refinedSrc"
-            :alt="props.alt"
-            class="rounded-lg w-full"
-          >
-          <div class="w-full h-full bg-black bg-opacity-20 absolute top-0 left-0 hidden dark:block pointer-events-none" />
-          <div v-if="props.title" class="w-fit mx-auto mt-2">
-            <span class="text-default-600">{{ props.title }}</span>
-          </div>
-        </ui-skeleton>
+        <img
+          :src="refinedSrc"
+          :alt="props.alt"
+          class="rounded-lg w-full"
+        >
+        <div class="w-full h-full bg-black bg-opacity-20 absolute top-0 left-0 hidden dark:block pointer-events-none" />
+        <div v-if="props.title" class="w-fit mx-auto mt-2">
+          <span class="text-default-600">{{ props.title }}</span>
+        </div>
       </div>
     </ui-dialog-trigger>
     <ui-dialog-content pure>
