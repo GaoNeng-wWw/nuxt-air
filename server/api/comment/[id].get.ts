@@ -21,4 +21,4 @@ export default defineProductApi(async (event) => {
     },
   });
   return { comments, total };
-}, { comment: ['read'] });
+}, { comment: ['read']}, false);

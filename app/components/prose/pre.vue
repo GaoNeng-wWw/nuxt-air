@@ -48,7 +48,7 @@ function open() {
 </script>
 
 <template>
-  <div class="group relative h-fit w-full group p-2 rounded bg-default-200 my-8">
+  <div class="group relative h-fit w-full group p-2 rounded bg-default-100 my-8">
     <popover-root :open="popoverShow">
       <popover-trigger as-child class="absolute right-2 top-2 z-10" @click="open">
         <div
@@ -60,7 +60,7 @@ function open() {
         />
       </popover-trigger>
       <popover-portal>
-        <popover-content as-child side="top" :side-offset="8" class="w-fit rounded bg-default-200 text-default-800 px-2 py-1">
+        <popover-content as-child side="top" :side-offset="8" class="w-fit rounded bg-default-100 text-default-800 px-2 py-1">
           <motion.div
             :initial="{ opacity: 0, scale: 0.95 }"
             :animate="{ opacity: 1, scale: 1 }"

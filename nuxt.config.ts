@@ -72,4 +72,17 @@ export default defineNuxtConfig({
     storage: 'localStorage', // or 'sessionStorage' or 'cookie'
     storageKey: 'nuxt-color-mode',
   },
+  nitro: {
+    storage: {
+      default: {
+        driver: 'redis',
+        url: import.meta.env.KV_URL,
+      },
+    },
+    devStorage: {
+      default: {
+        driver: 'memory',
+      },
+    },
+  },
 });

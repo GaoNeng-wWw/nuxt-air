@@ -22,7 +22,7 @@ const { locale } = useI18n();
         </ui-tag>
       </nuxt-link>
     </div>
-    <p v-if="post.description" class="my-2 line-clamp-2 text-default-700">
+    <p v-if="post.description" class="my-2 line-clamp-2 text-default-700 text-xs" :title="post.description">
       {{ post.description }}
     </p>
     <span v-if="post.date" class="text-sm text-default-600">{{ formatDate(new Date(post.date), 'YYYY/MM/DD') }}</span>

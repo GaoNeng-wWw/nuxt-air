@@ -11,8 +11,12 @@ export interface Permissions {
 export function defineProductApi<T extends EventHandlerRequest, D>(
   handler: EventHandler<T, D>,
   permissions?: Permissions,
+  needSession: boolean=true,
 ): EventHandler<T, D> {
   return defineEventHandler<T>(async (_ctx) => {
+    if (!needSession) {
+      return handler(_ctx);
+    }
     const session = auth.api.getSession({
       headers: _ctx.headers,
     });
@@ -28,7 +32,7 @@ export function defineProductApi<T extends EventHandlerRequest, D>(
           return auth.api.userHasPermission({
             body: {
               permissions,
-              userId: session.user.id
+              userId: session.user.id,
             },
           })
             .then(({ success }) => {
@@ -39,7 +43,7 @@ export function defineProductApi<T extends EventHandlerRequest, D>(
                 });
               }
               return handler(_ctx);
-            })
+            });
         }
         return handler(_ctx);
       })

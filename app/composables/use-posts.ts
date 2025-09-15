@@ -31,7 +31,8 @@ export async function usePosts(
     loading.value = true;
     let handle = queryCollection('post')
       .limit(size.value)
-      .skip((page.value - 1) * size.value);
+      .skip((page.value - 1) * size.value)
+      .order('date', 'DESC');
     if (tag) {
       handle = handle.where('tags', 'LIKE', `%${tag}%`);
     }

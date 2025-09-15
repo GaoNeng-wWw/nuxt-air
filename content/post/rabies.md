@@ -1,12 +1,12 @@
 ---
-createAt: 2025/07/24
+date: 2025/07/24
 tags:
   - virology
-  - biology
 references:
   - id: mbs:/content/journal/jgv/10.1099/vir.0.19128-0
     title: Rabies virus matrix protein regulates the balance of virus transcription and replication
     doi: https://doi.org/10.1099/vir.0.19128-0
+description: 狂犬病是一种有狂犬病病毒引起的人畜共患疾病, 可在恒温动物身上造成严重的脑炎. 对于未接种疫苗的患者, 神经症状出现时几乎100%死亡. 本文主要阐述了狂犬病病毒侵染人体机制与基因组作用.
 ---
 
 # 狂犬病
