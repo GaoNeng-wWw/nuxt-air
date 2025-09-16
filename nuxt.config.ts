@@ -76,7 +76,7 @@ export default defineNuxtConfig({
     storage: {
       default: {
         driver: 'redis',
-        url: import.meta.env.KV_URL,
+        path: import.meta.env.KV_URL,
       },
     },
     devStorage: {
