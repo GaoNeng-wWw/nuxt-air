@@ -29,6 +29,7 @@
     "@tiptap/extensions": "^3.0.7",
     "@tiptap/suggestion": "^3.3.0",
     "@unocss/extractor-arbitrary-variants": "^66.3.3",
+    "@upstash/redis": "^1.35.3",
     "@vueuse/components": "^13.7.0",
     "@vueuse/core": "^13.5.0",
     "better-auth": "^1.3.4",
