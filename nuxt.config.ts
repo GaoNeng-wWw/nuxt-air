@@ -85,4 +85,7 @@ export default defineNuxtConfig({
       },
     },
   },
+  unocss: {
+    envMode: 'build',
+  },
 });
