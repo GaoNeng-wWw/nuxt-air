@@ -81,8 +81,12 @@ export default defineNuxtConfig({
     },
     devStorage: {
       default: {
-        driver: 'memory',
+        driver: 'redis',
+        url: import.meta.env.KV_URL,
       },
     },
+  },
+  unocss: {
+    envMode: 'build',
   },
 });
