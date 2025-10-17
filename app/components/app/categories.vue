@@ -45,7 +45,7 @@ onMounted(() => {
     >
       <span
         :data-active="modelValue?.includes(tag.id)"
-        class="text-default-500 data-[active=true]:dark:text-primary-800 data-[active=true]:text-primary-900 cursor-pointer hover:text-primary-600 transition"
+        class="text-default-700 data-[active=true]:dark:text-primary-600 data-[active=true]:text-primary-900 cursor-pointer hover:text-primary-600 transition"
         @click="appendActiveTag(tag.id)"
       >
         {{ tag[locale] }}
