@@ -3,32 +3,20 @@ import { vElementVisibility } from '@vueuse/components';
 import { motion } from 'motion-v';
 
 const props = defineProps<{
-  tag?: string;
+  tag: string;
 }>();
 
-const {
-  data,
-  loadMore,
-  canLoadMore,
-  showLoading,
-} = await usePosts(
-  {
-    tag: computed(() => props.tag ?? ''),
-  },
+const { total } = usePostTotal(
+  computed(() => props.tag),
 );
-
-const postList = useTemplateRef('post-list');
-useSaveScrollPosition(postList);
-function onLoadMore() {
-  if (!canLoadMore()) {
-    return;
-  }
-  loadMore();
-}
+const { data, onLoadMore, showLoading } = usePosts({
+  tag: computed(() => props.tag),
+  total: computed(() => total.value),
+});
 </script>
 
 <template>
-  <div ref="post-list" class="w-full h-full mx-auto pt-4">
+  <div class="w-full h-full mx-auto pt-4">
     <div class="w-full mx-auto px-6">
       <ul class="space-y-4 h-full">
         <motion.div

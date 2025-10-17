@@ -1,5 +1,6 @@
-import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWind4 } from 'unocss';
+import { defineConfig, presetIcons, presetTypography, presetWind4 } from 'unocss';
 import { loadCustomIconSet } from './helper/resolve-svg';
+import { presetScrollbar } from 'unocss-preset-scrollbar';
 
 const icons = Object.keys(loadCustomIconSet()().icons).map(key => `i-air:${key}`);
 export default defineConfig({
@@ -64,6 +65,7 @@ export default defineConfig({
       },
     }),
     presetTypography(),
+    presetScrollbar(),
   ],
   safelist: [...icons, 'bg-green-500', 'bg-green-400', 'bg-green-300'],
 });
