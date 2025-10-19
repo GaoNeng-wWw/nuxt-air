@@ -16,7 +16,7 @@ const { locale } = useI18n();
     </h1>
     <div v-if="post.tags && post.tags.length" class="w-full flex flex-wrap gap-2 my-2">
       <nuxt-link v-for="tag of post.tags" :key="tag" :to="`/posts/${tag}`">
-        <ui-tag :key="tag" class="px-0 text-white text-sm flex items-center space-x-1">
+        <ui-tag :key="tag" class="px-0 text-default-600 text-sm flex items-center space-x-1">
           <div class="i-lucide:hash size-3.5" />
           <span>{{ tagMap.get(tag)?.[locale] }}</span>
         </ui-tag>

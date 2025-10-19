@@ -39,9 +39,11 @@ export function usePosts(
   const page = ref(0);
   const data: Ref<PostCollectionItem[]> = ref([]);
   const loading = ref(false);
+  const hiddenLoadMore = ref(false);
   const showLoading = computed(() => canLoad({ page, size: DEFAULT_PAGE_SIZE, total }) && loading.value);
   const onLoadMore = () => {
     if (!canLoad({ page: toValue(page) + 1, size: DEFAULT_PAGE_SIZE, total }) || loading.value) {
+      hiddenLoadMore.value = true;
       return;
     }
     loading.value = true;
@@ -83,5 +85,5 @@ export function usePosts(
   onUnmounted(() => {
     scope.stop();
   });
-  return { data, onLoadMore, showLoading };
+  return { data, onLoadMore, showLoading, hiddenLoadMore};
 }

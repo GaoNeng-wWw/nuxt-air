@@ -16,8 +16,8 @@ const { data, onLoadMore, showLoading } = usePosts({
 </script>
 
 <template>
-  <div class="w-full h-full mx-auto pt-4">
-    <div class="w-full mx-auto px-6">
+  <div class="w-full h-full">
+    <div class="w-full">
       <ul class="space-y-4 h-full">
         <motion.div
           v-for="post, idx of data" :key="post.id"

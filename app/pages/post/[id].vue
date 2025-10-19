@@ -15,6 +15,10 @@ function onSendSuccess(comment: IComment) {
   }
   commentList.value.onReloadComments(comment);
 }
+useSeoMeta({
+  title: data.value?.title,
+  description: data.value?.description,
+});
 </script>
 
 <template>

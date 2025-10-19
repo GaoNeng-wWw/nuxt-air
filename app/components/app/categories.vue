@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { useResizeObserver } from '@vueuse/core';
+import { motion } from 'motion-v';
+
 const {
   tags,
 } = useTags();
@@ -6,50 +9,49 @@ const {
   locale,
 } = useI18n();
 const items = useTemplateRef('items');
+const wrapper = useTemplateRef('wrapper');
 const width: Ref<'auto' | number> = ref('auto');
 
-const modelValue = defineModel<string>();
-
-function appendActiveTag(tag: string) {
-  if (modelValue.value === tag) {
-    modelValue.value = '';
+function calcWidth() {
+  let _width = -1;
+  if (!items.value?.length || wrapper.value) {
     return;
   }
-  modelValue.value = tag;
+  for (const item of items.value) {
+    _width = Math.max(_width, (item?.$el as HTMLLIElement).offsetWidth);
+  }
+  width.value = _width === -1 ? 'auto' : _width;
 }
 
 onMounted(() => {
-  let _width = -1;
-  if (items.value) {
-    for (const item of items.value) {
-      _width = Math.max(_width, item.offsetWidth);
-    }
-    width.value = _width === -1 ? 'auto' : _width;
+  if (!document.body) {
+    return;
   }
+  useResizeObserver(document.body, calcWidth);
 });
 </script>
 
 <template>
-  <ui-scroll
-    class="
-      max-w-full w-fit! sticky top-4 ml-4 w-md bg-default-100  px-4 py-3 rounded-full backdrop-blur-xl
-      z-10 text-sm border border-solid border-default-200 bg-opacity-20
-      "
-  >
-    <div
-      v-for="tag of tags"
-      ref="items"
-      :key="tag.id"
-      class="shrink-0 px-2"
-      :style="{ width: `${width}px` }"
-    >
-      <span
-        :data-active="modelValue?.includes(tag.id)"
-        class="text-default-700 data-[active=true]:dark:text-primary-600 data-[active=true]:text-primary-900 cursor-pointer hover:text-primary-600 transition"
-        @click="appendActiveTag(tag.id)"
+  <div ref="wrapper" class="w-full">
+    <ui-scroll class="w-full text-default-800">
+      <nuxt-link
+        to="/"
+        class="shrink-0 px-2 hover:text-primary-600 transition"
+        active-class="dark:text-primary-600 text-primary-600"
+      >
+        首页
+      </nuxt-link>
+      <nuxt-link
+        v-for="tag of tags"
+        ref="items"
+        :key="tag.id"
+        class="shrink-0 px-2 hover:text-primary-600 transition"
+        active-class="dark:text-primary-600 text-primary-600"
+        :style="{ width: `${width}px` }"
+        :to="`/posts/${tag.id}`"
       >
         {{ tag[locale] }}
-      </span>
-    </div>
-  </ui-scroll>
+      </nuxt-link>
+    </ui-scroll>
+  </div>
 </template>

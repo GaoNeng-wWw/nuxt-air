@@ -3,13 +3,11 @@ definePageMeta({
   title: '首页',
 });
 
-const activeTag:Ref<string> = ref('');
-
+const nav = useNav();
 </script>
 
 <template>
-  <div class="max-w-4xl w-full mx-auto pt-4 mx-auto space-y-2 h-200vh relative">
-    <app-categories v-model="activeTag" />
-    <ui-post-list :tag="activeTag" />
+  <div class="max-w-4xl w-full mx-auto pt-6 mx-auto space-y-2 relative px-6">
+    <ui-post-list :tag="nav.state.value.activeTag" />
   </div>
 </template>
