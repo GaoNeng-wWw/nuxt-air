@@ -1,4 +1,5 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content';
+import { asSitemapCollection } from '@nuxtjs/sitemap/content';
 
 const introductSchema = z.object({
   profile: z.object({
@@ -37,23 +38,25 @@ const introductSchema = z.object({
 
 export default defineContentConfig({
   collections: {
-    post: defineCollection({
-      type: 'page',
-      source: 'post/*',
-      schema: z.object({
-        title: z.string(),
-        tags: z.array(z.string()),
-        image: z.string().optional(),
-        date: z.date(),
-        references: z.array(
-          z.object({
-            id: z.string(),
-            title: z.string(),
-            doi: z.string(),
-          }),
-        ),
+    post: defineCollection(
+      asSitemapCollection({
+        type: 'page',
+        source: 'post/*',
+        schema: z.object({
+          title: z.string(),
+          tags: z.array(z.string()),
+          image: z.string().optional(),
+          date: z.date(),
+          references: z.array(
+            z.object({
+              id: z.string(),
+              title: z.string(),
+              doi: z.string(),
+            }),
+          ),
+        }),
       }),
-    }),
+    ),
     tags: defineCollection({
       type: 'data',
       source: 'tags.yaml',

@@ -8,10 +8,13 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/image',
     '@unocss/nuxt',
+    // '@nuxtjs/sitemap',
     '@nuxt/content',
     '@nuxtjs/i18n',
     'vue-sonner/nuxt',
     '@nuxtjs/color-mode',
+    // '@nuxtjs/seo',
+    'nuxt-og-image',
   ],
   eslint: {
     config: {
@@ -34,12 +37,8 @@ export default defineNuxtConfig({
         },
         highlight: {
           theme: {
-            // Default theme (same as single string)
             default: 'github-light',
-            // Theme used if `html.dark`
             dark: 'github-dark',
-            // Theme used if `html.sepia`
-            sepia: 'monokai',
           },
         },
       },
@@ -89,4 +88,15 @@ export default defineNuxtConfig({
   unocss: {
     envMode: 'build',
   },
+  ogImage: {
+    debug: true,
+    fonts: [
+      'Noto+Sans+SC:400',
+    ],
+  },
+  runtimeConfig:{
+    public:{
+      SITE_NAME:import.meta.env.NUXT_SITE_NAME
+    }
+  }
 });
