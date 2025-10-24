@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-definePageMeta({
-  title: '首页',
-});
+// definePageMeta({
+//   title: '首页',
+// });
+
+useHead({
+  title: '首页'
+})
 
 const nav = useNav();
 </script>

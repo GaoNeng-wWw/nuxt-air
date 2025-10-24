@@ -15,9 +15,15 @@ function onSendSuccess(comment: IComment) {
   }
   commentList.value.onReloadComments(comment);
 }
-useSeoMeta({
-  title: data.value?.title,
-  description: data.value?.description,
+useSeoMeta(data.value?.seo || {});
+
+defineOgImageComponent('Post', {
+  title: computed(() => data.value?.title),
+  description: computed(() => data.value?.seo.description),
+  tags: computed(() => data.value?.tags),
+});
+useHead({
+  title: computed(() => data.value?.title),
 });
 </script>
 

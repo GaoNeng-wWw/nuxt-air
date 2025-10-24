@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import { useDark } from '@vueuse/core';
 
+const cfg = useRuntimeConfig();
+
 useDark();
+
+useHead({
+  titleTemplate: `%s - ${cfg.public.SITE_NAME}`,
+});
 </script>
 
 <template>
