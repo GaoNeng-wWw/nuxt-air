@@ -1,9 +1,18 @@
-import { defineConfig, presetAttributify, presetIcons, presetTypography, presetWind4 } from 'unocss';
+import { defineConfig, presetIcons, presetTypography, presetWind4 } from 'unocss';
+import { presetScrollbar } from 'unocss-preset-scrollbar';
 import { loadCustomIconSet } from './helper/resolve-svg';
 
 const icons = Object.keys(loadCustomIconSet()().icons).map(key => `i-air:${key}`);
 export default defineConfig({
   theme: {
+    breakpoint: {
+      'xs': '320px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     animation: {
       durations: {
         'zoom-in': '200ms',
@@ -64,6 +73,10 @@ export default defineConfig({
       },
     }),
     presetTypography(),
+    presetScrollbar(),
   ],
   safelist: [...icons, 'bg-green-500', 'bg-green-400', 'bg-green-300'],
+  shortcuts: {
+    'nav-bg': 'backdrop-blur-xl bg-default-100/20 border border-solid border-default-200 backdrop-blur-20 backdrop-saturate-100',
+  },
 });

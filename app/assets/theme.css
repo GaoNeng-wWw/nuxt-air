@@ -28,17 +28,17 @@ body {overflow: auto;}
   --default-900: oklch(0.21 0.006 285.885);
   --default-950: oklch(0.141 0.005 285.823);
 
-  --primary-50: oklch(0.969 0.015 12.422);
-  --primary-100: oklch(0.941 0.03 12.58);
-  --primary-200: oklch(0.892 0.058 10.001);
-  --primary-300: oklch(0.81 0.117 11.638);
-  --primary-400: oklch(0.712 0.194 13.428);
-  --primary-500: oklch(0.645 0.246 16.439);
-  --primary-600: oklch(0.586 0.253 17.585);
-  --primary-700: oklch(0.514 0.222 16.935);
-  --primary-800: oklch(0.455 0.188 13.697);
-  --primary-900: oklch(0.41 0.159 10.272);
-  --primary-950: oklch(0.271 0.105 12.094);
+  --primary-50: oklch(0.962 0.021 207.51);
+  --primary-100: oklch(0.917 0.051 207.02);
+  --primary-200: oklch(0.837 0.08 205.73);
+  --primary-300: oklch(0.764 0.073 205.85);
+  --primary-400: oklch(0.674 0.064 206.33);
+  --primary-500: oklch(0.58 0.056 206.82);
+  --primary-600: oklch(0.496 0.047 205.37);
+  --primary-700: oklch(0.401 0.038 205.84);
+  --primary-800: oklch(0.315 0.03 205.85);
+  --primary-900: oklch(0.222 0.021 206.49);
+  --primary-950: oklch(0.176 0.018 202.34);
 }
 .dark {
   --default-950: oklch(0.985 0 0);
@@ -53,15 +53,15 @@ body {overflow: auto;}
   --default-100: oklch(0.21 0.006 285.885);
   --default-50: oklch(0.141 0.005 285.823);
 
-  --primary-950: oklch(0.969 0.015 12.422);
-  --primary-900: oklch(0.941 0.03 12.58);
-  --primary-800: oklch(0.892 0.058 10.001);
-  --primary-700: oklch(0.81 0.117 11.638);
-  --primary-600: oklch(0.712 0.194 13.428);
-  --primary-500: oklch(0.645 0.246 16.439);
-  --primary-400: oklch(0.586 0.253 17.585);
-  --primary-300: oklch(0.514 0.222 16.935);
-  --primary-200: oklch(0.455 0.188 13.697);
-  --primary-100: oklch(0.41 0.159 10.272);
-  --primary-50: oklch(0.271 0.105 12.094);
+  --primary-950: oklch(0.962 0.021 207.51);
+  --primary-900: oklch(0.917 0.051 207.02);
+  --primary-800: oklch(0.837 0.08 205.73);
+  --primary-700: oklch(0.764 0.073 205.85);
+  --primary-600: oklch(0.674 0.064 206.33);
+  --primary-500: oklch(0.58 0.056 206.82);
+  --primary-400: oklch(0.496 0.047 205.37);
+  --primary-300: oklch(0.401 0.038 205.84);
+  --primary-200: oklch(0.315 0.03 205.85);
+  --primary-100: oklch(0.222 0.021 206.49);
+  --primary-50: oklch(0.176 0.018 202.34);
 }

@@ -1,7 +1,7 @@
 export interface CanLoad {
-  page: MaybeRef<number>;
-  size: MaybeRef<number>;
-  total: MaybeRef<number>;
+  page: MaybeRef<number> | ComputedRef<number>;
+  size: MaybeRef<number> | ComputedRef<number>;
+  total: MaybeRefOrGetter<number> | ComputedRef<number>;
 }
 export function canLoad(
   { page, size, total }: CanLoad,

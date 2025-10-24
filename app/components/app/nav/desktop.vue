@@ -1,89 +1,65 @@
 <script lang="ts" setup>
-import { AppLoginDialog } from '#components';
 import { AnimatePresence, motion } from 'motion-v';
-import { HoverCardContent, HoverCardPortal, HoverCardRoot, HoverCardTrigger } from 'reka-ui';
 import { authClient } from '~~/shared/auth';
 
-const { locale } = useI18n();
+import LoginDialog from '../login-dialog.vue';
+import MobileDrawer from './mobile-drawer.vue';
 
-const {
-  tags,
-} = useTags();
+const { state } = useNav();
 
-const { render } = useDialog();
-
+const router = useRouter();
+const { render } = useDrawer();
+const { render: renderDialog } = useDialog();
 const rawSession = authClient.useSession();
-const data = computed(() => rawSession.value.data);
-const user = computed(() => data.value?.user);
 
-function showLoginDialog() {
-  render({
-    content: h(AppLoginDialog),
-  });
-}
+const data = computed(() => rawSession.value.data);
+const isPost = computed(() => state.value.postId);
 </script>
 
 <template>
-  <motion.nav
-    class="max-w-4xl w-full sticky top-0 px-4 z-10 top-4 flex  mx-auto items-center gap-8 transition transition-all duration-300"
-  >
+  <animate-presence>
     <motion.div
-      layout
-      :transition="{
-        duration: 0.4,
-        ease: ['easeOut', 'easeOut'],
-        type: 'tween',
-      }"
-      class="
-          py-3 px-8 rounded-full bg-default-100 bg-opacity-90 backdrop-blur border border-solid border-default-300
-          w-full
-          mx-0 sm:w-[calc(100%_-_2.5rem)] transition-all duration-300 ease-out
-          "
+      :data-type="isPost ? 'post' : 'index'"
+      layout-root
+      class="w-full px-5 z-10 flex items-center group"
     >
-      <hover-card-root>
-        <hover-card-trigger>
-          <nuxt-link to="/" active-class="text-default-900" class="text-default-700 text-sm">
-            {{ $t('posts') }}
-          </nuxt-link>
-        </hover-card-trigger>
-        <hover-card-portal>
-          <hover-card-content
-            :side-offset="24"
-            align="center"
-            class="py-1 px-8 bg-default-100 bg-opacity-90 text-default-800 rounded-lg backdrop-blur border border-default-300"
-          >
-            <nuxt-link
-              v-for="tag of tags"
-              :key="tag.id"
-              class="block py-2 "
-              active-class="text-primary-500"
-              :to="`/posts/${tag.id}`"
+      <motion.div layout class="max-w-50% flex items-center gap-2">
+        <motion.div
+          v-if="isPost"
+          layout="position"
+          class="text-default-950 size-8 rounded-full z-10 text-sm nav-bg aspect-ratio-square flex items-center justify-center cursor-pointer"
+          @click="router.back"
+        >
+          <motion.div layout class="i-material-symbols:chevron-left size-4" />
+        </motion.div>
+        <motion.div
+          class="w-fit nav-bg rounded-full overflow-hidden"
+        >
+          <motion.div class="flex items-center">
+            <motion.div
+              v-if="!isPost"
+              layout
+              class="text-sm px-4 py-2 grow hidden sm:block"
             >
-              <div>
-                {{ tag[locale] }}
-              </div>
-            </nuxt-link>
-          </hover-card-content>
-        </hover-card-portal>
-      </hover-card-root>
-    </motion.div>
-    <animate-presence>
-      <motion.div
-        layout
-        :transition="{
-          duration: 0.4,
-          ease: ['easeOut', 'easeOut'],
-          type: 'tween',
-        }"
-        class="
-            bg-default-200 aspect-ratio rounded-full p-1 size-10 block
-            absolute right-0 -translate-x-50% transition
-            sm:static sm:translate-none sm:border sm:border-solid sm:border-default-300
-          "
-      >
-        <app-account-button v-if="!user" class="size-full! bg-default-800!" @click="showLoginDialog" />
-        <nuxt-img v-if="user?.image" :src="user?.image" class="size-full rounded-full" />
+              <app-categories />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+        <motion.div class="size-fit rounded-full nav-bg cursor-pointer">
+          <motion.div
+            class="sm:hidden px-4 py-2"
+            @click="() => render({ content: h(MobileDrawer) })"
+          >
+            <div class="i-material-symbols:menu size-4 text-default-800" />
+          </motion.div>
+        </motion.div>
       </motion.div>
-    </animate-presence>
-  </motion.nav>
+      <motion.div
+        class="ml-auto mr-0 nav-bg p-2 rounded-full z-10"
+      >
+        <motion.div v-if="!data" class="i-material-symbols:account-circle size-6 text-default-950" @click="() => renderDialog({ content: h(LoginDialog) })" />
+        <motion.img v-else :src="data.user.image ?? ''" class="size-6 rounded-full" />
+      </motion.div>
+    </motion.div>
+  </animate-presence>
 </template>

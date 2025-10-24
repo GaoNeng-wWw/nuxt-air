@@ -1,19 +1,22 @@
 <script lang="ts" setup>
-import { breakpointsTailwind, useBreakpoints, useDark } from '@vueuse/core';
-
-const { greater } = useBreakpoints(breakpointsTailwind);
-const desktop = greater('sm');
+import { useDark } from '@vueuse/core';
 
 useDark();
 </script>
 
 <template>
-  <div class="w-full h-full min-h-dvh bg-stone-100 dark:bg-stone-950 relative">
-    <lazy-client-only>
-      <app-nav-desktop v-if="desktop" />
-      <app-nav-mobile v-else />
-    </lazy-client-only>
+  <div class="w-full min-h-dvh bg-stone-100 dark:bg-stone-950 relative">
+    <div class="max-w-4xl mx-auto sticky top-4 z-10 h-fit min-h-0 w-full">
+      <client-only>
+        <app-nav-desktop />
+      </client-only>
+    </div>
     <toaster theme="system" rich-colors />
     <nuxt-page keepalive />
+    <footer class="shrink-0 min-h-0 h-fit py-2">
+      <p class="text-xs text-center text-default-400">
+        © 2025 GaoNeng-wWw. All rights reserved.
+      </p>
+    </footer>
   </div>
 </template>

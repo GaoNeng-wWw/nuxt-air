@@ -1,8 +1,10 @@
 ---
 date: 2025/01/01
+tags:
+  - program
 ---
 
-# Example
+# Lorem Example
 
 本章展示了部分本博客的特殊功能, 目前全站文章支持 `MDX` 与 `Markdown`
 

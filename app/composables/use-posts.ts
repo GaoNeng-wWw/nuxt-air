@@ -1,85 +1,89 @@
 import type { PostCollectionItem } from '@nuxt/content';
-import { useDebounceFn, useThrottleFn } from '@vueuse/core';
+import { useThrottleFn } from '@vueuse/core';
 import { canLoad } from '~/lib/can-load';
+import { DEFAULT_PAGE_SIZE } from '~/lib/constants';
 
 export interface UsePosts {
-  tag?: MaybeRefOrGetter<string>;
+  tag?: MaybeRefOrGetter<string | undefined>;
+  total?: MaybeRefOrGetter<number | null>;
 }
 
-export async function usePosts(
-  opts?: UsePosts,
-) {
-  const page = ref(1);
-  const size = ref(10);
-  const total = ref(await queryCollection('post').count('*'));
-  const posts: Ref<PostCollectionItem[]> = ref([]);
-  const data = computed(() => posts.value);
-  const loading = ref(false);
-  const fullLoaded = computed(() => posts.value.length === total.value);
-  const showLoading = computed(() => loading.value && !fullLoaded.value);
-  const fetchTotal = (tag?: string) => {
+export function usePostTotal(tag?: MaybeRefOrGetter<string>) {
+  const total: Ref<number | null> = ref(null);
+  const loading = ref(true);
+  watchEffect(() => {
     const handle = queryCollection('post');
-    if (tag) {
-      handle.where('tags', 'LIKE', `%${tag}%`);
+    if (toValue(tag)) {
+      handle.where('tags', 'LIKE', `%${toValue(tag)}%`);
     }
     handle.count('*')
-      .then((count) => {
-        total.value = count;
-      });
-  };
-  const fetch = (tag?: string) => {
-    loading.value = true;
-    let handle = queryCollection('post')
-      .limit(size.value)
-      .skip((page.value - 1) * size.value)
-      .order('date', 'DESC');
-    if (tag) {
-      handle = handle.where('tags', 'LIKE', `%${tag}%`);
-    }
-    handle
-      .all()
-      .then((newPosts) => {
-        posts.value = [...posts.value, ...newPosts];
-        return posts;
+      .then((value) => {
+        total.value = value;
       })
       .finally(() => {
         loading.value = false;
       });
-  };
-  const canLoadMore = () => {
-    return canLoad({ page, size, total });
-  };
-  const loadMore = useThrottleFn(() => {
-    if (total.value === 0) {
-      page.value += 1;
+  });
+  return { total, totalLoading: loading };
+}
+
+export function usePosts(
+  props: UsePosts,
+) {
+  const activeTag = computed(() => {
+    return toValue(props.tag ?? '');
+  });
+  const total = computed(() => {
+    return toValue(props.total) ?? 0;
+  });
+  const page = ref(0);
+  const data: Ref<PostCollectionItem[]> = ref([]);
+  const loading = ref(false);
+  const hiddenLoadMore = ref(false);
+  const showLoading = computed(() => canLoad({ page, size: DEFAULT_PAGE_SIZE, total }) && loading.value);
+  const onLoadMore = () => {
+    if (!canLoad({ page: toValue(page) + 1, size: DEFAULT_PAGE_SIZE, total }) || loading.value) {
+      hiddenLoadMore.value = true;
       return;
     }
+    loading.value = true;
     page.value += 1;
-  }, 200);
-  fetch(
-    toValue(opts?.tag),
-  );
-  fetchTotal(toValue(opts?.tag));
-  watch(
-    () => opts?.tag,
-    () => {
-      if (opts?.tag) {
-        page.value = 0;
-        posts.value = [];
-      }
-    },
-    { deep: true },
-  );
-  watch(page, () => {
-    fetch(
-      toValue(opts?.tag),
-    );
-  });
-  return {
-    data,
-    loading,
-    showLoading,
-    canLoadMore,
-    loadMore,
   };
+  const scope = effectScope();
+  scope.run(() => {
+    watch(activeTag, (value, oldValue) => {
+      if (value !== oldValue) {
+        page.value = 0;
+        data.value = [];
+      };
+    });
+    watchEffect(() => {
+      loading.value = true;
+      const handle = queryCollection('post');
+      handle.skip(
+        ((page.value - 1) * DEFAULT_PAGE_SIZE),
+      )
+        .limit(DEFAULT_PAGE_SIZE);
+      if (activeTag.value) {
+        handle.where(
+          'tags',
+          'LIKE',
+          `%${activeTag.value}%`,
+        );
+      }
+      handle
+        .order('date', 'DESC')
+        .all()
+        .then((posts) => {
+          data.value = [...data.value, ...posts];
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    });
+  });
+  onUnmounted(() => {
+    scope.stop();
+  });
+  return { data, onLoadMore, showLoading, hiddenLoadMore};
 }
