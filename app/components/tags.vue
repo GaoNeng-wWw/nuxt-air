@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-const route = useRoute();
+const { currentRoute } = useRouter();
 const { tags } = useTags();
-const { data } = useAsyncData(async () => await queryCollection('post').path(route.path).first());
+const { data } = useAsyncData(async () => await queryCollection('post').path(currentRoute.value.path).first(), {
+  watch: [currentRoute],
+});
 
 const postTag = computed(() => data.value?.tags ?? []);
 const displayedTag = computed(() => tags.value?.filter(tag => postTag.value.includes(tag.id)));
