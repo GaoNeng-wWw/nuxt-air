@@ -35,6 +35,7 @@ useHead({
         prose
         prose-stone
         max-w-full
+        [&_img]:w-unset
         dark:prose-invert
         prose-headings:my-4
         prose-headings:no-underline
