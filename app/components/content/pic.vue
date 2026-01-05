@@ -11,7 +11,7 @@ const showDialog = ref(false);
 </script>
 
 <template>
-  <motion.div layout class="relative w-full h-fit">
+  <motion.div layout class="relative w-full">
     <motion.img
       layout
       :layout-id="`img-${src}`"
@@ -26,37 +26,39 @@ const showDialog = ref(false);
         mass: 5,
       }"
       alt="thumbnail"
-      class="block w-full object-contain transition-opacity duration-300 rounded-2xl cursor-zoom-in"
+      class="block object-contain rounded-2xl cursor-zoom-in"
       @click="showDialog = true"
     />
     <p class="text-center my-4">
       {{ title }}
     </p>
     <animate-presence>
-      <motion.img
-        v-if="showDialog"
-        :layout-id="`img-${src}`"
-        :src="src"
-        layout
-        alt="thumbnail"
-        :transition="{
-          type: 'spring',
-          stiffness: 449,
-          damping: 86,
-          mass: 5,
-        }"
-        class="h-[75vh] object-contain cursor-zoom-out transition-opacity duration-300 fixed inset-50% z-10 -transform-translate-x-1/2 -transform-translate-y-1/2 object-contain rounded-xl z-100"
-        @click="showDialog = false"
-      />
-      <motion.div
-        v-if="showDialog"
-        layout
-        class="w-full h-full fixed inset-0 z-50 bg-black/50"
-        :initial="{ backdropFilter: 'blur(16px)' }"
-        :animate="{ backdropFilter: 'blur(16px)' }"
-        :exit="{ backdropFilter: 'blur(16px)' }"
-        @click="showDialog = false"
-      />
+      <motion.div v-if="showDialog" class="fixed w-full h-full inset-0 flex items-center justify-center z-100 px-4">
+        <motion.img
+          v-if="showDialog"
+          :layout-id="`img-${src}`"
+          :src="src"
+          layout
+          alt="thumbnail"
+          :transition="{
+            type: 'spring',
+            stiffness: 449,
+            damping: 86,
+            mass: 5,
+          }"
+          class="h-75vw md:h-50vw object-contain cursor-zoom-out rounded-xl z-200"
+          @click="showDialog = false"
+        />
+        <motion.div
+          v-if="showDialog"
+          layout
+          class="w-full h-full fixed inset-0 z-50 bg-black/50"
+          :initial="{ backdropFilter: 'blur(16px)' }"
+          :animate="{ backdropFilter: 'blur(16px)' }"
+          :exit="{ backdropFilter: 'blur(16px)' }"
+          @click="showDialog = false"
+        />
+      </motion.div>
     </animate-presence>
   </motion.div>
 </template>
