@@ -1,84 +1,62 @@
 <script lang="ts" setup>
 import { AnimatePresence, motion } from 'motion-v';
+import { ref } from 'vue';
 
-const { src, title } = defineProps<{
+defineProps<{
   src: string;
   title?: string;
 }>();
 
 const showDialog = ref(false);
-
-const originState = reactive({
-  top: 0,
-  left: 0,
-  width: 0,
-  height: 0,
-});
-
-const overflowMode = ref('');
-
-function onClickOriginImage(ev: MouseEvent) {
-  const el = ev.currentTarget as HTMLElement;
-  showDialog.value = true;
-  const { top, left, width, height } = el.getBoundingClientRect();
-  originState.top = top;
-  originState.left = left;
-  originState.width = width;
-  originState.height = height;
-  if (overflowMode.value === '') {
-    overflowMode.value = document.documentElement.style.overflow;
-  }
-  document.documentElement.style.overflow = 'hidden';
-}
-function onClose() {
-  document.documentElement.style.overflow = overflowMode.value;
-  showDialog.value = false;
-}
 </script>
 
 <template>
-  <motion.div class="w-full h-fit relative">
-    <motion.div class="max-h-[500px] overflow-auto">
-      <motion.img
-        :src="src"
-        class="w-full"
-        @click="onClickOriginImage"
-      />
-    </motion.div>
-    <motion.p class="text-center my-8">
+  <motion.div layout class="relative w-full h-fit">
+    <motion.img
+      layout
+      :layout-id="`img-${src}`"
+      :src="src"
+      :style="{
+        opacity: showDialog ? 0 : 1,
+      }"
+      :transition="{
+        type: 'spring',
+        stiffness: 449,
+        damping: 86,
+        mass: 5,
+      }"
+      alt="thumbnail"
+      class="block w-full object-contain transition-opacity duration-300 rounded-2xl cursor-zoom-in"
+      @click="showDialog = true"
+    />
+    <p class="text-center my-4">
       {{ title }}
-    </motion.p>
-    <teleport to="body">
-      <animate-presence>
-        <motion.img
-          v-if="showDialog"
-          class="[--w:80vw] lg:[--w:50vw] h-unset fixed z-200"
-          :src="src"
-          layout
-          :initial="{
-            top: `${originState.top}px`,
-            left: `${originState.left}px`,
-            transform: 'translate(0%, 0%)',
-          }"
-          :animate="{
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }"
-          :exit="{
-            top: `${originState.top}px`,
-            left: `${originState.left}px`,
-            transform: 'translate(0%, 0%)',
-          }"
-          :style="{
-            maxWidth: 'var(--w)',
-            width: '100%',
-
-          }"
-          @click.stop="onClose"
-        />
-        <motion.div v-if="showDialog" class="fixed w-dvw h-dvh bg-black/80 inset-0 z-100" @click="onClose" />
-      </animate-presence>
-    </teleport>
+    </p>
+    <animate-presence>
+      <motion.img
+        v-if="showDialog"
+        :layout-id="`img-${src}`"
+        :src="src"
+        layout
+        alt="thumbnail"
+        :transition="{
+          type: 'spring',
+          stiffness: 449,
+          damping: 86,
+          mass: 5,
+        }"
+        class="h-[75vh] object-contain cursor-zoom-out transition-opacity duration-300 fixed inset-50% z-10 -transform-translate-x-1/2 -transform-translate-y-1/2 object-contain rounded-xl z-100"
+        @click="showDialog = false"
+      />
+      <motion.div
+        v-if="showDialog"
+        layout
+        class="w-full h-full fixed inset-0 z-50 bg-black/50"
+        :initial="{ backdropFilter: 'blur(16px)' }"
+        :animate="{ backdropFilter: 'blur(16px)' }"
+        :exit="{ backdropFilter: 'blur(16px)' }"
+        @click="showDialog = false"
+      />
+    </animate-presence>
   </motion.div>
 </template>

@@ -35,14 +35,13 @@ useHead({
         prose
         prose-stone
         max-w-full
-        [&_img]:w-unset
         dark:prose-invert
-        prose-headings:my-4
-        prose-headings:no-underline
-        prose-headings:before:mr-2
-        prose-headings:before:text-default-600
-        prose-headings:before:content-none
-        prose-p:my-2
+        _prose-headings:my-4
+        _prose-headings:no-underline
+        _prose-headings:before:mr-2
+        _prose-headings:before:text-default-600
+        _prose-headings:before:content-none
+        prose-p:my-4
         prose-p:before:content-none
         prose-p:after:content-none
         prose-a:no-underline
