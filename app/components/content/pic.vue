@@ -26,7 +26,7 @@ const showDialog = ref(false);
         mass: 5,
       }"
       alt="thumbnail"
-      class="block object-contain rounded-2xl cursor-zoom-in"
+      class="block object-contain rounded-2xl cursor-zoom-in w-full"
       @click="showDialog = true"
     />
     <p class="text-center my-4">
@@ -46,7 +46,7 @@ const showDialog = ref(false);
             damping: 86,
             mass: 5,
           }"
-          class="h-75vw md:h-50vw object-contain cursor-zoom-out rounded-xl z-200"
+          class="h-75vh md:h-75vh object-contain cursor-zoom-out rounded-xl z-200"
           @click="showDialog = false"
         />
         <motion.div
